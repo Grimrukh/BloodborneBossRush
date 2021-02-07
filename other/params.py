@@ -6,7 +6,7 @@
 """
 from enum import IntEnum
 
-from soulstruct.params.bloodborne import GameParamBND
+from soulstruct.bloodborne.params import GameParamBND
 
 
 class StartingClasses(IntEnum):
@@ -23,7 +23,8 @@ class StartingClasses(IntEnum):
 
 
 class BossCharacterParam(IntEnum):
-    """Just for my reference, for param editing. These are listed in "story mode" Boss Rush order."""
+    """Just for my reference, for param editing. These are listed in "story mode" Boss Rush order. Also includes boss
+    minion characters."""
     ClericBeast = 500241
     FatherGascoignePhaseOne = 271000
     FatherGascoignePhaseTwo = 272000
@@ -42,7 +43,12 @@ class BossCharacterParam(IntEnum):
     TheOneRebornHead = 507100
     TheOneRebornCaster = 507200
     TheOneRebornMaiden = 105810
-    CelestialEmissary = 250080  # TODO: what about minions?
+    CelestialEmissary = 250080
+    CelestialEmissaryGiant = 257010
+    CelestialEmissaryGiantTentacles1 = 257100
+    CelestialEmissaryGiantTentacles2 = 257101
+    CelestialEmissaryMinion = 250081
+    CelestialEmissaryMinionTentacles = 250150
     Ebrietas = 251000
     Micolash = 6380  # uses separate buff for Players. Not touching here.
     MergosWetNurse = 551000  # includes copies
@@ -227,6 +233,8 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
 
     to_remove = []
     for row_id, row in game_param_bnd.Shops.items():
+        # Many entries are duplicated multiple times in the shop lineup for stock in different time periods (times of
+        # day). The row ID checked is the first entry, in the range [100000, 109999] or [200000, 209999].
         if 140000 <= row_id < 149999 or 240000 <= row_id < 249999:
             check_row_id = row_id - 40000
         elif 130000 <= row_id < 139999 or 230000 <= row_id < 239999:

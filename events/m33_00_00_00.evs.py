@@ -16,6 +16,7 @@ strings:
 238: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m33_00_entities import *
 
@@ -344,8 +345,8 @@ def AmygdalaDies():
     Kill(Characters.Amygdala, award_souls=True)
     DisableObject(Objects.AmygdalaFog1)
     DisableObject(Objects.AmygdalaFog2)
-    DeleteVFX(FX.AmygdalaFog1, erase_root_only=True)
-    DeleteVFX(FX.AmygdalaFog2, erase_root_only=True)
+    DeleteVFX(VFX.AmygdalaFog1, erase_root_only=True)
+    DeleteVFX(VFX.AmygdalaFog2, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -354,8 +355,8 @@ def AmygdalaDies():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.AmygdalaFog1)
     DisableObject(Objects.AmygdalaFog2)
-    DeleteVFX(FX.AmygdalaFog1, erase_root_only=True)
-    DeleteVFX(FX.AmygdalaFog2, erase_root_only=True)
+    DeleteVFX(VFX.AmygdalaFog1, erase_root_only=True)
+    DeleteVFX(VFX.AmygdalaFog2, erase_root_only=True)
     SetLockedCameraSlot(game_map=NIGHTMARE_FRONTIER, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.Amygdala)
@@ -434,9 +435,9 @@ def EnterAmygdalaFog():
     GotoIfFlagOn(Label.L0, Flags.AmygdalaFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.AmygdalaFog1)
-    DeleteVFX(FX.AmygdalaFog1, erase_root_only=False)
+    DeleteVFX(VFX.AmygdalaFog1, erase_root_only=False)
     DisableObject(Objects.AmygdalaFog2)
-    DeleteVFX(FX.AmygdalaFog2, erase_root_only=False)
+    DeleteVFX(VFX.AmygdalaFog2, erase_root_only=False)
     IfFlagOff(1, Flags.AmygdalaDead)
     IfFlagOn(1, Flags.AmygdalaFirstTimeDone)
     IfConditionTrue(-1, input_condition=1)
@@ -446,8 +447,8 @@ def EnterAmygdalaFog():
     IfConditionTrue(0, input_condition=-1)
     EnableObject(Objects.AmygdalaFog1)
     EnableObject(Objects.AmygdalaFog2)
-    CreateVFX(FX.AmygdalaFog1)
-    CreateVFX(FX.AmygdalaFog2)
+    CreateVFX(VFX.AmygdalaFog1)
+    CreateVFX(VFX.AmygdalaFog2)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -522,7 +523,10 @@ def StartAmygdalaBattle():
     EndIfFlagOn(Flags.AmygdalaDead)
     DisableAI(Characters.Amygdala)
     DisableHealthBar(Characters.Amygdala)
-    IfFlagOn(0, Flags.AmygdalaFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Amygdala)
+    # IfFlagOn(0, Flags.AmygdalaFogEntered)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.Amygdala, UpdateAuthority.Forced)

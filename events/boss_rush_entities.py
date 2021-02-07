@@ -15,6 +15,8 @@ class BossRushFlags(Flag):
     # 7400+ slots are post-boss lantern appearance/activation events.
     # 7496 is the story boss order choice event.
     # 7497 is the random boss order choice event.
+    # 7500-7599 are boss warp request flags, which trigger warps immediately when activated.
+    # 7600-7699 are boss death flags, which prevent bosses from being re-selected during a random rush.
     BossRushCompleted = 7498
     BossRushRandomized = 7499
     NextBossChosen = 7500

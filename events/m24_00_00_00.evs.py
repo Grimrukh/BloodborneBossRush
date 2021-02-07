@@ -21,6 +21,7 @@ strings:
 302: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m24_00_entities import *
 
@@ -401,7 +402,7 @@ def Constructor():
     Event12404843()
     VicarAmeliaDies()
     PlayVicarAmeliaDeathSound()
-    VicarAmeliaFirstTime()
+    # VicarAmeliaFirstTime()
     PlayMasterWillemCutscene()
     EnterVicarAmeliaBossFog()
     EnterVicarAmeliaBossFogAsSummon()
@@ -5337,7 +5338,7 @@ def VicarAmeliaDies():
     DisableObject(2400801)
     Kill(2400800, award_souls=False)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=False)
+    DeleteVFX(VFX.BossFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -5345,7 +5346,7 @@ def VicarAmeliaDies():
     IfCharacterDead(0, 2400800)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=True)
+    DeleteVFX(VFX.BossFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=CATHEDRAL_WARD, camera_slot=0)
     Wait(3.0)
     KillBoss(2400800)
@@ -5430,21 +5431,21 @@ def VicarAmeliaFirstTime():
 
 def PlayMasterWillemCutscene():
     """ 12401803: Play cutscene between Laurence and Master Willem at skull after Vicar Amelia is killed. """
-    DeleteVFX(FX.LaurenceSkull, erase_root_only=False)
+    DeleteVFX(VFX.LaurenceSkull, erase_root_only=False)
     EndIfThisEventOn()
     GotoIfFlagOn(Label.L0, Flags.VicarAmeliaDead)
     IfFlagOn(0, Flags.VicarAmeliaDead)
 
     # --- 0 --- #
     DefineLabel(0)
-    CreateVFX(FX.LaurenceSkull)
+    CreateVFX(VFX.LaurenceSkull)
     EndIfClient()
     IfCharacterHuman(1, PLAYER)
     IfActionButtonParam(1, action_button_id=2400010, entity=2401801)
     IfConditionTrue(0, input_condition=1)
     EnableFlag(CommonFlags.CutsceneActive)
     WaitFrames(1)
-    DeleteVFX(FX.LaurenceSkull, erase_root_only=True)
+    DeleteVFX(VFX.LaurenceSkull, erase_root_only=True)
     PlayCutsceneAndMovePlayerAndSetTimePeriod(
         Cutscenes.LaurenceFlashback, CutsceneType.Skippable, -1, CATHEDRAL_WARD, player_id=10000, time_period_id=2
     )
@@ -5469,12 +5470,12 @@ def EnterVicarAmeliaBossFog():
     GotoIfFlagOn(Label.L0, Flags.VicarAmeliaFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=False)
+    DeleteVFX(VFX.BossFog, erase_root_only=False)
     IfFlagOff(1, Flags.VicarAmeliaDead)
     IfFlagOn(1, Flags.VicarAmeliaFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.BossFog)
-    CreateVFX(FX.BossFog)
+    CreateVFX(VFX.BossFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -5549,7 +5550,10 @@ def StartVicarAmeliaBattle():
     DisableAI(Characters.VicarAmelia)
     DisableHealthBar(Characters.VicarAmelia)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.VicarAmeliaFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.VicarAmelia)
+    # IfFlagOn(0, Flags.VicarAmeliaFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12404223)
     NotifyBossBattleStart()
@@ -5683,7 +5687,9 @@ def VicarAmeliaLimbDamage(
         is_invincible=False,
         start_in_stop_state=False,
     )
-    SetNPCPartEffects(Characters.VicarAmelia, npc_part_id=vulnerable_npc_part_id, material_sfx_id=72, material_vfx_id=72)
+    SetNPCPartEffects(
+        Characters.VicarAmelia, npc_part_id=vulnerable_npc_part_id, material_sfx_id=72, material_vfx_id=72
+    )
     IfCharacterPartHealthLessThanOrEqual(2, Characters.VicarAmelia, npc_part_id=vulnerable_npc_part_id, value=0)
     IfHealthLessThanOrEqual(3, Characters.VicarAmelia, 0.0)
     IfConditionTrue(-1, input_condition=2)

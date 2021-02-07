@@ -19,7 +19,7 @@ strings:
 254: 
 """
 from soulstruct.bloodborne.events import *
-# from .common import ArriveAtLantern, LightLantern, ReturnToHuntersDream, GainInsight, ToggleLantern
+from .boss_rush_entities import *
 from .common_entities import *
 from .m24_01_entities import *
 
@@ -238,7 +238,7 @@ def Constructor():
     Event12414733()
     ClericBeastDies()
     PlayClericBeastDeathSound()
-    ClericBeastFirstTime()
+    # ClericBeastFirstTime()
     EnterClericBeastFog()
     EnterClericBeastFogAsSummon()
     StartClericBeastBattle()
@@ -377,7 +377,7 @@ def Constructor():
     Event12414813()
     GascoigneDies()
     PlayFatherGascoigneDeathSound()
-    FatherGascoigneFirstTime()
+    # FatherGascoigneFirstTime()
     EnterFatherGascoigneFog()
     EnterFatherGascoigneFogAsSummon()
     StartFatherGascoigneBattle()
@@ -1288,7 +1288,7 @@ def ClericBeastDies():
     DisableCharacter(Characters.ClericBeast)
     Kill(Characters.ClericBeast, award_souls=False)
     DisableObject(Objects.ClericBeastFog)
-    DeleteVFX(FX.ClericBeastFog, erase_root_only=False)
+    DeleteVFX(VFX.ClericBeastFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -1296,7 +1296,7 @@ def ClericBeastDies():
     IfCharacterDead(0, Characters.ClericBeast)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.ClericBeastFog)
-    DeleteVFX(FX.ClericBeastFog, erase_root_only=True)
+    DeleteVFX(VFX.ClericBeastFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=CENTRAL_YHARNAM, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.ClericBeast)
@@ -1387,12 +1387,12 @@ def EnterClericBeastFog():
     GotoIfFlagOn(Label.L0, Flags.ClericBeastFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.ClericBeastFog)
-    DeleteVFX(FX.ClericBeastFog, erase_root_only=False)
+    DeleteVFX(VFX.ClericBeastFog, erase_root_only=False)
     IfFlagOff(1, Flags.ClericBeastDead)
     IfFlagOn(1, Flags.ClericBeastFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.ClericBeastFog)
-    CreateVFX(FX.ClericBeastFog)
+    CreateVFX(VFX.ClericBeastFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1468,9 +1468,12 @@ def StartClericBeastBattle():
     DisableAI(Characters.ClericBeast)
     DisableHealthBar(Characters.ClericBeast)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(-1, Flags.ClericBeastFogEntered)
-    IfFlagOn(-1, 12415400)
-    IfConditionTrue(0, input_condition=-1)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.ClericBeast)
+    # IfFlagOn(-1, Flags.ClericBeastFogEntered)
+    # IfFlagOn(-1, 12415400)
+    # IfConditionTrue(0, input_condition=-1)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.ClericBeast, UpdateAuthority.Forced)
@@ -1855,7 +1858,10 @@ def StartFatherGascoigneBattle():
     DisableHealthBar(Characters.GascoigneHuman)
     DisableHealthBar(Characters.GascoigneBeast)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.GascoigneFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.FatherGascoigne)
+    # IfFlagOn(0, Flags.GascoigneFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12414223)
     NotifyBossBattleStart()

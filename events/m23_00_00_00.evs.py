@@ -21,6 +21,7 @@ strings:
 302: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .m23_00_entities import *
 
 
@@ -333,7 +334,7 @@ def Constructor():
     Event12304813()
     BloodStarvedBeastDies()
     PlayBloodStarvedBeastDeathSound()
-    BloodStarvedBeastFirstTime()
+    # BloodStarvedBeastFirstTime()
     EnterBloodStarvedBeastFog()
     EnterBloodStarvedBeastFogAsSummon()
     Event12304802()
@@ -349,7 +350,7 @@ def Constructor():
     Event12304733()
     DarkbeastPaarlDies()
     PlayDarkbeastPaarlDeathSound()
-    DarkbeastPaarlFirstTime()
+    # DarkbeastPaarlFirstTime()
     Event12304730()
     Event12304731()
     Event12304702()
@@ -733,7 +734,7 @@ def BloodStarvedBeastDies():
     DisableCharacter(2300800)
     Kill(Characters.BloodStarvedBeast, award_souls=False)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=False)
+    DeleteVFX(VFX.BossFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -741,7 +742,7 @@ def BloodStarvedBeastDies():
     IfCharacterDead(0, Characters.BloodStarvedBeast)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=True)
+    DeleteVFX(VFX.BossFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=OLD_YHARNAM, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.BloodStarvedBeast)
@@ -817,12 +818,12 @@ def EnterBloodStarvedBeastFog():
     GotoIfFlagOn(Label.L0, Flags.BloodStarvedBeastFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=False)
+    DeleteVFX(VFX.BossFog, erase_root_only=False)
     IfFlagOff(1, Flags.BloodStarvedBeastDead)
     IfFlagOn(1, Flags.BloodStarvedBeastFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.BossFog)
-    CreateVFX(FX.BossFog)
+    CreateVFX(VFX.BossFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -897,7 +898,10 @@ def Event12304802():
     DisableAI(Characters.BloodStarvedBeast)
     DisableHealthBar(Characters.BloodStarvedBeast)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, 12304800)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.BloodStarvedBeast)
+    # IfFlagOn(0, 12304800)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.BloodStarvedBeast, UpdateAuthority.Forced)
@@ -1207,7 +1211,10 @@ def Event12304702():
     DisableAI(Characters.DarkbeastPaarl)
     DisableHealthBar(Characters.DarkbeastPaarl)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, 12304700)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.DarkbeastPaarl)
+    # IfFlagOn(0, 12304700)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.DarkbeastPaarl, UpdateAuthority.Forced)

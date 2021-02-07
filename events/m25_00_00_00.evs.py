@@ -21,6 +21,7 @@ strings:
 382: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m25_00_entities import *
 
@@ -404,7 +405,7 @@ def Constructor():
     Event12504813()
     MartyrLogariusDies()
     PlayMartyrLogariusDeathSound()
-    MartyrLogariusFirstTime()
+    # MartyrLogariusFirstTime()
     EnterMartyrLogariusFog()
     EnterMartyrLogariusFogAsSummon()
     StartMartyrLogariusBattle()
@@ -1434,7 +1435,7 @@ def MartyrLogariusDies():
     Kill(Characters.MartyrLogariusSword, award_souls=False)
     Kill(Characters.MartyrLogariusBulletOwner, award_souls=False)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=True)
+    DeleteVFX(VFX.BossFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -1442,7 +1443,7 @@ def MartyrLogariusDies():
     IfCharacterDead(0, Characters.MartyrLogarius)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=True)
+    DeleteVFX(VFX.BossFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=CASTLE_CAINHURST, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.MartyrLogarius)
@@ -1552,12 +1553,12 @@ def EnterMartyrLogariusFog():
     GotoIfFlagOn(Label.L0, Flags.MartyrLogariusFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.BossFog)
-    DeleteVFX(FX.BossFog, erase_root_only=False)
+    DeleteVFX(VFX.BossFog, erase_root_only=False)
     IfFlagOff(1, Flags.MartyrLogariusDead)
     IfFlagOn(1, Flags.MartyrLogariusFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.BossFog)
-    CreateVFX(FX.BossFog)
+    CreateVFX(VFX.BossFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1639,7 +1640,10 @@ def StartMartyrLogariusBattle():
     CreateProjectileOwner(Characters.MartyrLogariusBulletOwner)
     DisableCharacter(Characters.MartyrLogariusBulletOwner)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.MartyrLogariusFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.MartyrLogarius)
+    # IfFlagOn(0, Flags.MartyrLogariusFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12504223)
     NotifyBossBattleStart()

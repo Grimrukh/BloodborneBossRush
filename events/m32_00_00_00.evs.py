@@ -18,6 +18,7 @@ strings:
 222: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m32_00_entities import *
 
@@ -82,8 +83,8 @@ def Constructor():
     Event13204834()
     RomDies()
     PlayRomDeathSound()
-    RomFirstTime()
-    TriggerBloodMoon()
+    # RomFirstTime()
+    TriggerBloodMoon()  # TODO: Handle post-boss events (remove).
     EnterRomFog()
     EnterRomFogAsSummon()
     StartRomBattle()
@@ -748,7 +749,7 @@ def RomDies():
     DisableCharacter(Characters.Rom)
     Kill(Characters.Rom, award_souls=False)
     DisableObject(Objects.RomFog)
-    DeleteVFX(FX.RomFog, erase_root_only=False)
+    DeleteVFX(VFX.RomFog, erase_root_only=False)
     DisableCollision(3204010)
     End()
 
@@ -757,7 +758,7 @@ def RomDies():
     IfCharacterDead(0, Characters.Rom)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.RomFog)
-    DeleteVFX(FX.RomFog, erase_root_only=True)
+    DeleteVFX(VFX.RomFog, erase_root_only=True)
     DisableCollision(3204010)
     SetLockedCameraSlot(game_map=BYRGENWERTH, camera_slot=0)
     Wait(3.0)
@@ -947,13 +948,13 @@ def EnterRomFog():
     GotoIfFlagOn(Label.L0, Flags.RomFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.RomFog)
-    DeleteVFX(FX.RomFog, erase_root_only=False)
+    DeleteVFX(VFX.RomFog, erase_root_only=False)
     DisableCollision(3204010)
     IfFlagOff(1, Flags.RomDead)
     IfFlagOn(1, Flags.RomFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.RomFog)
-    CreateVFX(FX.RomFog)
+    CreateVFX(VFX.RomFog)
     EnableCollision(3204010)
 
     # --- 0 --- #
@@ -1035,9 +1036,12 @@ def StartRomBattle():
     DisableHealthBar(Characters.Rom)
     EnableImmortality(Characters.Rom)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(1, Flags.RomFirstTimeDone)
-    IfFlagOn(1, Flags.RomLakeEntered)
-    IfConditionTrue(0, input_condition=1)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Rom)
+    # IfFlagOn(1, Flags.RomFirstTimeDone)
+    # IfFlagOn(1, Flags.RomLakeEntered)
+    # IfConditionTrue(0, input_condition=1)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.Rom, UpdateAuthority.Forced)

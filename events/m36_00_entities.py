@@ -6,6 +6,7 @@ class Flags(Flag):
     OrphanDead = 13601800
     OrphanSpiritDead = 13601803
     OrphanFogEntered = 13604808
+    OrphanFirstTimeDone = 13604811
     OrphanPhaseTwo = 13604820
 
 
@@ -24,7 +25,7 @@ class Objects(Object):
     MoonOrphanDead = 3601811  # entire skybox actually
 
 
-class FX(FXEvent):
+class VFX(VFXEvent):
     OrphanFog1 = 3603800
     OrphanFog2 = 3603801
 

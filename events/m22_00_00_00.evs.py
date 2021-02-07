@@ -21,9 +21,9 @@ strings:
 318: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m22_00_entities import *
-# from .common import GainInsight
 
 
 def Constructor():
@@ -90,7 +90,7 @@ def Constructor():
     Event12204893()
     WitchesOfHemwickDie()
     PlayWitchesOfHemwickDeathSound()
-    WitchesOfHemwickFirstTime()
+    # WitchesOfHemwickFirstTime()
     DisableBossMadOneSpawners()
     EnterWitchesOfHemwickBossFog()
     EnterWitchesOfHemwickBossFogAsSummon()
@@ -368,8 +368,8 @@ def WitchesOfHemwickDie():
     Kill(Characters.SecondWitchOfHemwick, award_souls=False)
     DisableObject(Objects.BossEntryFogGate)
     DisableObject(Objects.BossExitFogGate)
-    DeleteVFX(FX.BossEntryFog, erase_root_only=True)
-    DeleteVFX(FX.BossExitFog, erase_root_only=True)
+    DeleteVFX(VFX.BossEntryFog, erase_root_only=True)
+    DeleteVFX(VFX.BossExitFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -380,8 +380,8 @@ def WitchesOfHemwickDie():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.BossEntryFogGate)
     DisableObject(Objects.BossExitFogGate)
-    DeleteVFX(FX.BossEntryFog, erase_root_only=True)
-    DeleteVFX(FX.BossExitFog, erase_root_only=True)
+    DeleteVFX(VFX.BossEntryFog, erase_root_only=True)
+    DeleteVFX(VFX.BossExitFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=HEMWICK_CHARNEL_LANE, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.FirstWitchOfHemwick)
@@ -489,16 +489,16 @@ def EnterWitchesOfHemwickBossFog():
     GotoIfFlagOn(Label.L0, Flags.WitchesOfHemwickFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.BossEntryFogGate)
-    DeleteVFX(FX.BossEntryFog, erase_root_only=False)
+    DeleteVFX(VFX.BossEntryFog, erase_root_only=False)
     DisableObject(Objects.BossExitFogGate)
-    DeleteVFX(FX.BossExitFog, erase_root_only=False)
+    DeleteVFX(VFX.BossExitFog, erase_root_only=False)
     IfFlagOff(1, Flags.WitchesOfHemwickDead)
     IfFlagOn(1, Flags.WitchesOfHemwickFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.BossEntryFogGate)
     EnableObject(Objects.BossExitFogGate)
-    CreateVFX(FX.BossEntryFog)
-    CreateVFX(FX.BossExitFog)
+    CreateVFX(VFX.BossEntryFog)
+    CreateVFX(VFX.BossExitFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -573,7 +573,10 @@ def StartWitchesOfHemwickBossBattle():
     DisableAI(Characters.FirstWitchOfHemwick)
     DisableHealthBar(Characters.FirstWitchOfHemwick)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.WitchesOfHemwickFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.WitchesOfHemwick)
+    # IfFlagOn(0, Flags.WitchesOfHemwickFogEntered)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.FirstWitchOfHemwick, UpdateAuthority.Forced)

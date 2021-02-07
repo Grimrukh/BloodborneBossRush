@@ -24,6 +24,7 @@ strings:
 382: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m28_00_entities import *
 
@@ -138,7 +139,7 @@ def Constructor():
     Event12804883()
     OneRebornDies()
     PlayOneRebornDeathSound()
-    OneRebornFirstTime()
+    # OneRebornFirstTime()
     EnterOneRebornFog()
     EnterOneRebornFogAsSummon()
     StartOneRebornBattle()
@@ -1862,8 +1863,8 @@ def OneRebornDies():
     DisableBackread(Characters.OneRebornMaiden6)
     DisableObject(Objects.OneRebornFog1)
     DisableObject(Objects.OneRebornFog2)
-    DeleteVFX(FX.OneRebornFog1, erase_root_only=False)
-    DeleteVFX(FX.OneRebornFog2, erase_root_only=False)
+    DeleteVFX(VFX.OneRebornFog1, erase_root_only=False)
+    DeleteVFX(VFX.OneRebornFog2, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -1883,8 +1884,8 @@ def OneRebornDies():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.OneRebornFog1)
     DisableObject(Objects.OneRebornFog2)
-    DeleteVFX(FX.OneRebornFog1, erase_root_only=True)
-    DeleteVFX(FX.OneRebornFog2, erase_root_only=True)
+    DeleteVFX(VFX.OneRebornFog1, erase_root_only=True)
+    DeleteVFX(VFX.OneRebornFog2, erase_root_only=True)
     SetLockedCameraSlot(game_map=YAHARGUL, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.OneRebornHealthPool)
@@ -1978,16 +1979,16 @@ def EnterOneRebornFog():
     GotoIfFlagOn(Label.L0, Flags.OneRebornFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.OneRebornFog1)
-    DeleteVFX(FX.OneRebornFog1, erase_root_only=False)
+    DeleteVFX(VFX.OneRebornFog1, erase_root_only=False)
     DisableObject(Objects.OneRebornFog2)
-    DeleteVFX(FX.OneRebornFog2, erase_root_only=False)
+    DeleteVFX(VFX.OneRebornFog2, erase_root_only=False)
     IfFlagOff(1, Flags.OneRebornDead)
     IfFlagOn(1, Flags.OneRebornFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.OneRebornFog1)
-    CreateVFX(FX.OneRebornFog1)
+    CreateVFX(VFX.OneRebornFog1)
     EnableObject(Objects.OneRebornFog2)
-    CreateVFX(FX.OneRebornFog2)
+    CreateVFX(VFX.OneRebornFog2)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -2078,7 +2079,10 @@ def StartOneRebornBattle():
     EnableImmortality(Characters.OneRebornMain)
     EnableImmortality(Characters.OneRebornHumanPart)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.OneRebornFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.TheOneReborn)
+    # IfFlagOn(0, Flags.OneRebornFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12804223)
     NotifyBossBattleStart()

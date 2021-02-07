@@ -189,6 +189,35 @@ def Constructor():
     SkipLinesIfConditionFalse(1, 5)
     EnableFlag(70009240)
 
+    # NEW BOSS RUSH EVENTS
+
+    # These events warp you to the given warp point whenever the given request flag is enabled.
+    WarpToNextBoss(0, BossRushFlags.RequestBoss_ClericBeast, BossRushWarpPoints.ClericBeast)
+    WarpToNextBoss(1, BossRushFlags.RequestBoss_FatherGascoigne, BossRushWarpPoints.FatherGascoigne)
+    WarpToNextBoss(2, BossRushFlags.RequestBoss_BloodStarvedBeast, BossRushWarpPoints.BloodStarvedBeast)
+    WarpToNextBoss(3, BossRushFlags.RequestBoss_WitchesOfHemwick, BossRushWarpPoints.WitchesOfHemwick)
+    WarpToNextBoss(4, BossRushFlags.RequestBoss_VicarAmelia, BossRushWarpPoints.VicarAmelia)
+    WarpToNextBoss(5, BossRushFlags.RequestBoss_DarkbeastPaarl, BossRushWarpPoints.DarkbeastPaarl)
+    WarpToNextBoss(6, BossRushFlags.RequestBoss_ShadowsOfYharnam, BossRushWarpPoints.ShadowsOfYharnam)
+    WarpToNextBoss(7, BossRushFlags.RequestBoss_Rom, BossRushWarpPoints.Rom)
+    WarpToNextBoss(8, BossRushFlags.RequestBoss_Amygdala, BossRushWarpPoints.Amygdala)
+    WarpToNextBoss(9, BossRushFlags.RequestBoss_MartyrLogarius, BossRushWarpPoints.MartyrLogarius)
+    WarpToNextBoss(10, BossRushFlags.RequestBoss_TheOneReborn, BossRushWarpPoints.TheOneReborn)
+    WarpToNextBoss(11, BossRushFlags.RequestBoss_CelestialEmissary, BossRushWarpPoints.CelestialEmissary)
+    WarpToNextBoss(12, BossRushFlags.RequestBoss_Ebrietas, BossRushWarpPoints.Ebrietas)
+    WarpToNextBoss(13, BossRushFlags.RequestBoss_Micolash, BossRushWarpPoints.Micolash)
+    WarpToNextBoss(14, BossRushFlags.RequestBoss_MergosWetNurse, BossRushWarpPoints.MergosWetNurse)
+    WarpToNextBoss(15, BossRushFlags.RequestBoss_Ludwig, BossRushWarpPoints.Ludwig)
+    WarpToNextBoss(16, BossRushFlags.RequestBoss_LivingFailures, BossRushWarpPoints.LivingFailures)
+    WarpToNextBoss(17, BossRushFlags.RequestBoss_LadyMaria, BossRushWarpPoints.LadyMaria)
+    WarpToNextBoss(18, BossRushFlags.RequestBoss_Laurence, BossRushWarpPoints.Laurence)
+    WarpToNextBoss(19, BossRushFlags.RequestBoss_OrphanOfKos, BossRushWarpPoints.OrphanOfKos)
+    WarpToNextBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
+    WarpToNextBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
+    # TODO: Create a unique flag for "MoonPresenceRequested" that is checked in Hunter's Dream boss events.
+    #  This flag should be enabled when RequestBoss_MoonPresence flag is enabled. If it's disabled when Hunter's Dream
+    #  loads boss events, Gehrman is assumed.
+
 
 def Preconstructor():
     """ 50: Event 50 """
@@ -1984,6 +2013,7 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
     DisableObject(lantern_obj)
 
     await FlagEnabled(boss_dead_flag)
+
     EnableObject(lantern_obj)
     CreateTemporaryVFX(100330, anchor_entity=lantern_obj, anchor_type=CoordEntityType.Object, model_point=100)
     # TODO: Award 10 blood vials and bullets at this point too.
@@ -1991,15 +2021,13 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
     # Trying to use the standard action button instruction, rather than creating a new ActionButtonParam for it.
     IfActionButton(
         0,
-        prompt_text=70011000,  # "Light Lamp"  # TODO: Create text 70011002: "Face next foe"
+        prompt_text=70011002,  # "Face next foe"
         anchor_entity=lantern_obj,
         anchor_type=CoordEntityType.Object,
         max_distance=2.0,
         facing_angle=180.0,
         trigger_attribute=TriggerAttribute.All,  # may as well avoid weird issues
     )
-    # TODO: Create new ActionButtonParam if necessary, using prompt text 70011002 ("Face next foe")
-    # IfActionButtonAtObject(0, action_button_id=7100, obj=lantern_obj)
 
     DisableFlag(BossRushFlags.NextBossChosen)
     if BossRushFlags.BossRushRandomized:
@@ -2008,94 +2036,6 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
         EnableNextStoryBossWarpFlag(0, boss_dead_flag)  # TODO: 95% sure I can pass through event arguments...
 
     await BossRushFlags.NextBossChosen
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_ClericBeast)
-    RestartIfFlagOn(BossRushFlags.BossDead_ClericBeast)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_FatherGascoigne)
-    RestartIfFlagOn(BossRushFlags.BossDead_FatherGascoigne)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_BloodStarvedBeast)
-    RestartIfFlagOn(BossRushFlags.BossDead_BloodStarvedBeast)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_WitchesOfHemwick)
-    RestartIfFlagOn(BossRushFlags.BossDead_WitchesOfHemwick)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_VicarAmelia)
-    RestartIfFlagOn(BossRushFlags.BossDead_VicarAmelia)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_DarkbeastPaarl)
-    RestartIfFlagOn(BossRushFlags.BossDead_DarkbeastPaarl)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_ShadowsOfYharnam)
-    RestartIfFlagOn(BossRushFlags.BossDead_ShadowsOfYharnam)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Rom)
-    RestartIfFlagOn(BossRushFlags.BossDead_Rom)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Amygdala)
-    RestartIfFlagOn(BossRushFlags.BossDead_Amygdala)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_MartyrLogarius)
-    RestartIfFlagOn(BossRushFlags.BossDead_MartyrLogarius)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_TheOneReborn)
-    RestartIfFlagOn(BossRushFlags.BossDead_TheOneReborn)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_CelestialEmissary)
-    RestartIfFlagOn(BossRushFlags.BossDead_CelestialEmissary)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Ebrietas)
-    RestartIfFlagOn(BossRushFlags.BossDead_Ebrietas)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Micolash)
-    RestartIfFlagOn(BossRushFlags.BossDead_Micolash)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_MergosWetNurse)
-    RestartIfFlagOn(BossRushFlags.BossDead_MergosWetNurse)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Ludwig)
-    RestartIfFlagOn(BossRushFlags.BossDead_Ludwig)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_LivingFailures)
-    RestartIfFlagOn(BossRushFlags.BossDead_LivingFailures)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_LadyMaria)
-    RestartIfFlagOn(BossRushFlags.BossDead_LadyMaria)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Laurence)
-    RestartIfFlagOn(BossRushFlags.BossDead_Laurence)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_OrphanOfKos)
-    RestartIfFlagOn(BossRushFlags.BossDead_OrphanOfKos)
-    Goto(Label.L0)
-
-    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_Gehrman)
-    RestartIfFlagOn(BossRushFlags.BossDead_Gehrman)
-    Goto(Label.L0)
-
-    # --- 0 ---
-    DefineLabel(Label.L0)
-    EnableFlag(BossRushFlags.NextBossChosen)
 
     # TODO: Display a debug message if warp request failed?
     #  (Unless randomized is off and BossRushFlags.BossDead_MoonPresence is enabled.)
@@ -2294,4 +2234,8 @@ def EnableRandomBossWarpFlag():
     EnableFlag(BossRushFlags.NextBossChosen)
 
 
-# TODO: Boss rush warp event.
+def WarpToNextBoss(_, boss_warp_flag: int, warp_point: int):
+    """ 7500: Warp player to requested next boss in Boss Rush."""
+    await FlagEnabled(boss_warp_flag)
+    DisableFlag(boss_warp_flag)
+    WarpPlayerToRespawnPoint(warp_point)

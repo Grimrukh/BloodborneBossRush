@@ -15,6 +15,7 @@ strings:
 164: N:\\SPRJ\\data\\Param\\event\\common.emevd
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m27_00_entities import *
 
@@ -289,7 +290,7 @@ def Constructor():
     Event12704843()
     ShadowsOfYharnamDie()
     PlayShadowsOfYharnamDeathSound()
-    ShadowsOfYharnamFirstTime()
+    # ShadowsOfYharnamFirstTime()
     EnterShadowsOfYharnamFog()
     EnterShadowsOfYharnamFogAsSummon()
     StartShadowsOfYharnamBattle()
@@ -755,7 +756,10 @@ def StartShadowsOfYharnamBattle():
     EnableInvincibility(Characters.ShadowGiantSnake2)
     EnableInvincibility(Characters.ShadowGiantSnake3)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.ShadowsOfYharnamFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.ShadowsOfYharnam)
+    # IfFlagOn(0, Flags.ShadowsOfYharnamFogEntered)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.Shadow1, UpdateAuthority.Forced)

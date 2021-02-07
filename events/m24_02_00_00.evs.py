@@ -15,6 +15,7 @@ strings:
 180: N:\\SPRJ\\data\\Param\\event\\common.emevd
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m24_02_entities import *
 
@@ -110,7 +111,7 @@ def Constructor():
     Event12424813()
     EbrietasDies()
     Event12421801()
-    EbrietasFirstTime()
+    # EbrietasFirstTime()
     EnterEbrietasFog()
     EnterEbrietasFogAsSummon()
     StartEbrietasBattle()
@@ -131,7 +132,7 @@ def Constructor():
     Event12424713()
     CelestialEmissaryDies()
     PlayCelestialEmissaryDeathSound()
-    CelestialEmissaryFirstTime()
+    # CelestialEmissaryFirstTime()
     EnterCelestialEmissaryFog()
     EnterCelestialEmissaryFogAsSummon()
     StartCelestialEmissaryBattle()
@@ -326,7 +327,7 @@ def EbrietasDies():
     DisableCharacter(Characters.Ebrietas)
     Kill(Characters.Ebrietas, award_souls=False)
     DisableObject(Objects.EbrietasFog)
-    DeleteVFX(FX.EbrietasFog, erase_root_only=False)
+    DeleteVFX(VFX.EbrietasFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -334,7 +335,7 @@ def EbrietasDies():
     IfCharacterDead(0, Characters.Ebrietas)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.EbrietasFog)
-    DeleteVFX(FX.EbrietasFog, erase_root_only=True)
+    DeleteVFX(VFX.EbrietasFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.Ebrietas)
@@ -419,12 +420,12 @@ def EnterEbrietasFog():
     GotoIfFlagOn(Label.L0, Flags.EbrietasFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.EbrietasFog)
-    DeleteVFX(FX.EbrietasFog, erase_root_only=False)
+    DeleteVFX(VFX.EbrietasFog, erase_root_only=False)
     IfFlagOff(1, Flags.EbrietasDead)
     IfFlagOn(1, Flags.EbrietasFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.EbrietasFog)
-    CreateVFX(FX.EbrietasFog)
+    CreateVFX(VFX.EbrietasFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -499,7 +500,10 @@ def StartEbrietasBattle():
     DisableAI(Characters.Ebrietas)
     DisableHealthBar(Characters.Ebrietas)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.EbrietasFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Ebrietas)
+    # IfFlagOn(0, Flags.EbrietasFogEntered)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.Ebrietas, UpdateAuthority.Forced)
@@ -744,8 +748,8 @@ def CelestialEmissaryDies():
     DisableAI(Characters.CelestialMinion7)
     DisableObject(Objects.CelestialEmissaryFog)
     DisableObject(Objects.CelestialEmissaryExitFog)
-    DeleteVFX(FX.CelestialEmissaryEntranceFog, erase_root_only=False)
-    DeleteVFX(FX.CelestialEmissaryExitFog, erase_root_only=False)
+    DeleteVFX(VFX.CelestialEmissaryEntranceFog, erase_root_only=False)
+    DeleteVFX(VFX.CelestialEmissaryExitFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -754,8 +758,8 @@ def CelestialEmissaryDies():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.CelestialEmissaryFog)
     DisableObject(Objects.CelestialEmissaryExitFog)
-    DeleteVFX(FX.CelestialEmissaryEntranceFog, erase_root_only=True)
-    DeleteVFX(FX.CelestialEmissaryExitFog, erase_root_only=True)
+    DeleteVFX(VFX.CelestialEmissaryEntranceFog, erase_root_only=True)
+    DeleteVFX(VFX.CelestialEmissaryExitFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
     DisableCharacter(2420750)
     DisableCharacter(2420751)
@@ -891,16 +895,16 @@ def EnterCelestialEmissaryFog():
     GotoIfFlagOn(Label.L0, Flags.CelestialEmissaryFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.CelestialEmissaryEntranceFog)
-    DeleteVFX(FX.CelestialEmissaryEntranceFog, erase_root_only=False)
+    DeleteVFX(VFX.CelestialEmissaryEntranceFog, erase_root_only=False)
     DisableObject(Objects.CelestialEmissaryExitFog)
-    DeleteVFX(FX.CelestialEmissaryExitFog, erase_root_only=False)
+    DeleteVFX(VFX.CelestialEmissaryExitFog, erase_root_only=False)
     IfFlagOff(1, Flags.CelestialEmissaryDead)
     IfFlagOn(1, Flags.CelestialEmissaryFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.CelestialEmissaryEntranceFog)
     EnableObject(Objects.CelestialEmissaryExitFog)
-    CreateVFX(FX.CelestialEmissaryEntranceFog)
-    CreateVFX(FX.CelestialEmissaryExitFog)
+    CreateVFX(VFX.CelestialEmissaryEntranceFog)
+    CreateVFX(VFX.CelestialEmissaryExitFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -981,7 +985,10 @@ def StartCelestialEmissaryBattle():
     DisableAI(Characters.CelestialMinion7)
     EnableImmortality(Characters.CelestialEmissarySmall)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.CelestialEmissaryFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.CelestialEmissary)
+    # IfFlagOn(0, Flags.CelestialEmissaryFogEntered)
+
     GotoIfClient(Label.L0)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(2800810, UpdateAuthority.Forced)

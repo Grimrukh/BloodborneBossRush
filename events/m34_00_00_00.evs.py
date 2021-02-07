@@ -15,6 +15,7 @@ strings:
 190: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m34_00_entities import *
 
@@ -96,7 +97,7 @@ def Constructor():
     Event13404742()
     LudwigDies()
     Event13404811()
-    LudwigFirstTime()  # 1801 in this map instead of 1802
+    # LudwigFirstTime()  # 1801 in this map instead of 1802
     EnterLudwigFog()
     EnterLudwigFogAsSummon()
     StartLudwigBattle()
@@ -129,7 +130,7 @@ def Constructor():
     # LAURENCE, THE FIRST VICAR
     LaurenceDies()
     LaurenceAwakens()
-    LaurenceFirstTime()
+    # LaurenceFirstTime()
     EnterLaurenceFog()
     EnterLaurenceFogAsSummon()
     StartLaurenceBattle()
@@ -867,7 +868,7 @@ def LudwigDies():
     Kill(Characters.LudwigTheAccursed, award_souls=False)
     Kill(Characters.LudwigTheHolyBlade, award_souls=False)
     DisableObject(Objects.LudwigFog)
-    DeleteVFX(FX.LudwigFog, erase_root_only=True)
+    DeleteVFX(VFX.LudwigFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -880,7 +881,7 @@ def LudwigDies():
     IfConditionTrue(0, input_condition=-1)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LudwigFog)
-    DeleteVFX(FX.LudwigFog, erase_root_only=True)
+    DeleteVFX(VFX.LudwigFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=HUNTERS_NIGHTMARE, camera_slot=0)
     Wait(3.0)
     SkipLinesIfFinishedConditionTrue(2, 2)
@@ -1019,12 +1020,12 @@ def EnterLudwigFog():
     GotoIfFlagOn(Label.L0, Flags.LudwigFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.LudwigFog)
-    DeleteVFX(FX.LudwigFog, erase_root_only=False)
+    DeleteVFX(VFX.LudwigFog, erase_root_only=False)
     IfFlagOff(1, Flags.LudwigDead)
     IfFlagOn(1, Flags.LudwigFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.LudwigFog)
-    CreateVFX(FX.LudwigFog)
+    CreateVFX(VFX.LudwigFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1083,7 +1084,10 @@ def StartLudwigBattle():
     AddSpecialEffect(Characters.LudwigTheAccursed, 8040, affect_npc_part_hp=False)
     AddSpecialEffect(Characters.LudwigTheHolyBlade, 8040, affect_npc_part_hp=False)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.LudwigFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Ludwig)
+    # IfFlagOn(0, Flags.LudwigFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 13404810)
     NotifyBossBattleStart()
@@ -1513,7 +1517,7 @@ def LaurenceDies():
     DisableCharacter(Characters.Laurence)
     Kill(Characters.Laurence, award_souls=True)
     DisableObject(Objects.LaurenceFog)
-    DeleteVFX(FX.LaurenceFog, erase_root_only=True)
+    DeleteVFX(VFX.LaurenceFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -1522,7 +1526,7 @@ def LaurenceDies():
     EnableFlag(3400)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LaurenceFog)
-    DeleteVFX(FX.LaurenceFog, erase_root_only=True)
+    DeleteVFX(VFX.LaurenceFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=HUNTERS_NIGHTMARE, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.Laurence)
@@ -1654,13 +1658,13 @@ def EnterLaurenceFog():
     GotoIfFlagOn(Label.L0, Flags.LaurenceFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.LaurenceFog)
-    DeleteVFX(FX.LaurenceFog, erase_root_only=False)
+    DeleteVFX(VFX.LaurenceFog, erase_root_only=False)
     IfFlagOff(1, Flags.LaurenceDead)
     IfFlagOn(1, Flags.LaurenceFirstTimeDone)
     IfConditionTrue(-1, input_condition=1)
     IfConditionTrue(0, input_condition=-1)
     EnableObject(Objects.LaurenceFog)
-    CreateVFX(FX.LaurenceFog)
+    CreateVFX(VFX.LaurenceFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1715,7 +1719,10 @@ def StartLaurenceBattle():
     DisableAI(Characters.Laurence)
     DisableHealthBar(Characters.Laurence)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.LaurenceFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Laurence)
+    # IfFlagOn(0, Flags.LaurenceFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, Flags.LaurenceBattleStarted)
     NotifyBossBattleStart()

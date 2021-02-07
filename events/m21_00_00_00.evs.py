@@ -16,14 +16,18 @@ strings:
 """
 from soulstruct.bloodborne.events import *
 from .anims import c9020
+from .boss_rush_entities import *
 from .common_entities import *
 from .m21_00_entities import *
-from .boss_rush_entities import *
 
 
 def Constructor():
     """ 0: Event 0 """
     BossRushFirstArrival()
+
+    for boss_dead_flag in range(7601, 7623):
+        # Disable all (new) boss death flags every time you return to the Hunter's Dream.
+        DisableFlag(boss_dead_flag)
 
     SkipLinesIfClient(2)
     SkipLinesIfFlagOff(1, 6600)
@@ -2643,8 +2647,3 @@ def BossRushFirstArrival():
     EnableFlag(HeadstoneWarpUnlockedFlags.LivingFailures)
     EnableFlag(HeadstoneWarpUnlockedFlags.LadyMaria)
     EnableFlag(HeadstoneWarpUnlockedFlags.OrphanOfKos)
-
-    # TODO: All starting classes are Waste of Skin (all same stats, except they start with 687334 echoes).
-    #  Can rename the class to something else, actually.
-
-    # TODO: Give player all weapons and equipment (just look up available item lots, probably).

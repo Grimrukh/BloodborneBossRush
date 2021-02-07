@@ -22,7 +22,7 @@ strings:
 382: 
 """
 from soulstruct.bloodborne.events import *
-# from .common import GainInsight
+from .boss_rush_entities import *
 from .common_entities import *
 from .m26_00_entities import *
 
@@ -65,7 +65,7 @@ def Constructor():
     Event12604848()
     MergosWetNurseDies()
     PlayMergosWetNurseDeathSound()
-    MergosWetNurseFirstTime()
+    # MergosWetNurseFirstTime()
     EnterMergosWetNurseFog()
     EnterMergosWetNurseFogAsSummon()
     StartMergosWetNurseBattle()
@@ -91,7 +91,7 @@ def Constructor():
     Event12604863()
     MicolashDies()
     PlayMicolashDeathSound()
-    MicolashFirstTime()
+    # MicolashFirstTime()
     OpenMicolashTrapGate()
     EnterMicolashFog()
     EnterMicolashFogAsSummon()
@@ -595,7 +595,7 @@ def MergosWetNurseDies():
     DisableCharacter(Characters.MergosWetNurseClone1)
     DisableCharacter(Characters.MergosWetNurseClone2)
     DisableObject(Objects.MergosWetNurseFog)
-    DeleteVFX(FX.MergosWetNurseFog, erase_root_only=False)
+    DeleteVFX(VFX.MergosWetNurseFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -612,7 +612,7 @@ def MergosWetNurseDies():
     Wait(18.0)
     DisplayBanner(BannerType.NightmareSlain)
     DisableObject(Objects.MergosWetNurseFog)
-    DeleteVFX(FX.MergosWetNurseFog, erase_root_only=True)
+    DeleteVFX(VFX.MergosWetNurseFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=NIGHTMARE_OF_MENSIS, camera_slot=0)
     CancelSpecialEffect(PLAYER, 5630)
     Wait(3.0)
@@ -709,12 +709,12 @@ def EnterMergosWetNurseFog():
     GotoIfFlagOn(Label.L0, Flags.MergosWetNurseFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.MergosWetNurseFog)
-    DeleteVFX(FX.MergosWetNurseFog, erase_root_only=False)
+    DeleteVFX(VFX.MergosWetNurseFog, erase_root_only=False)
     IfFlagOff(1, Flags.MergosWetNurseDead)
     IfFlagOn(1, Flags.MergosWetNurseFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.MergosWetNurseFog)
-    CreateVFX(FX.MergosWetNurseFog)
+    CreateVFX(VFX.MergosWetNurseFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -796,7 +796,10 @@ def StartMergosWetNurseBattle():
     EnableImmortality(Characters.MergosWetNurse)
     EnableImmortality(Characters.MergosWetNurseClone1)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.MergosWetNurseFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.MergosWetNurse)
+    # IfFlagOn(0, Flags.MergosWetNurseFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12604732)
     NotifyBossBattleStart()
@@ -1040,9 +1043,9 @@ def MicolashDies():
     DisableObject(Objects.MicolashFog1)
     DisableObject(Objects.MicolashFog2)
     DisableObject(Objects.MicolashFog3)
-    DeleteVFX(FX.MicolashFog1, erase_root_only=False)
-    DeleteVFX(FX.MicolashFog2, erase_root_only=False)
-    DeleteVFX(FX.MicolashFog3, erase_root_only=False)
+    DeleteVFX(VFX.MicolashFog1, erase_root_only=False)
+    DeleteVFX(VFX.MicolashFog2, erase_root_only=False)
+    DeleteVFX(VFX.MicolashFog3, erase_root_only=False)
     End()
 
     # --- 0 --- #
@@ -1056,9 +1059,9 @@ def MicolashDies():
     DisableObject(Objects.MicolashFog1)
     DisableObject(Objects.MicolashFog2)
     DisableObject(Objects.MicolashFog3)
-    DeleteVFX(FX.MicolashFog1, erase_root_only=True)
-    DeleteVFX(FX.MicolashFog2, erase_root_only=True)
-    DeleteVFX(FX.MicolashFog3, erase_root_only=True)
+    DeleteVFX(VFX.MicolashFog1, erase_root_only=True)
+    DeleteVFX(VFX.MicolashFog2, erase_root_only=True)
+    DeleteVFX(VFX.MicolashFog3, erase_root_only=True)
     SetBackreadStateAlternate(Characters.Micolash, state=False)
     SetNetworkUpdateRate(Characters.Micolash, is_fixed=False, update_rate=CharacterUpdateRate.Always)
     Wait(3.0)
@@ -1135,9 +1138,9 @@ def MicolashFirstTime():
     EnableFlag(Flags.MicolashFogEntered)
     EnableCharacter(Characters.Micolash)
     EnableObject(Objects.MicolashFog1)
-    CreateVFX(FX.MicolashFog1)
+    CreateVFX(VFX.MicolashFog1)
     EnableObject(Objects.MicolashFog3)
-    CreateVFX(FX.MicolashFog3)
+    CreateVFX(VFX.MicolashFog3)
     EndIfFlagOn(9342)
     RunEvent(9350, 0, args=(2,))
     EnableFlag(9342)
@@ -1206,9 +1209,9 @@ def SummonStartMicolashBattle():
     EnableFlag(Flags.MicolashFogEntered)
     EnableCharacter(Characters.Micolash)
     EnableObject(Objects.MicolashFog1)
-    CreateVFX(FX.MicolashFog1)
+    CreateVFX(VFX.MicolashFog1)
     EnableObject(Objects.MicolashFog3)
-    CreateVFX(FX.MicolashFog3)
+    CreateVFX(VFX.MicolashFog3)
     EnableFlag(Flags.MicolashFogEntered)
     EnableFlag(Flags.MicolashFirstTimeDone)
 
@@ -1219,16 +1222,16 @@ def EnterMicolashFog():
     GotoIfFlagOn(Label.L0, Flags.MicolashFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.MicolashFog1)
-    DeleteVFX(FX.MicolashFog1, erase_root_only=False)
+    DeleteVFX(VFX.MicolashFog1, erase_root_only=False)
     DisableObject(Objects.MicolashFog3)
-    DeleteVFX(FX.MicolashFog3, erase_root_only=False)
+    DeleteVFX(VFX.MicolashFog3, erase_root_only=False)
     IfFlagOff(1, Flags.MicolashDead)
     IfFlagOn(1, Flags.MicolashFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.MicolashFog1)
-    CreateVFX(FX.MicolashFog1)
+    CreateVFX(VFX.MicolashFog1)
     EnableObject(Objects.MicolashFog3)
-    CreateVFX(FX.MicolashFog3)
+    CreateVFX(VFX.MicolashFog3)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1303,7 +1306,10 @@ def StartMicolashBattle():
     DisableAI(Characters.Micolash)
     DisableHealthBar(Characters.Micolash)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.MicolashFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.Micolash)
+    # IfFlagOn(0, Flags.MicolashFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12604731)
     NotifyBossBattleStart()
@@ -1418,7 +1424,7 @@ def MicolashPhaseTwoTrigger():
     ReplanAI(Characters.Micolash)
     AICommand(Characters.Micolash, command_id=10, slot=0)
     DisableObject(Objects.MicolashFog2)
-    DeleteVFX(FX.MicolashFog2, erase_root_only=True)
+    DeleteVFX(VFX.MicolashFog2, erase_root_only=True)
 
 
 def Event12604985():

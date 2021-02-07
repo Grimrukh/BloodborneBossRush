@@ -14,6 +14,7 @@ strings:
 180: N:\\SPRJ\\data\\Param\\event\\common.emevd
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from .m35_00_entities import *
 
@@ -122,7 +123,7 @@ def Constructor():
 
     # LADY MARIA OF THE ASTRAL CLOCKTOWER
     LadyMariaDies()
-    LadyMariaFirstTime()
+    # LadyMariaFirstTime()
     EnterLadyMariaFog()
     EnterLadyMariaFogAsSummon()
     StartLadyMariaBattle()
@@ -140,7 +141,7 @@ def Constructor():
     
     # LIVING FAILURES
     LivingFailuresDie()
-    LivingFailuresFirstTime()
+    # LivingFailuresFirstTime()
     SummonStartLivingFailuresBattle()
     EnterLivingFailuresFog()
     EnterLivingFailuresFogAsSummon()
@@ -757,7 +758,7 @@ def LadyMariaDies():
     DisableCharacter(Characters.LadyMaria)
     Kill(Characters.LadyMaria, award_souls=False)
     DisableObject(Objects.LadyMariaFog)
-    DeleteVFX(FX.LadyMariaFog, erase_root_only=True)
+    DeleteVFX(VFX.LadyMariaFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -765,7 +766,7 @@ def LadyMariaDies():
     IfCharacterDead(0, Characters.LadyMaria)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LadyMariaFog)
-    DeleteVFX(FX.LadyMariaFog, erase_root_only=True)
+    DeleteVFX(VFX.LadyMariaFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=RESEARCH_HALL, camera_slot=0)
     Wait(3.0)
     KillBoss(Characters.LadyMaria)
@@ -944,12 +945,12 @@ def EnterLadyMariaFog():
     GotoIfFlagOn(Label.L0, Flags.LadyMariaFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.LadyMariaFog)
-    DeleteVFX(FX.LadyMariaFog, erase_root_only=False)
+    DeleteVFX(VFX.LadyMariaFog, erase_root_only=False)
     IfFlagOff(1, Flags.LadyMariaDead)
     IfFlagOn(1, Flags.LadyMariaFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.LadyMariaFog)
-    CreateVFX(FX.LadyMariaFog)
+    CreateVFX(VFX.LadyMariaFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1003,7 +1004,10 @@ def StartLadyMariaBattle():
     DisableAI(Characters.LadyMaria)
     DisableHealthBar(Characters.LadyMaria)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.LadyMariaFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.LadyMaria)
+    # IfFlagOn(0, Flags.LadyMariaFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 13504810)
     NotifyBossBattleStart()
@@ -1165,7 +1169,7 @@ def LivingFailuresDie():
     Kill(Characters.LivingFailure3, award_souls=False)
     Kill(Characters.LivingFailure4, award_souls=False)
     DisableObject(Objects.LivingFailuresFog)
-    DeleteVFX(FX.LivingFailuresFog, erase_root_only=True)
+    DeleteVFX(VFX.LivingFailuresFog, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -1173,7 +1177,7 @@ def LivingFailuresDie():
     IfHealthEqual(0, Characters.LivingFailuresHealthPool, 0.0)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LivingFailuresFog)
-    DeleteVFX(FX.LivingFailuresFog, erase_root_only=True)
+    DeleteVFX(VFX.LivingFailuresFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=RESEARCH_HALL, camera_slot=0)
     EnableCollision(3504812)
     DisableCollision(3504814)
@@ -1246,12 +1250,12 @@ def EnterLivingFailuresFog():
     GotoIfFlagOn(Label.L0, Flags.LivingFailuresFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.LivingFailuresFog)
-    DeleteVFX(FX.LivingFailuresFog, erase_root_only=False)
+    DeleteVFX(VFX.LivingFailuresFog, erase_root_only=False)
     IfFlagOff(1, Flags.LivingFailuresDead)
     IfFlagOn(1, Flags.LivingFailuresFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.LivingFailuresFog)
-    CreateVFX(FX.LivingFailuresFog)
+    CreateVFX(VFX.LivingFailuresFog)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1319,7 +1323,10 @@ def StartLivingFailuresBattle():
     ReferDamageToEntity(Characters.LivingFailure3, Characters.LivingFailuresHealthPool)
     ReferDamageToEntity(Characters.LivingFailure4, Characters.LivingFailuresHealthPool)
     GotoIfThisEventOn(Label.L0)
-    IfFlagOn(0, Flags.LivingFailuresFogEntered)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.LivingFailures)
+    # IfFlagOn(0, Flags.LivingFailuresFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 13504860)
     NotifyBossBattleStart()

@@ -15,6 +15,7 @@ strings:
 158: 
 """
 from soulstruct.bloodborne.events import *
+from .boss_rush_entities import *
 from .common_entities import *
 from m36_00_entities import *
 
@@ -120,8 +121,8 @@ def Constructor():
 
     # ORPHAN OF KOS
     OrphanDies()
-    OrphanFirstTimeTrigger()
-    OrphanFirstTimeCutscene()
+    # OrphanFirstTimeTrigger()
+    # OrphanFirstTimeCutscene()
     EnterOrphanFog()
     EnterOrphanFogAsSummon()
     StartOrphanBattle()
@@ -857,7 +858,7 @@ def OrphanDies():
     Kill(Characters.Orphan, award_souls=False)
     Kill(Characters.OrphanWinged, award_souls=False)
     DisableObject(Objects.OrphanFog1)
-    DeleteVFX(FX.OrphanFog1, erase_root_only=True)
+    DeleteVFX(VFX.OrphanFog1, erase_root_only=True)
     End()
 
     # --- 0 --- #
@@ -870,8 +871,8 @@ def OrphanDies():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.OrphanFog1)
     DisableObject(Objects.OrphanFog2)
-    DeleteVFX(FX.OrphanFog1, erase_root_only=True)
-    DeleteVFX(FX.OrphanFog2, erase_root_only=True)
+    DeleteVFX(VFX.OrphanFog1, erase_root_only=True)
+    DeleteVFX(VFX.OrphanFog2, erase_root_only=True)
     SetLockedCameraSlot(game_map=FISHING_HAMLET, camera_slot=0)
     Wait(3.0)
     SkipLinesIfFinishedConditionTrue(2, 2)
@@ -1058,14 +1059,14 @@ def EnterOrphanFog():
     GotoIfFlagOn(Label.L0, Flags.OrphanFirstTimeDone)
     SkipLinesIfClient(2)
     DisableObject(Objects.OrphanFog1)
-    DeleteVFX(FX.OrphanFog1, erase_root_only=False)
+    DeleteVFX(VFX.OrphanFog1, erase_root_only=False)
     IfFlagOff(1, Flags.OrphanDead)
     IfFlagOn(1, Flags.OrphanFirstTimeDone)
     IfConditionTrue(0, input_condition=1)
     EnableObject(Objects.OrphanFog1)
     EnableObject(Objects.OrphanFog2)
-    CreateVFX(FX.OrphanFog1)
-    CreateVFX(FX.OrphanFog2)
+    CreateVFX(VFX.OrphanFog1)
+    CreateVFX(VFX.OrphanFog2)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -1121,7 +1122,10 @@ def StartOrphanBattle():
     DisableHealthBar(Characters.OrphanWinged)
     ReferDamageToEntity(Characters.Orphan, Characters.OrphanWinged)
     GotoIfThisEventOn(Label.L0)
+
+    IfPlayerInsideRegion(0, BossRushTriggers.OrphanOfKos)
     IfFlagOn(0, Flags.OrphanFogEntered)
+
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 13604810)
     NotifyBossBattleStart()
