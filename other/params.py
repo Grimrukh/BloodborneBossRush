@@ -327,6 +327,7 @@ def modify():
     set_shop_lineups(game_param_bnd)
     set_new_item_lots(game_param_bnd)
     set_goods_and_effects(game_param_bnd)
+    # TODO: SAVE FILE.
 
 
 if __name__ == '__main__':

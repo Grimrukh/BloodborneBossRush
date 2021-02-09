@@ -1,11 +1,6 @@
 """
 TODO:
     Warp straight to Dream from Clinic at game start.
-    Check there are no special "first-time arrival" events in maps that cause stuff to happen.
-    Have each area's skybox be in the state you would normally find it for that boss.
-    Make sure there are no sources of souls (e.g. minions).
-        - Enemies that appear on stairway in Micolash fight should be adjusted.
-        -
 """
 
 from soulstruct.game_types import *

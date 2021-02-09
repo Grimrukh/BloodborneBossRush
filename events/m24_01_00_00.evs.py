@@ -27,6 +27,7 @@ from .m24_01_entities import *
 def Constructor():
     """ 0: Event 0 """
     if not BossRushTriggers.ClericBeast and not BossRushTriggers.FatherGascoigne:
+        # This warps the player to the Dream when the game first begins, as well.
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7400, slot=1, args=(2410952, 2411952, BossRushFlags.BossDead_ClericBeast))
@@ -265,10 +266,11 @@ def Constructor():
     ClericBeastLimbAppearance(3, 483, 493, 8, 13)
     ClericBeastLimbAppearance(4, 484, 494, 9, 14)
 
-    GotoIfFlagOn(Label.L2, 12410999)
-    FirstAwakening()
-    RunEvent(12410285, slot=0, args=(12410400, 12410401, 2411204, 2411316))
-    Event12410995()
+    # No awakening cutscene.
+    # GotoIfFlagOn(Label.L2, 12410999)
+    # FirstAwakening()
+    # RunEvent(12410285, slot=0, args=(12410400, 12410401, 2411204, 2411316))
+    # Event12410995()
 
     # --- 2 --- #
     DefineLabel(2)
@@ -524,13 +526,14 @@ def Constructor():
 def Preconstructor():
     """ 50: Event 50 """
 
-    SkipLinesIfFlagOn(2, Flags.FirstAwakeningDone)
-    EnableFlag(CommonFlags.CutsceneActive)
-    DisableSoundEvent(2413900)
+    # SkipLinesIfFlagOn(2, Flags.FirstAwakeningDone)
+    # EnableFlag(CommonFlags.CutsceneActive)
+    # DisableSoundEvent(2413900)
 
-    SkipLinesIfFlagOff(1, 12410998)
-    EnableFlag(12410999)
+    # SkipLinesIfFlagOff(1, 12410998)
+    # EnableFlag(12410999)
 
+    # Not sure what this does but it's probably demo stuff that never matters.
     RunEvent(12410005, slot=0, args=(12410999,))
 
     DisableAnimations(2413950)
@@ -552,7 +555,7 @@ def Preconstructor():
     Event12410701()
     Event12410780()
 
-    # TODO: Not sure how flag 12411000 is ever enabled (if it ever is).
+    # TODO: Not sure how flag 12411000 is ever enabled (if it ever is). Probably demo/debug.
     SkipLinesIfFlagOff(11, 12411000)
     DisableBackread(2410901)
     DisableBackread(2410740)

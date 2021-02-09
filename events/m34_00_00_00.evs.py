@@ -106,8 +106,8 @@ def Constructor():
     Event13404740()
     Event13404742()
     LudwigDies()
-    Event13404811()
-    # LudwigFirstTime()  # 1801 in this map instead of 1802
+    # LudwigFirstTimeTrigger()  # triggers first-time cutscene
+    # LudwigFirstTimeCutscene()  # 1801 in this map instead of 1802
     EnterLudwigFog()
     EnterLudwigFogAsSummon()
     StartLudwigBattle()
@@ -902,7 +902,7 @@ def LudwigDies():
     Wait(0.0)
 
 
-def Event13404811():
+def LudwigFirstTimeTrigger():
     """ 13404811: Event 13404811 """
     EndIfFlagOn(9471)
     EndIfFlagOn(Flags.LudwigFirstTimeDone)
@@ -920,7 +920,7 @@ def Event13404811():
     EnableFlag(CommonFlags.CutsceneActive)
 
 
-def LudwigFirstTime():
+def LudwigFirstTimeCutscene():
     """ 13401801: Event 13401801 """
     EndIfFlagOn(9471)
     EndIfThisEventOn()
