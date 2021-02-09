@@ -192,31 +192,33 @@ def Constructor():
     # NEW BOSS RUSH EVENTS
 
     # These events warp you to the given warp point whenever the given request flag is enabled.
-    WarpToNextBoss(0, BossRushFlags.RequestBoss_ClericBeast, BossRushWarpPoints.ClericBeast)
-    WarpToNextBoss(1, BossRushFlags.RequestBoss_FatherGascoigne, BossRushWarpPoints.FatherGascoigne)
-    WarpToNextBoss(2, BossRushFlags.RequestBoss_BloodStarvedBeast, BossRushWarpPoints.BloodStarvedBeast)
-    WarpToNextBoss(3, BossRushFlags.RequestBoss_WitchesOfHemwick, BossRushWarpPoints.WitchesOfHemwick)
-    WarpToNextBoss(4, BossRushFlags.RequestBoss_VicarAmelia, BossRushWarpPoints.VicarAmelia)
-    WarpToNextBoss(5, BossRushFlags.RequestBoss_DarkbeastPaarl, BossRushWarpPoints.DarkbeastPaarl)
-    WarpToNextBoss(6, BossRushFlags.RequestBoss_ShadowsOfYharnam, BossRushWarpPoints.ShadowsOfYharnam)
-    WarpToNextBoss(7, BossRushFlags.RequestBoss_Rom, BossRushWarpPoints.Rom)
-    WarpToNextBoss(8, BossRushFlags.RequestBoss_Amygdala, BossRushWarpPoints.Amygdala)
-    WarpToNextBoss(9, BossRushFlags.RequestBoss_MartyrLogarius, BossRushWarpPoints.MartyrLogarius)
-    WarpToNextBoss(10, BossRushFlags.RequestBoss_TheOneReborn, BossRushWarpPoints.TheOneReborn)
-    WarpToNextBoss(11, BossRushFlags.RequestBoss_CelestialEmissary, BossRushWarpPoints.CelestialEmissary)
-    WarpToNextBoss(12, BossRushFlags.RequestBoss_Ebrietas, BossRushWarpPoints.Ebrietas)
-    WarpToNextBoss(13, BossRushFlags.RequestBoss_Micolash, BossRushWarpPoints.Micolash)
-    WarpToNextBoss(14, BossRushFlags.RequestBoss_MergosWetNurse, BossRushWarpPoints.MergosWetNurse)
-    WarpToNextBoss(15, BossRushFlags.RequestBoss_Ludwig, BossRushWarpPoints.Ludwig)
-    WarpToNextBoss(16, BossRushFlags.RequestBoss_LivingFailures, BossRushWarpPoints.LivingFailures)
-    WarpToNextBoss(17, BossRushFlags.RequestBoss_LadyMaria, BossRushWarpPoints.LadyMaria)
-    WarpToNextBoss(18, BossRushFlags.RequestBoss_Laurence, BossRushWarpPoints.Laurence)
-    WarpToNextBoss(19, BossRushFlags.RequestBoss_OrphanOfKos, BossRushWarpPoints.OrphanOfKos)
-    WarpToNextBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
-    WarpToNextBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
+    WarpToBoss(0, BossRushFlags.RequestBoss_ClericBeast, BossRushWarpPoints.ClericBeast)
+    WarpToBoss(1, BossRushFlags.RequestBoss_FatherGascoigne, BossRushWarpPoints.FatherGascoigne)
+    WarpToBoss(2, BossRushFlags.RequestBoss_BloodStarvedBeast, BossRushWarpPoints.BloodStarvedBeast)
+    WarpToBoss(3, BossRushFlags.RequestBoss_WitchesOfHemwick, BossRushWarpPoints.WitchesOfHemwick)
+    WarpToBoss(4, BossRushFlags.RequestBoss_VicarAmelia, BossRushWarpPoints.VicarAmelia)
+    WarpToBoss(5, BossRushFlags.RequestBoss_DarkbeastPaarl, BossRushWarpPoints.DarkbeastPaarl)
+    WarpToBoss(6, BossRushFlags.RequestBoss_ShadowsOfYharnam, BossRushWarpPoints.ShadowsOfYharnam)
+    WarpToBoss(7, BossRushFlags.RequestBoss_Rom, BossRushWarpPoints.Rom)
+    WarpToBoss(8, BossRushFlags.RequestBoss_Amygdala, BossRushWarpPoints.Amygdala)
+    WarpToBoss(9, BossRushFlags.RequestBoss_MartyrLogarius, BossRushWarpPoints.MartyrLogarius)
+    WarpToBoss(10, BossRushFlags.RequestBoss_TheOneReborn, BossRushWarpPoints.TheOneReborn)
+    WarpToBoss(11, BossRushFlags.RequestBoss_CelestialEmissary, BossRushWarpPoints.CelestialEmissary)
+    WarpToBoss(12, BossRushFlags.RequestBoss_Ebrietas, BossRushWarpPoints.Ebrietas)
+    WarpToBoss(13, BossRushFlags.RequestBoss_Micolash, BossRushWarpPoints.Micolash)
+    WarpToBoss(14, BossRushFlags.RequestBoss_MergosWetNurse, BossRushWarpPoints.MergosWetNurse)
+    WarpToBoss(15, BossRushFlags.RequestBoss_Ludwig, BossRushWarpPoints.Ludwig)
+    WarpToBoss(16, BossRushFlags.RequestBoss_LivingFailures, BossRushWarpPoints.LivingFailures)
+    WarpToBoss(17, BossRushFlags.RequestBoss_LadyMaria, BossRushWarpPoints.LadyMaria)
+    WarpToBoss(18, BossRushFlags.RequestBoss_Laurence, BossRushWarpPoints.Laurence)
+    WarpToBoss(19, BossRushFlags.RequestBoss_OrphanOfKos, BossRushWarpPoints.OrphanOfKos)
+    WarpToBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
+    WarpToBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
     # TODO: Create a unique flag for "MoonPresenceRequested" that is checked in Hunter's Dream boss events.
     #  This flag should be enabled when RequestBoss_MoonPresence flag is enabled. If it's disabled when Hunter's Dream
     #  loads boss events, Gehrman is assumed.
+
+    WarpBackToDream()
 
 
 def Preconstructor():
@@ -2000,28 +2002,62 @@ def Event9910():
 def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag: int):
     """ 7400: Enable given lantern when given boss death flag is enabled, and monitor interaction with it.
 
+    Alternatively, just warps player back to the dream automatically if there's no next boss to go to, because this is
+    either a single fight or because you just finished the boss rush.
+
     The lantern has a simple "Face next foe" prompt when approached. When you interact with it, the Boss Rush event
-    looks up the next boss (either random or ordered) and warps you to the appropriate arena.
+    looks up the next boss (either random or in story order) and warps you to the appropriate arena.
 
     The `boss_dead_flag` should only be enabled on map load if there are multiple bosses in this map and the player is
-    currently fighting another one. In that case, the lantern will appear again in the other arena, with no harm done.
-
-    TODO: Use the tree in Gehrman's arena as the lantern there?
+    currently fighting another one. In that case, this event will end immediately after the lantern is disabled (so
+    Gehrman and Moon Presence lanterns behave correctly).
     """
     if lantern_chr != 0:
         DisableCharacter(lantern_chr)  # always disabled, since prompt is so simple
     DisableObject(lantern_obj)
 
+    # If boss is already dead, just end here and leave lantern disabled.
+    EndIfFlagOn(boss_dead_flag)
+
     await FlagEnabled(boss_dead_flag)
+
+    if not BossRushFlags.BossRushActive:
+        # This is a single boss fight. Warp back to Dream after waiting long enough for the boss death sound to play.
+        GainInsight(0, 1)  # replaces all boss-specific insight gains
+        Wait(5.0)
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+        return
+
+    WaitFrames(1)  # give completion flag a chance to be enabled
+    if BossRushFlags.BossRushCompleted:
+        Wait(5.0)
+        DisplayBanner(BannerType.NightmareSlain)
+        GainInsight(0, 5)  # Can only apply up to 9 insight in one event call, so doing 10 * 5.
+        GainInsight(1, 5)  # Fortunately, slots 1-9 do not clash with other event IDs.
+        GainInsight(2, 5)
+        GainInsight(3, 5)
+        GainInsight(4, 5)
+        GainInsight(5, 5)
+        GainInsight(6, 5)
+        GainInsight(7, 5)
+        GainInsight(8, 5)
+        GainInsight(9, 5)
+        Wait(5.0)
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+        return
 
     EnableObject(lantern_obj)
     CreateTemporaryVFX(100330, anchor_entity=lantern_obj, anchor_type=CoordEntityType.Object, model_point=100)
-    # TODO: Award 10 blood vials and bullets at this point too.
+
+    RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
+    RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
+    RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
+    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
 
     # Trying to use the standard action button instruction, rather than creating a new ActionButtonParam for it.
     IfActionButton(
         0,
-        prompt_text=70011002,  # "Face next foe"
+        prompt_text=BossRushText.FaceNextFoe,
         anchor_entity=lantern_obj,
         anchor_type=CoordEntityType.Object,
         max_distance=2.0,
@@ -2029,119 +2065,197 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
         trigger_attribute=TriggerAttribute.All,  # may as well avoid weird issues
     )
 
-    DisableFlag(BossRushFlags.NextBossChosen)
     if BossRushFlags.BossRushRandomized:
         EnableRandomBossWarpFlag()
     else:
-        EnableNextStoryBossWarpFlag(0, boss_dead_flag)  # TODO: 95% sure I can pass through event arguments...
-
-    await BossRushFlags.NextBossChosen
-
-    # TODO: Display a debug message if warp request failed?
-    #  (Unless randomized is off and BossRushFlags.BossDead_MoonPresence is enabled.)
+        EnableNextStoryBossWarpFlag()
 
 
-def EnableNextStoryBossWarpFlag(_, boss_dead_flag: int):
-    """ 7496: Enable the next story boss warp flag, based on the given `boss_dead_flag`. Slot doesn't matter here.
+def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
+    """ 7450: Warp player to requested next boss in Boss Rush."""
+    Await(FlagEnabled(required_boss_warp_flag) and not BossRushFlags.ChoosingRandomBoss)
+    DisableFlag(required_boss_warp_flag)
+    WarpPlayerToRespawnPoint(warp_point)
 
-    Double-checks that the appropriate next boss is not dead. If they are, no condition will be satisfied, and the
-    player will be warped back to Hunter's Dream as a "handled exception".
-    """
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_ClericBeast)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_FatherGascoigne)
-    EnableFlag(BossRushFlags.RequestBoss_FatherGascoigne)
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_FatherGascoigne)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_BloodStarvedBeast)
-    EnableFlag(BossRushFlags.RequestBoss_BloodStarvedBeast)
+def MonitorStoryBossRushRequest():
+    """ 7493: Starts a new Story Boss Rush when bell is rung, or ends current boss rush. """
+    Await(HasSpecialEffect(PLAYER, BossRushEffects.StoryRushRequest))
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_BloodStarvedBeast)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_WitchesOfHemwick)
-    EnableFlag(BossRushFlags.RequestBoss_WitchesOfHemwick)
+    if not InsideMap(HUNTERS_DREAM):
+        # End boss rush.
+        Wait(1.0)
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+        return
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_WitchesOfHemwick)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_VicarAmelia)
-    EnableFlag(BossRushFlags.RequestBoss_VicarAmelia)
+    # Start story boss rush.
+    Wait(2.0)
+    DisableFlag(BossRushFlags.BossRushCompleted)
+    EnableFlag(BossRushFlags.BossRushActive)
+    DisableFlag(BossRushFlags.BossRushRandomized)  # just for clarity here
+    RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
+    RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
+    RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
+    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_VicarAmelia)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_DarkbeastPaarl)
-    EnableFlag(BossRushFlags.RequestBoss_DarkbeastPaarl)
+    Wait(0.5)
+    EnableNextStoryBossWarpFlag()
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_DarkbeastPaarl)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_ShadowsOfYharnam)
-    EnableFlag(BossRushFlags.RequestBoss_ShadowsOfYharnam)
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_ShadowsOfYharnam)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Rom)
-    EnableFlag(BossRushFlags.RequestBoss_Rom)
+def MonitorRandomBossRushRequest():
+    """ 7494: Starts a new Random Boss Rush when bell is rung, or ends current boss rush. """
+    Await(HasSpecialEffect(PLAYER, BossRushEffects.RandomRushRequest))
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Rom)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Amygdala)
-    EnableFlag(BossRushFlags.RequestBoss_Amygdala)
+    if not InsideMap(HUNTERS_DREAM):
+        # End boss rush.
+        Wait(1.0)
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+        return
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Amygdala)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_MartyrLogarius)
-    EnableFlag(BossRushFlags.RequestBoss_MartyrLogarius)
+    # Start random boss rush.
+    Wait(2.0)
+    DisableFlag(BossRushFlags.BossRushCompleted)
+    EnableFlag(BossRushFlags.BossRushActive)
+    EnableFlag(BossRushFlags.BossRushRandomized)
+    RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
+    RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
+    RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
+    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_MartyrLogarius)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_TheOneReborn)
-    EnableFlag(BossRushFlags.RequestBoss_TheOneReborn)
+    Wait(0.5)
+    EnableRandomBossWarpFlag()
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_TheOneReborn)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_CelestialEmissary)
-    EnableFlag(BossRushFlags.RequestBoss_CelestialEmissary)
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_CelestialEmissary)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Ebrietas)
-    EnableFlag(BossRushFlags.RequestBoss_Ebrietas)
+def FinishBossRush():
+    """ 7495: Enables completion flag when every boss is dead. """
+    IfFlagOn(1, BossRushFlags.BossDead_ClericBeast)
+    IfFlagOn(1, BossRushFlags.BossDead_FatherGascoigne)
+    IfFlagOn(1, BossRushFlags.BossDead_BloodStarvedBeast)
+    IfFlagOn(1, BossRushFlags.BossDead_WitchesOfHemwick)
+    IfFlagOn(1, BossRushFlags.BossDead_VicarAmelia)
+    IfFlagOn(1, BossRushFlags.BossDead_DarkbeastPaarl)
+    IfFlagOn(1, BossRushFlags.BossDead_ShadowsOfYharnam)
+    IfFlagOn(1, BossRushFlags.BossDead_Rom)
+    IfFlagOn(1, BossRushFlags.BossDead_Amygdala)
+    IfFlagOn(1, BossRushFlags.BossDead_MartyrLogarius)
+    IfFlagOn(1, BossRushFlags.BossDead_TheOneReborn)
+    IfFlagOn(1, BossRushFlags.BossDead_CelestialEmissary)
+    IfFlagOn(1, BossRushFlags.BossDead_Ebrietas)
+    IfFlagOn(1, BossRushFlags.BossDead_Micolash)
+    IfFlagOn(1, BossRushFlags.BossDead_MergosWetNurse)
+    IfFlagOn(1, BossRushFlags.BossDead_Ludwig)
+    IfFlagOn(1, BossRushFlags.BossDead_LivingFailures)
+    IfFlagOn(1, BossRushFlags.BossDead_LadyMaria)
+    IfFlagOn(1, BossRushFlags.BossDead_Laurence)
+    IfFlagOn(1, BossRushFlags.BossDead_OrphanOfKos)
+    IfFlagOn(1, BossRushFlags.BossDead_Gehrman)
+    IfFlagOn(1, BossRushFlags.BossDead_MoonPresence)
+    IfConditionTrue(0, 1)
+    EnableFlag(BossRushFlags.BossRushCompleted)
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Ebrietas)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Micolash)
-    EnableFlag(BossRushFlags.RequestBoss_Micolash)
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Micolash)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_MergosWetNurse)
-    EnableFlag(BossRushFlags.RequestBoss_MergosWetNurse)
+def EnableNextStoryBossWarpFlag():
+    """ 7496: Enable the next story boss warp flag, based on the last-numbered boss death flag. """
 
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_MergosWetNurse)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Ludwig)
-    EnableFlag(BossRushFlags.RequestBoss_Ludwig)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Ludwig)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_LivingFailures)
-    EnableFlag(BossRushFlags.RequestBoss_LivingFailures)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_LivingFailures)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_LadyMaria)
-    EnableFlag(BossRushFlags.RequestBoss_LadyMaria)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_LadyMaria)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Laurence)
-    EnableFlag(BossRushFlags.RequestBoss_Laurence)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Laurence)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_OrphanOfKos)
-    EnableFlag(BossRushFlags.RequestBoss_OrphanOfKos)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_OrphanOfKos)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_Gehrman)
-    EnableFlag(BossRushFlags.RequestBoss_Gehrman)
-
-    SkipLinesIfNotEqual(2, boss_dead_flag, BossRushFlags.BossDead_Gehrman)
-    SkipLinesIfFlagOn(1, BossRushFlags.BossDead_MoonPresence)
+    SkipLinesIfFlagOff(3, BossRushFlags.BossDead_Gehrman)
     EnableFlag(BossRushFlags.RequestBoss_MoonPresence)
+    EnableFlag(BossRushFlags.MoonPresenceRequested)  # tells Hunter's Dream which boss to prepare
+    Goto(Label.L0)
 
-    # Do nothing if `boss_dead_flag == BossRushFlags.BossDead_MoonPresence`.
+    SkipLinesIfFlagOff(3, BossRushFlags.BossDead_OrphanOfKos)
+    EnableFlag(BossRushFlags.RequestBoss_Gehrman)
+    DisableFlag(BossRushFlags.MoonPresenceRequested)  # just in case
+    Goto(Label.L0)
 
-    EnableFlag(BossRushFlags.NextBossChosen)
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Laurence)
+    EnableFlag(BossRushFlags.RequestBoss_OrphanOfKos)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_LadyMaria)
+    EnableFlag(BossRushFlags.RequestBoss_Laurence)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Ludwig)
+    EnableFlag(BossRushFlags.RequestBoss_LadyMaria)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_MergosWetNurse)
+    EnableFlag(BossRushFlags.RequestBoss_Ludwig)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Micolash)
+    EnableFlag(BossRushFlags.RequestBoss_MergosWetNurse)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Ebrietas)
+    EnableFlag(BossRushFlags.RequestBoss_Micolash)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_CelestialEmissary)
+    EnableFlag(BossRushFlags.RequestBoss_Ebrietas)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_TheOneReborn)
+    EnableFlag(BossRushFlags.RequestBoss_CelestialEmissary)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_MartyrLogarius)
+    EnableFlag(BossRushFlags.RequestBoss_TheOneReborn)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Amygdala)
+    EnableFlag(BossRushFlags.RequestBoss_MartyrLogarius)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Rom)
+    EnableFlag(BossRushFlags.RequestBoss_Amygdala)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_ShadowsOfYharnam)
+    EnableFlag(BossRushFlags.RequestBoss_Rom)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_DarkbeastPaarl)
+    EnableFlag(BossRushFlags.RequestBoss_ShadowsOfYharnam)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_VicarAmelia)
+    EnableFlag(BossRushFlags.RequestBoss_DarkbeastPaarl)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_WitchesOfHemwick)
+    EnableFlag(BossRushFlags.RequestBoss_VicarAmelia)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_BloodStarvedBeast)
+    EnableFlag(BossRushFlags.RequestBoss_WitchesOfHemwick)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_FatherGascoigne)
+    EnableFlag(BossRushFlags.RequestBoss_BloodStarvedBeast)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_ClericBeast)
+    EnableFlag(BossRushFlags.RequestBoss_FatherGascoigne)
+    Goto(Label.L0)
+
+    # Cleric Beast isn't dead (i.e. this was activated from the Hunter's Dream).
+    EnableFlag(BossRushFlags.RequestBoss_ClericBeast)
+
+    # --- 0 --- #
+
+    DisableFlag(BossRushFlags.ChoosingRandomBoss)  # just in case
 
 
 def EnableRandomBossWarpFlag():
     """ 7497: Enable a random boss warp flag whose dead flag is disabled.
 
-    Of course, this could theoretically take forever if you're infinitely unlucky, but in reality it's fine and too
-    annoying to do anything better (like randomly ordering 1-22 and trying each one in turn).
+    Keeps restarting until a flag is enabled for a non-dead boss. Of course, this could theoretically take forever if
+    you're infinitely unlucky, but in reality it's fine and too annoying to do anything better (like randomly ordering
+    1-22 and trying each one in turn).
     """
+    EnableFlag(BossRushFlags.ChoosingRandomBoss)
+
     DisableFlagRange((BossRushFlags.RequestBoss_ClericBeast, BossRushFlags.RequestBoss_MoonPresence))
     EnableRandomFlagInRange((BossRushFlags.RequestBoss_ClericBeast, BossRushFlags.RequestBoss_MoonPresence))
 
@@ -2231,11 +2345,17 @@ def EnableRandomBossWarpFlag():
 
     # --- 0 ---
     DefineLabel(Label.L0)
-    EnableFlag(BossRushFlags.NextBossChosen)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.RequestBoss_MoonPresence)
+    EnableFlag(BossRushFlags.MoonPresenceRequested)  # tells Hunter's Dream which boss to prepare
+    SkipLines(1)
+    DisableFlag(BossRushFlags.MoonPresenceRequested)  # just in case
+
+    DisableFlag(BossRushFlags.ChoosingRandomBoss)  # boss warps allowed again
 
 
-def WarpToNextBoss(_, boss_warp_flag: int, warp_point: int):
-    """ 7500: Warp player to requested next boss in Boss Rush."""
-    await FlagEnabled(boss_warp_flag)
-    DisableFlag(boss_warp_flag)
-    WarpPlayerToRespawnPoint(warp_point)
+def WarpBackToDream():
+    """ 7499: Warp player back to Hunter's Dream. """
+    Await(FlagEnabled(BossRushFlags.RequestDreamReturn))  # ignores 'ChoosingRandomBoss' flag, for emergencies
+    DisableFlag(BossRushFlags.RequestDreamReturn)
+    WarpPlayerToRespawnPoint(BossRushWarpPoints.HuntersDream)

@@ -7,6 +7,7 @@
 from enum import IntEnum
 
 from soulstruct.bloodborne.params import GameParamBND
+from soulstruct.config import BB_PATH
 
 
 class StartingClasses(IntEnum):
@@ -30,15 +31,19 @@ class BossCharacterParam(IntEnum):
     FatherGascoignePhaseTwo = 272000
     BloodStarvedBeast = 209000
     WitchOfHemwick = 210020  # both witches
+    WitchOfHemwickMadOne = 205010
     VicarAmelia = 502000
     DarkbeastPaarl = 508000
     ShadowOfYharnam1 = 212700
     ShadowOfYharnam2 = 212710
     ShadowOfYharnam3 = 212720
+    ShadowSmallSnake = 212750
+    ShadowLargeSnake = 503300
     Rom = 510000
     RomSpiderMinion = 140010
     Amygdala = 512000
     MartyrLogarius = 232000
+    MartyrLogariusSword = 232100
     TheOneRebornBody = 507000
     TheOneRebornHead = 507100
     TheOneRebornCaster = 507200
@@ -51,6 +56,9 @@ class BossCharacterParam(IntEnum):
     CelestialEmissaryMinionTentacles = 250150
     Ebrietas = 251000
     Micolash = 6380  # uses separate buff for Players. Not touching here.
+    MicolashPuppet = 204600
+    MicolashAttendant1 = 225000
+    MicolashAttendant2 = 225020
     MergosWetNurse = 551000  # includes copies
     LudwigPhaseOne = 451000
     LudwigPhaseTwo = 451001
@@ -67,28 +75,24 @@ class BossCharacterParam(IntEnum):
     MoonPresence = 540000
 
 
-GAME_PARAM_PATH = (
-    "G:/Dark Souls/Other FromSoft Games/Bloodborne/DISC/Image0/dvdroot_ps4/param/gameparam/gameparam.parambnd.dcx"
-)
-
-
 def print_change(entry, field, value):
     print(f" {field}: {entry[field]} -> {value}")
     entry[field] = value
 
 
 def set_boss_levels(game_param_bnd: GameParamBND):
-    """Set special effects to scale difficulty of bosses."""
+    """Set special effects to scale difficulty of bosses. Also removes any soul rewards."""
     # TODO: For Lobos to test it, use level 1 (7001) instead for all bosses.
-    # TODO: Even with +10 weapons and level 70, level 7022 could get tough without powerful Blood Gems.
+    # TODO: Even with +10 weapons and level 70, level 7022 could get tough without powerful Blood Gems?
     new_level = 7022  # Moon Presence level (highest level there is)
     ng_plus_level = 7413  # Moon Presence NG+ level
 
     for boss in BossCharacterParam:
+        boss_entry = game_param_bnd.Characters[boss]
+        boss_entry["getSoul"] = 0
         if boss == BossCharacterParam.Micolash:
             pass  # leaving Micolash as he is (he's almost end-game level anyway)
         else:
-            boss_entry = game_param_bnd.Characters[boss]
             print_change(boss_entry, "spEffectID6", new_level)
             print_change(boss_entry, "GameClearSpEffectID", ng_plus_level)
 
@@ -288,13 +292,41 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     _copy_armor_piece(200030, 200089, 311000, "Alluring Dress")
 
 
+def set_new_item_lots(game_param_bnd: GameParamBND):
+    vial_refill = game_param_bnd.ItemLots[5500].copy()
+    vial_refill["lotItemId01"] = 1000
+    vial_refill["lotItemNum01"] = 10
+    game_param_bnd.ItemLots[1000] = vial_refill
+
+    bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    bullet_refill["lotItemId01"] = 900
+    bullet_refill["lotItemNum01"] = 10
+    game_param_bnd.ItemLots[1001] = bullet_refill
+
+    bell_of_chaos = game_param_bnd.ItemLots[10010].copy()
+    bell_of_chaos["lotItemId01"] = 225
+    game_param_bnd.ItemLots[10011] = bell_of_chaos
+
+
+def set_goods_and_effects(game_param_bnd: GameParamBND):
+    request_story_boss_rush = game_param_bnd.SpecialEffects[9000].copy()  # Beckoning Bell
+    game_param_bnd.SpecialEffects[9500] = request_story_boss_rush
+    game_param_bnd.Goods[200]["refId"] = 9500
+
+    request_random_boss_rush = game_param_bnd.SpecialEffects[9025].copy()  # Sinister Resonant Bell
+    game_param_bnd.SpecialEffects[9501] = request_random_boss_rush
+    game_param_bnd.Goods[225]["refId"] = 9501
+
+
 def modify():
     """Apply all modifications."""
 
-    game_param_bnd = GameParamBND(GAME_PARAM_PATH)
+    game_param_bnd = GameParamBND(BB_PATH + "/param/gameparam/gameparam.parambnd.dcx")
     set_boss_levels(game_param_bnd)
     set_starting_classes(game_param_bnd)
     set_shop_lineups(game_param_bnd)
+    set_new_item_lots(game_param_bnd)
+    set_goods_and_effects(game_param_bnd)
 
 
 if __name__ == '__main__':

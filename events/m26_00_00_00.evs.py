@@ -29,9 +29,15 @@ from .m26_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.MergosWetNurse and not BossRushTriggers.Micolash:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=15, args=(2600951, 2601951, BossRushFlags.BossDead_MergosWetNurse))
+    RunEvent(7400, slot=14, args=(2600952, 2601952, BossRushFlags.BossDead_Micolash))
+
     RunEvent(7000, slot=30, args=(2600950, 2601950, 999, 12607800))
-    RunEvent(7000, slot=31, args=(2600951, 2601951, Flags.MergosWetNurseDead, 12607820))
-    RunEvent(7000, slot=32, args=(2600952, 2601952, 999, 12607840))  # Post-Micolash lantern
+    # RunEvent(7000, slot=31, args=(2600951, 2601951, Flags.MergosWetNurseDead, 12607820))
+    # RunEvent(7000, slot=32, args=(2600952, 2601952, 999, 12607840))  # Post-Micolash lantern
     RunEvent(7000, slot=33, args=(2600953, 2601953, 999, 12607860))
     RunEvent(7100, slot=30, args=(72600200, 2601950))
     RunEvent(7100, slot=31, args=(72600201, 2601951))
@@ -102,7 +108,7 @@ def Constructor():
     MicolashPhaseTwoTrigger()
     Event12604985()
     Event12604986()
-    TriggerMicolashBridgeCutscene()
+    TriggerMicolashBridgeCutscene()  # stripped
     SummonStartMicolashBattle()
     # These control Micolash's behavior at the six corners/intersections in the Phase 1 area.
     MicolashRunsAwayPhase1(0, 2602040, 2602042, 2602041, 2602042, 2602042, 12604942, 12604941, 12604942)
@@ -606,34 +612,10 @@ def MergosWetNurseDies():
     Kill(Characters.MergosWetNurse, award_souls=False)
     Kill(Characters.MergosWetNurseClone1, award_souls=False)
     IfCharacterDead(0, Characters.MergosWetNurse)
-    EnableFlag(12604808)
-    Wait(3.0)
-    PlaySoundEffect(anchor_entity=2602300, sound_type=SoundType.a_Ambient, sound_id=260000004)  # Mergo crying.
-    Wait(18.0)
-    DisplayBanner(BannerType.NightmareSlain)
-    DisableObject(Objects.MergosWetNurseFog)
-    DeleteVFX(VFX.MergosWetNurseFog, erase_root_only=True)
+    DisplayBanner(BannerType.PreySlaughtered)  # Nightmare Slain banner saved for boss rush completion
     SetLockedCameraSlot(game_map=NIGHTMARE_OF_MENSIS, camera_slot=0)
     CancelSpecialEffect(PLAYER, 5630)
-    Wait(3.0)
-    KillBoss(2600803)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(20)
-    AwardItemLot(55100000, host_only=False)
-    EnableFlag(2601)
-    EnableFlag(9462)
-    StopPlayLogMeasurement(2600000)
-    StopPlayLogMeasurement(2600001)
-    StopPlayLogMeasurement(2600010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1054,37 +1036,11 @@ def MicolashDies():
     EnableFlag(Flags.RequestStopMicolashMusic)
     IfCharacterDead(0, Characters.Micolash)
     EnableFlag(Flags.DismissMicolashPuppets)
-    IfFlagOn(0, 72600301)  # Wait for Micolash's dying "I'll forget everything" lament to finish.
+    IfFlagOn(0, BossRushFlags.MicolashDyingWordsDone)  # this flag is reset each time the battle starts
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.MicolashFog1)
-    DisableObject(Objects.MicolashFog2)
-    DisableObject(Objects.MicolashFog3)
-    DeleteVFX(VFX.MicolashFog1, erase_root_only=True)
-    DeleteVFX(VFX.MicolashFog2, erase_root_only=True)
-    DeleteVFX(VFX.MicolashFog3, erase_root_only=True)
     SetBackreadStateAlternate(Characters.Micolash, state=False)
     SetNetworkUpdateRate(Characters.Micolash, is_fixed=False, update_rate=CharacterUpdateRate.Always)
-    Wait(3.0)
-    KillBoss(Characters.Micolash)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    AwardAchievement(Achievements.MicolashDefeated)
-    AwardItemLot(21000, host_only=False)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    EnableFlag(2600)
-    EnableFlag(9461)
-    DisableFlagRange((1080, 1099))
-    EnableFlag(1082)
-    CreatePlayLog(40)
-    StopPlayLogMeasurement(2601000)
-    StopPlayLogMeasurement(2601001)
-    StopPlayLogMeasurement(2601010)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 190, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 190, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 190, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 190, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1165,39 +1121,7 @@ def OpenMicolashTrapGate():
 
 def TriggerMicolashBridgeCutscene():
     """ 12601854: Event 12601854 """
-    GotoIfThisEventOff(Label.L0)
-    EndOfAnimation(Objects.MicolashBridge, 1)
-    EndOfAnimation(Objects.MicolashTrapGate, 1)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    EndIfClient()
-    IfFlagOn(1, Flags.MicolashDead)
-    IfCharacterHuman(1, PLAYER)
-    IfCharacterInsideRegion(-1, PLAYER, region=2602853)
-    IfCharacterInsideRegion(-1, PLAYER, region=2602854)
-    IfConditionTrue(1, input_condition=-1)
-    IfConditionTrue(0, input_condition=1)
-    Wait(3.0)
-    EnableFlag(CommonFlags.CutsceneActive)
-    WaitFrames(1)
-    GotoIfFlagOff(Label.L1, Flags.MicolashTrapGateShut)
-    PlayCutscene(Cutscenes.MicolashBridgeCutscene, skippable=True, fade_out=False, player_id=PLAYER)
-    WaitFrames(1)
-    EndOfAnimation(Objects.MicolashBridge, 1)
-    ForceAnimation(Objects.MicolashTrapGate, 2)
-    Goto(Label.L2)
-
-    # --- 1 --- #
-    DefineLabel(1)
-    PlayCutscene(26000005, skippable=True, fade_out=False, player_id=PLAYER)
-    WaitFrames(1)
-    EndOfAnimation(Objects.MicolashBridge, 1)
-
-    # --- 2 --- #
-    DefineLabel(2)
-    DisableFlag(CommonFlags.CutsceneActive)
+    End()  # stripped
 
 
 def SummonStartMicolashBattle():
@@ -1309,6 +1233,9 @@ def StartMicolashBattle():
 
     IfPlayerInsideRegion(0, BossRushTriggers.Micolash)
     # IfFlagOn(0, Flags.MicolashFogEntered)
+
+    # NEW: Clear the flag that marks Micolash's dying words as completed.
+    DisableFlag(BossRushFlags.MicolashDyingWordsDone)
 
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 12604731)
@@ -1827,7 +1754,12 @@ def MicolashDisappearsWhenHitInPhase2():
     RestartIfConditionTrue(2)
     WaitFrames(15)
     ForceAnimation(Characters.Micolash, 103120)
-    CreateTemporaryVFX(926210, anchor_entity=Characters.Micolash, anchor_type=CoordEntityType.Character, model_point=200)
+    CreateTemporaryVFX(
+        926210,
+        anchor_entity=Characters.Micolash,
+        anchor_type=CoordEntityType.Character,
+        model_point=200,
+    )
     SkipLinesIfFlagOn(10, 12604949)
     SkipLinesIfFlagOn(11, 12604950)
     SkipLinesIfFlagOn(12, 12604951)

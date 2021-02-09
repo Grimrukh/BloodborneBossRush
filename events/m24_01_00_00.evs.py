@@ -26,10 +26,16 @@ from .m24_01_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    RunEvent(7000, slot=15, args=(WarpPoints.FirstFloorSickroom, 2411950, CommonFlags.HuntersDreamVisited, 12417800))
-    RunEvent(7000, slot=16, args=(WarpPoints.CentralYharnam, 2411951, 999, 12417820))
-    RunEvent(7000, slot=17, args=(WarpPoints.GreatBridge, 2411952, Flags.ClericBeastDead, 12417840))
-    RunEvent(7000, slot=18, args=(WarpPoints.TombOfOedon, 2411953, Flags.GascoigneDead, 12417860))
+    if not BossRushTriggers.ClericBeast and not BossRushTriggers.FatherGascoigne:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=1, args=(2410952, 2411952, BossRushFlags.BossDead_ClericBeast))
+    RunEvent(7400, slot=2, args=(2410953, 2411953, BossRushFlags.BossDead_FatherGascoigne))
+
+    RunEvent(7000, slot=15, args=(2410950, 2411950, CommonFlags.HuntersDreamVisited, 12417800))
+    RunEvent(7000, slot=16, args=(2410951, 2411951, 999, 12417820))
+    # RunEvent(7000, slot=17, args=(2410952, 2411952, Flags.ClericBeastDead, 12417840))
+    # RunEvent(7000, slot=18, args=(2410953, 2411953, Flags.GascoigneDead, 12417860))
     Event12411010()
     RunEvent(7100, slot=15, args=(72410200, 2411950))
     RunEvent(7100, slot=16, args=(72410201, 2411951))
@@ -375,7 +381,7 @@ def Constructor():
     # FATHER GASCOIGNE
     Event12414812()
     Event12414813()
-    GascoigneDies()
+    FatherGascoigneDies()
     PlayFatherGascoigneDeathSound()
     # FatherGascoigneFirstTime()
     EnterFatherGascoigneFog()
@@ -1295,29 +1301,8 @@ def ClericBeastDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.ClericBeast)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.ClericBeastFog)
-    DeleteVFX(VFX.ClericBeastFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=CENTRAL_YHARNAM, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.ClericBeast)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(Achievements.ClericBeastDefeated)
-    SkipLinesIfFlagOn(1, 6645)
-    AwardItemLot(50000010, host_only=False)
-    EnableFlag(2411)
-    EnableFlag(9456)
-    StopPlayLogMeasurement(2410000)
-    StopPlayLogMeasurement(2410001)
-    StopPlayLogMeasurement(2410010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1655,7 +1640,7 @@ def ClericBeastLimbAppearance(_, arg_0_3: int, arg_4_7: int, arg_8_8: uchar, arg
     Restart()
 
 
-def GascoigneDies():
+def FatherGascoigneDies():
     """ 12411800: Father Gascoigne is killed. """
     GotoIfThisEventOff(Label.L0)
     DisableSoundEvent(2413812)
@@ -1676,33 +1661,9 @@ def GascoigneDies():
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(2411810)
-    DeleteVFX(2413810, erase_root_only=True)
     SetLockedCameraSlot(game_map=CENTRAL_YHARNAM, camera_slot=0)
-    Wait(3.0)
-    SkipLinesIfFinishedConditionTrue(2, 2)
-    KillBoss(Characters.GascoigneHuman)
-    SkipLines(1)
-    KillBoss(Characters.GascoigneBeast)
     SetNetworkUpdateRate(Characters.GascoigneBeast, is_fixed=True, update_rate=CharacterUpdateRate.EveryFiveFrames)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    AwardAchievement(14)
-    AwardItemLot(31000, host_only=False)
-    EnableFlag(2412)
-    EnableFlag(9457)
-    EnableFlag(5910)
-    StopPlayLogMeasurement(2410000)
-    StopPlayLogMeasurement(2410001)
-    StopPlayLogMeasurement(2410010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 114, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 114, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 114, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 114, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)

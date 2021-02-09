@@ -26,15 +26,24 @@ from .common_entities import *
 from .m24_00_entities import *
 
 
+# NOTE: Vanilla point region "Event ワープポイント2400103" has been deleted, as it already had the boss rush trigger ID
+#  I needed to use for Vicar Amelia (....751). This point seemed to be for a cut enemy anyway.
+
+
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.VicarAmelia:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=5, args=(2400951, 2401951, BossRushFlags.BossDead_VicarAmelia))
+
     RunEvent(7600, slot=20, args=(2401999, 2403999))
     RunEvent(7600, slot=21, args=(2401998, 2403998))
     RunEvent(7600, slot=22, args=(2401997, 2403997))
     RunEvent(7600, slot=23, args=(2401996, 2403996))
     RunEvent(7600, slot=24, args=(2401995, 2403995))
     RunEvent(7000, slot=10, args=(2400950, 2401950, 999, 12407800))
-    RunEvent(7000, slot=11, args=(2400951, 2401951, Flags.VicarAmeliaDead, 12407820))
+    # RunEvent(7000, slot=11, args=(2400951, 2401951, Flags.VicarAmeliaDead, 12407820))
     RunEvent(7100, slot=10, args=(72400200, 2401950))
     RunEvent(7100, slot=11, args=(72400201, 2401951))
     RunEvent(7200, slot=10, args=(72400100, 2401950, 2102950))
@@ -403,7 +412,7 @@ def Constructor():
     VicarAmeliaDies()
     PlayVicarAmeliaDeathSound()
     # VicarAmeliaFirstTime()
-    PlayMasterWillemCutscene()
+    PlayMasterWillemCutscene()  # stripped
     EnterVicarAmeliaBossFog()
     EnterVicarAmeliaBossFogAsSummon()
     StartVicarAmeliaBattle()
@@ -5334,42 +5343,19 @@ def VicarAmeliaDies():
     GotoIfThisEventOff(Label.L0)
     DisableSoundEvent(2403802)
     DisableSoundEvent(2403803)
-    DisableCharacter(2400800)
+    DisableCharacter(Characters.VicarAmelia)
     DisableObject(2400801)
-    Kill(2400800, award_souls=False)
+    Kill(Characters.VicarAmelia, award_souls=False)
     DisableObject(Objects.BossFog)
     DeleteVFX(VFX.BossFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
     DefineLabel(0)
-    IfCharacterDead(0, 2400800)
+    IfCharacterDead(0, Characters.VicarAmelia)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.BossFog)
-    DeleteVFX(VFX.BossFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=CATHEDRAL_WARD, camera_slot=0)
-    Wait(3.0)
-    KillBoss(2400800)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(15)
-    AwardItemLot(50000001, host_only=False)
-    EnableFlag(2400)
-    EnableFlag(2401)
-    EnableFlag(9455)
-    EnableFlag(2402)
-    EnableFlag(72400512)
-    StopPlayLogMeasurement(2400000)
-    StopPlayLogMeasurement(2400001)
-    StopPlayLogMeasurement(2400010)
-    CreatePlayLog(114)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 126, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 126, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 126, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 126, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -5432,25 +5418,7 @@ def VicarAmeliaFirstTime():
 def PlayMasterWillemCutscene():
     """ 12401803: Play cutscene between Laurence and Master Willem at skull after Vicar Amelia is killed. """
     DeleteVFX(VFX.LaurenceSkull, erase_root_only=False)
-    EndIfThisEventOn()
-    GotoIfFlagOn(Label.L0, Flags.VicarAmeliaDead)
-    IfFlagOn(0, Flags.VicarAmeliaDead)
-
-    # --- 0 --- #
-    DefineLabel(0)
-    CreateVFX(VFX.LaurenceSkull)
-    EndIfClient()
-    IfCharacterHuman(1, PLAYER)
-    IfActionButtonParam(1, action_button_id=2400010, entity=2401801)
-    IfConditionTrue(0, input_condition=1)
-    EnableFlag(CommonFlags.CutsceneActive)
-    WaitFrames(1)
-    DeleteVFX(VFX.LaurenceSkull, erase_root_only=True)
-    PlayCutsceneAndMovePlayerAndSetTimePeriod(
-        Cutscenes.LaurenceFlashback, CutsceneType.Skippable, -1, CATHEDRAL_WARD, player_id=10000, time_period_id=2
-    )
-    WaitFrames(1)
-    DisableFlag(CommonFlags.CutsceneActive)
+    End()  # No cutscene.
 
 
 def SummonStartVicarAmeliaBattle():

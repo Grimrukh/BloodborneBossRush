@@ -28,8 +28,13 @@ from .m22_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.WitchesOfHemwick:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=4, args=(2200951, 2201951, BossRushFlags.BossDead_WitchesOfHemwick))
+
     RunEvent(7000, slot=0, args=(2200950, 2201950, 999, 12207800))
-    RunEvent(7000, slot=1, args=(2200951, 2201951, Flags.WitchesOfHemwickDead, 12207820))
+    # RunEvent(7000, slot=1, args=(2200951, 2201951, Flags.WitchesOfHemwickDead, 12207820))
     RunEvent(7100, slot=0, args=(72200200, 2201950))
     RunEvent(7100, slot=1, args=(72200201, 2201951))
     RunEvent(7200, slot=0, args=(72200100, 2201950, 2102951))
@@ -378,32 +383,9 @@ def WitchesOfHemwickDie():
     IfCharacterDead(1, Characters.SecondWitchOfHemwick)
     IfConditionTrue(0, input_condition=1)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.BossEntryFogGate)
-    DisableObject(Objects.BossExitFogGate)
-    DeleteVFX(VFX.BossEntryFog, erase_root_only=True)
-    DeleteVFX(VFX.BossExitFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=HEMWICK_CHARNEL_LANE, camera_slot=0)
     Wait(3.0)
-    KillBoss(Characters.FirstWitchOfHemwick)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    AwardAchievement(Achievements.WitchesOfHemwickDefeated)
-    AwardItemLot(ItemLots.WitchesOfHemwickReward, host_only=False)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    EnableFlag(72400512)
-    EnableFlag(2200)
-    EnableFlag(9452)
-    EnableFlag(5911)
-    StopPlayLogMeasurement(2200000)
-    StopPlayLogMeasurement(2200001)
-    StopPlayLogMeasurement(2200010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)

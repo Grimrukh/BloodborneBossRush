@@ -21,6 +21,12 @@ from .m35_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.LivingFailures and not BossRushTriggers.LadyMaria:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=17, args=(3500951, 3501951, BossRushFlags.BossDead_LivingFailures))
+    RunEvent(7400, slot=18, args=(3500952, 3501952, BossRushFlags.BossDead_LadyMaria))
+
     Event13501810()
     IfCharacterHuman(15, PLAYER)
     SkipLinesIfConditionFalse(1, 15)
@@ -29,8 +35,8 @@ def Constructor():
     SkipLinesIfFlagOff(1, 13500100)
     EnableFlag(13500101)
     RunEvent(7000, slot=60, args=(3500950, 3501950, 999, 13507800))
-    RunEvent(7000, slot=61, args=(3500951, 3501951, Flags.LivingFailuresDead, 13507820))
-    RunEvent(7000, slot=62, args=(3500952, 3501952, Flags.LadyMariaDead, 13507840))
+    # RunEvent(7000, slot=61, args=(3500951, 3501951, Flags.LivingFailuresDead, 13507820))
+    # RunEvent(7000, slot=62, args=(3500952, 3501952, Flags.LadyMariaDead, 13507840))
     RunEvent(7100, slot=60, args=(73500200, 3501950))
     RunEvent(7100, slot=61, args=(73500201, 3501951))
     RunEvent(7100, slot=62, args=(73500202, 3501952))
@@ -123,7 +129,7 @@ def Constructor():
 
     # LADY MARIA OF THE ASTRAL CLOCKTOWER
     LadyMariaDies()
-    # LadyMariaFirstTime()
+    LadyMariaFirstTime()  # stripped
     EnterLadyMariaFog()
     EnterLadyMariaFogAsSummon()
     StartLadyMariaBattle()
@@ -132,11 +138,11 @@ def Constructor():
     StopLadyMariaMusic()
     Event13504806()
     Event13504807()
-    ControlLadyMariaInChair()
-    OpenAstralClocktower()
-    LadyMariaItemDrop()
-    LadyMariaObjectDestroyed(0, 3501906)
-    LadyMariaObjectDestroyed(1, 3501910)
+    ControlLadyMariaInChair()  # stripped
+    # OpenAstralClocktower()
+    # LadyMariaItemDrop()
+    LadyMariaObjectDestroyed(0, Objects.LadyMariaEmptyChair)  # stripped
+    LadyMariaObjectDestroyed(1, Objects.LadyMariaTable)  # stripped
     CancelLadyMariaBuff()
     
     # LIVING FAILURES
@@ -197,7 +203,7 @@ def Constructor():
     Event13501124()
     Event13501125()
     RunEvent(13501200, slot=0, args=(3501120, 13504220, 1, 3500020, 0, 4294967295))
-    RunEvent(13501200, slot=1, args=(3501130, 13504230, 1, 3500030, 0, 4294967295))
+    # RunEvent(13501200, slot=1, args=(3501130, 13504230, 1, 3500030, 0, 4294967295))  # Maria's door can't be opened.
     RunEvent(13501200, slot=2, args=(3501141, 13504241, 2, 3500040, 0, 4294967295))
     RunEvent(13501200, slot=3, args=(3501142, 13504242, 2, 3500040, 0, 4294967295))
     RunEvent(13501200, slot=4, args=(3501145, 13504245, 2, 3500041, 0, 4294967295))
@@ -541,7 +547,15 @@ def Preconstructor():
     """ 50: Event 50 """
     RunEvent(13500940, slot=0, args=(3500901,))
     RunEvent(13500950, slot=0, args=(3500900,))
-    RunEvent(13500945, slot=0, args=(Characters.LadyMariaFriendly, 3501905, 3501906, 3501907, 3501908, 3501909, Flags.LadyMariaFirstTimeDone))
+    ControlMariaState(  # now just disables all these objects
+        0,
+        Characters.LadyMariaFriendly,
+        3501905,  # unknown Maria-related object (disabled)
+        Objects.LadyMariaEmptyChair,
+        Objects.LadyMariaSitting1,
+        Objects.LadyMariaSitting2,
+        Objects.LadyMariaFloorPanels,
+    )
     RunEvent(13500960, slot=0, args=(3500910, 3500911))
     RunEvent(13500400, slot=0, args=(3500331, 3502354, 3502350))
     RunEvent(13505630, slot=0, args=(3500771, 3502318, 0.0, 5.0), arg_types="iiff")
@@ -802,53 +816,7 @@ def LadyMariaDies():
 
 def LadyMariaFirstTime():
     """ 13501801: Event 13501801 """
-    IfFlagOff(1, Flags.LadyMariaDead)
-    IfThisEventOff(1)
-    GotoIfConditionTrue(Label.L5, input_condition=1)
-    DeleteVFX(3503820, erase_root_only=False)
-    End()
-
-    # --- 5 --- #
-    DefineLabel(5)
-    DisableCharacter(Characters.LadyMaria)
-    DisableFlag(13500947)
-    IfFlagOn(0, 13500947)
-    DeleteObjectVFX(3501905, erase_root=False)
-    DeleteVFX(3503820, erase_root_only=False)
-    EnableFlag(9180)
-    WaitFrames(1)
-    GotoIfFlagOn(Label.L0, 1651)
-    PlayCutscene(35000010, skippable=True, fade_out=False, player_id=PLAYER, move_to_region=3502808, 
-                 move_to_map=RESEARCH_HALL)
-    Goto(Label.L1)
-
-    # --- 0 --- #
-    DefineLabel(0)
-    PlayCutscene(35000010, skippable=True, fade_out=False, player_id=PLAYER, move_to_region=3502808, 
-                 move_to_map=RESEARCH_HALL)
-
-    # --- 1 --- #
-    DefineLabel(1)
-    WaitFrames(1)
-    DisableFlag(9180)
-    EnableCharacter(Characters.LadyMaria)
-    DisableCharacter(Characters.LadyMariaFriendly)  # Isn't she already disabled (cut content)?
-    DisableBackread(Characters.LadyMariaFriendly)
-    DisableObjectInvulnerability(3501906)
-    DisableObject(3501907)  # Lady Maria in chair
-    DisableObject(3501908)  # Lady Maria in chair
-    EnableFlag(Flags.LadyMariaFogEntered)
-    EnableFlag(3510)
-    EnableFlag(3511)
-    DisableFlag(3512)
-    DisableFlag(3513)
-    DisableFlag(3515)
-    DisableFlag(3516)
-    DisableFlag(3517)
-    DisableFlag(3518)
-    EndIfFlagOn(9346)
-    RunEvent(9350, slot=0, args=(1,))
-    EnableFlag(9346)
+    DeleteVFX(3503820, erase_root_only=False)  # stripped
 
 
 @RestartOnRest
@@ -902,32 +870,17 @@ def Event13501804():
 
 def LadyMariaObjectDestroyed(_, obj: int):
     """ 13501805: Event 13501805 """
-    IfFlagOn(1, Flags.LadyMariaDead)
-    IfThisEventSlotOn(1)
-    GotoIfConditionTrue(Label.L0, input_condition=1)
-    IfObjectDestroyed(0, obj)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    DisableObject(obj)
-    End()
+    DisableObject(obj)  # stripped
 
 
 def ControlLadyMariaInChair():
-    """ 13501807: Event 13501807 """
-    IfCharacterHuman(1, PLAYER)
-    IfFlagOn(1, Flags.LadyMariaFogEntered)
-    IfConditionTrue(0, input_condition=1)
-    EndIfHost()
+    """ 13501807: Now just sets up assets immediately. Redundant with Preconstructor version but oh well.  """
     EnableCharacter(Characters.LadyMaria)
     DisableCharacter(Characters.LadyMariaFriendly)
     DisableBackread(Characters.LadyMariaFriendly)
-    DisableObjectInvulnerability(3501906)  # chair
-    DisableObject(3501907)  # unknown
-    DisableObject(3501908)  # unknown
-    EnableFlag(Flags.LadyMariaFogEntered)
-    EnableFlag(Flags.LadyMariaFirstTimeDone)
+    DisableObject(Objects.LadyMariaEmptyChair)
+    DisableObject(Objects.LadyMariaSitting1)
+    DisableObject(Objects.LadyMariaSitting2)
 
 
 def Event13501810():
@@ -3545,71 +3498,24 @@ def Event13500944(_, arg_0_3: int):
     ForceAnimation(arg_0_3, 103162, skip_transition=True)
 
 
-def Event13500945(_, arg_0_3: int, arg_4_7: int, arg_8_11: int, arg_12_15: int, arg_16_19: int, arg_20_23: int, 
-                  arg_24_27: int):
-    """ 13500945: Event 13500945 """
-    IfCharacterHuman(-15, PLAYER)
-    GotoIfConditionFalse(Label.L9, input_condition=-15)
-    GotoIfFlagRangeState(Label.L0, RangeState.AnyOn, FlagType.Absolute, (1650, 1669))
-    DisableFlagRange((1650, 1669))
-    EnableFlag(1651)
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(1, 1660)
-    IfFlagRangeAnyOn(1, (1722, 1723))
-    IfFlagOn(1, 73500602)
-    GotoIfConditionFalse(Label.L8, input_condition=1)
-    DisableFlagRange((1650, 1669))
-    EnableFlag(1651)
-
-    # --- 8 --- #
-    DefineLabel(8)
-
-    # --- 9 --- #
-    DefineLabel(9)
-    DisableObject(arg_4_7)
-    DisableObject(arg_12_15)
-    DisableObject(arg_16_19)
-    DisableObject(arg_20_23)
-    GotoIfFlagOn(Label.L0, 1660)
-    GotoIfFlagOn(Label.L1, 1650)
-    GotoIfFlagOn(Label.L2, 1651)
-    DisableCharacter(arg_0_3)
-    DisableBackread(arg_0_3)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    SetTeamType(arg_0_3, TeamType.Ally)
-    DisableGravity(arg_0_3)
-    DisableCharacterCollision(arg_0_3)
-    ForceAnimation(arg_0_3, 7000)
-    EnableObjectInvulnerability(arg_8_11)
-    End()
-
-    # --- 1 --- #
-    DefineLabel(1)
-    DisableCharacter(arg_0_3)
-    DisableBackread(arg_0_3)
-    EndIfFlagOn(arg_24_27)
-    CreateObjectVFX(900201, obj=arg_4_7, model_point=200)
-    EnableObjectInvulnerability(arg_8_11)
-    EnableObject(arg_12_15)
-    EnableObjectInvulnerability(arg_12_15)
-    End()
-
-    # --- 2 --- #
-    DefineLabel(2)
-    DisableCharacter(arg_0_3)
-    DisableBackread(arg_0_3)
-    EnableObject(arg_20_23)
-    EnableObjectInvulnerability(arg_20_23)
-    EndIfFlagOn(arg_24_27)
-    EnableObjectInvulnerability(arg_8_11)
-    EnableObject(arg_16_19)
-    EnableObjectInvulnerability(arg_16_19)
-    End()
+def ControlMariaState(
+    _,
+    lady_maria_friendly: int,
+    unknown_obj: int,
+    empty_chair: int,
+    maria_sitting_1: int,
+    maria_sitting_2: int,
+    maria_floor: int,
+    # no longer takes FirstTimeFlag arg
+):
+    """ 13500945: Now just disables all the non-boss assets. """
+    DisableObject(unknown_obj)
+    DisableObject(maria_sitting_1)
+    DisableObject(maria_sitting_2)
+    DisableObject(maria_floor)
+    DisableObject(empty_chair)
+    DisableCharacter(lady_maria_friendly)
+    DisableBackread(lady_maria_friendly)  # stripped
 
 
 def Event13500946(_, arg_0_3: int, arg_4_7: int):

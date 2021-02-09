@@ -22,9 +22,15 @@ from .m24_02_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.Ebrietas and not BossRushTriggers.CelestialEmissary:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=13, args=(2420951, 2421951, BossRushFlags.BossDead_Ebrietas))
+    RunEvent(7400, slot=12, args=(2420952, 2421952, BossRushFlags.BossDead_CelestialEmissary))
+
     RunEvent(7000, slot=20, args=(2420950, 2421950, 999, 12427800))
-    RunEvent(7000, slot=21, args=(2420951, 2421951, Flags.EbrietasDead, 12427820))
-    RunEvent(7000, slot=22, args=(2420952, 2421952, Flags.CelestialEmissaryDead, 12427840))
+    # RunEvent(7000, slot=21, args=(2420951, 2421951, Flags.EbrietasDead, 12427820))
+    # RunEvent(7000, slot=22, args=(2420952, 2421952, Flags.CelestialEmissaryDead, 12427840))
     RunEvent(7100, slot=20, args=(72420200, 2421950))
     RunEvent(7100, slot=21, args=(72420201, 2421951))
     RunEvent(7100, slot=22, args=(72420202, 2421952))
@@ -261,7 +267,7 @@ def Constructor():
     RunEvent(12425350, slot=7, args=(2420384, 252002, 252000))
     RunEvent(12425400, slot=0, args=(2420263, 2422265, 3000))
     RunEvent(12425400, slot=1, args=(2420392, 2422686, 3004))
-    Event12420100()
+    BreakCathedralWindow()  # now just makes window invulnerable
     RegisterLadder(start_climbing_flag=12420600, stop_climbing_flag=12420601, obj=2421600)
     Event12420500()
     Event12420700()
@@ -334,28 +340,8 @@ def EbrietasDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.Ebrietas)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.EbrietasFog)
-    DeleteVFX(VFX.EbrietasFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.Ebrietas)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(28)
-    AwardItemLot(80000300, host_only=False)
-    EnableFlag(2421)
-    EnableFlag(9459)
-    StartPlayLogMeasurement(2420000, 0, overwrite=False)
-    StartPlayLogMeasurement(2420001, 18, overwrite=False)
-    StartPlayLogMeasurement(2420010, 40, overwrite=False)
-    CreatePlayLog(58)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 70, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 70, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 70, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 70, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -756,35 +742,10 @@ def CelestialEmissaryDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.CelestialEmissaryGiant)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.CelestialEmissaryFog)
-    DisableObject(Objects.CelestialEmissaryExitFog)
-    DeleteVFX(VFX.CelestialEmissaryEntranceFog, erase_root_only=True)
-    DeleteVFX(VFX.CelestialEmissaryExitFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
-    DisableCharacter(2420750)
-    DisableCharacter(2420751)
-    Wait(3.0)
-    KillBoss(Characters.CelestialEmissaryGiant)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    AwardAchievement(27)
-    SkipLinesIfFlagOn(2, 6332)
-    AwardItemLot(25700000, host_only=False)
-    SkipLines(1)
-    AwardItemLot(25700005, host_only=False)
-    EnableFlag(2420)
-    EnableFlag(9458)
-    StartPlayLogMeasurement(2420000, 0, overwrite=False)
-    StartPlayLogMeasurement(2420001, 18, overwrite=False)
-    StartPlayLogMeasurement(2420010, 40, overwrite=False)
-    CreatePlayLog(58)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 120, PlayLogMultiplayerType.HostOnly)
-    End()
+    DisableCharacter(2420750)  # tentacles
+    DisableCharacter(2420751)  # tentacles
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1321,13 +1282,9 @@ def Event12420050(_, arg_0_3: int, arg_4_7: int, arg_8_11: int):
     EnableTreasure(arg_0_3)
 
 
-def Event12420100():
+def BreakCathedralWindow():
     """ 12420100: Event 12420100 """
-    SkipLinesIfThisEventOff(2)
-    PostDestruction(2421850, slot=1)
-    End()
-    IfObjectDestroyed(0, 2421850)
-    EnableFlag(12420100)
+    EnableObjectInvulnerability(2421850)  # stripped
 
 
 def Event12420123():

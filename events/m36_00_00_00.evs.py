@@ -22,9 +22,14 @@ from m36_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.OrphanOfKos:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=20, args=(3600952, 3601952, BossRushFlags.BossDead_OrphanOfKos))
+
     RunEvent(7000, slot=65, args=(3600950, 3601950, 999, 13607800))
     RunEvent(7000, slot=66, args=(3600951, 3601951, 999, 13607820))
-    RunEvent(7000, slot=67, args=(3600952, 3601952, Flags.OrphanDead, 13607840))
+    # RunEvent(7000, slot=67, args=(3600952, 3601952, Flags.OrphanDead, 13607840))
     RunEvent(7100, slot=65, args=(73600200, 3601950))
     RunEvent(7100, slot=66, args=(73600201, 3601951))
     RunEvent(7100, slot=67, args=(73600202, 3601952))
@@ -134,8 +139,8 @@ def Constructor():
     OrphanPhaseTwoLightning()
     ApplyOrphanDrainEffect()
     ControlOrphanPhaseTwoLightningCamera()
-    ControlOrphanSpirit()
-    OrphanSpiritDies()
+    ControlOrphanSpirit()  # stripped
+    OrphanSpiritDies()  # stripped
     SummonStartOrphanBattle()
 
     RunEvent(13605200, slot=0, args=(3600200, 3602200, 0, 3603200, 0.0, 0), arg_types="iiiifi")
@@ -869,32 +874,8 @@ def OrphanDies():
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.OrphanFog1)
-    DisableObject(Objects.OrphanFog2)
-    DeleteVFX(VFX.OrphanFog1, erase_root_only=True)
-    DeleteVFX(VFX.OrphanFog2, erase_root_only=True)
     SetLockedCameraSlot(game_map=FISHING_HAMLET, camera_slot=0)
-    Wait(3.0)
-    SkipLinesIfFinishedConditionTrue(2, 2)
-    KillBoss(Characters.Orphan)
-    SkipLines(1)
-    KillBoss(Characters.OrphanWinged)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    AwardAchievement(35)
-    RunEvent(9350, 0, args=(5,))
-    AwardItemLot(3601800, host_only=False)
-    EnableFlag(3600)
-    StopPlayLogMeasurement(9360000)
-    StopPlayLogMeasurement(9360001)
-    StopPlayLogMeasurement(9360010)
-    CreatePlayLog(0)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 12, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -955,91 +936,15 @@ def OrphanFirstTimeCutscene():
 
 def ControlOrphanSpirit():
     """ 13601802: Event 13601802 """
-    DisableAI(Characters.OrphanSpirit)
-    DisableHealthBar(Characters.OrphanSpirit)
-    DisableGravity(Characters.OrphanSpirit)
-    IfCharacterBackreadEnabled(0, Characters.OrphanSpirit)
-    Move(Characters.OrphanSpirit, destination=Objects.KosCorpse, model_point=100, short_move=True)
-    ForceAnimation(Characters.OrphanSpirit, 7000, loop=True)
-    EndIfFlagOn(Flags.OrphanSpiritDead)
-    GotoIfThisEventOff(Label.L0)
-    ForceAnimation(Characters.OrphanSpirit, 0, loop=True)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, Flags.OrphanDead)
-    ForceAnimation(Characters.OrphanSpirit, 7001)
+    DisableCharacter(Characters.OrphanSpirit)
+    End()  # stripped
 
 
 def OrphanSpiritDies():
     """ 13601803: Trigger banner, cutscene, and moon swap when Orphan's immobile spirit is killed. """
     GotoIfThisEventOn(Label.L0)
     DisableObject(Objects.MoonOrphanDead)
-    IfCharacterDead(0, Characters.OrphanSpirit)
-    DisplayBanner(BannerType.NightmareSlain)
-    Wait(5.0)
-    IfCharacterHuman(1, PLAYER)
-    EndIfConditionFalse(1)
-
-    # --- 0 --- #
-    DefineLabel(0)
-    DisableSoundEvent(3603000)
-    DisableSoundEvent(3603001)
-    DeleteVFX(3603810, erase_root_only=True)
-    DeleteVFX(3603811, erase_root_only=True)
-    DeleteVFX(3603812, erase_root_only=True)
-    DeleteVFX(3603813, erase_root_only=True)
-    DeleteVFX(3603814, erase_root_only=True)
-    DeleteVFX(3603815, erase_root_only=True)
-    DeleteVFX(3603816, erase_root_only=True)
-    DeleteVFX(3603817, erase_root_only=True)
-    DeleteVFX(3603818, erase_root_only=True)
-    DeleteVFX(3603819, erase_root_only=True)
-    DeleteVFX(3603820, erase_root_only=True)
-    DeleteVFX(3603821, erase_root_only=True)
-    DeleteVFX(3603822, erase_root_only=True)
-    DeleteVFX(3603823, erase_root_only=True)
-    DeleteVFX(3603824, erase_root_only=True)
-    DeleteVFX(3603825, erase_root_only=True)
-    DeleteVFX(3603826, erase_root_only=True)
-    DeleteVFX(3603827, erase_root_only=True)
-    DeleteVFX(3603828, erase_root_only=True)
-    DeleteVFX(3603829, erase_root_only=True)
-    DeleteVFX(3603830, erase_root_only=True)
-    DeleteVFX(3603831, erase_root_only=True)
-    DeleteVFX(3603832, erase_root_only=True)
-    DeleteVFX(3603840, erase_root_only=True)
-    DeleteVFX(3603841, erase_root_only=True)
-    DeleteVFX(3603842, erase_root_only=True)
-    DeleteVFX(3603843, erase_root_only=True)
-    DeleteVFX(3603844, erase_root_only=True)
-    DeleteVFX(3603845, erase_root_only=True)
-    DeleteVFX(3603846, erase_root_only=True)
-    DeleteVFX(3603847, erase_root_only=True)
-    DeleteVFX(3603848, erase_root_only=True)
-    DeleteVFX(3603849, erase_root_only=True)
-    DeleteVFX(3603850, erase_root_only=True)
-    DeleteVFX(3603851, erase_root_only=True)
-    DeleteVFX(3603852, erase_root_only=True)
-    DeleteVFX(3603860, erase_root_only=True)
-    DeleteVFX(3603870, erase_root_only=True)
-    DeleteVFX(3603871, erase_root_only=True)
-    DeleteVFX(3603872, erase_root_only=True)
-    DeleteVFX(3603873, erase_root_only=True)
-    DeleteVFX(3603874, erase_root_only=True)
-    SkipLinesIfThisEventOff(2)
-    DisableObject(Objects.MoonOrphanAlive)
-    EnableObject(Objects.MoonOrphanDead)
-    EndIfThisEventOn()
-    EnableFlag(CommonFlags.CutsceneActive)
-    PlayCutscene(Cutscenes.OrphanSpiritDeath, skippable=True, fade_out=False, player_id=PLAYER)
-    WaitFrames(1)
-    DisableObject(Objects.MoonOrphanAlive)
-    EnableObject(Objects.MoonOrphanDead)
-    DisableFlag(CommonFlags.CutsceneActive)
-    EnableFlag(9469)
-    RunEvent(9350, 0, args=(3,))
+    End()  # stripped
 
 
 def SummonStartOrphanBattle():
@@ -1124,7 +1029,7 @@ def StartOrphanBattle():
     GotoIfThisEventOn(Label.L0)
 
     IfPlayerInsideRegion(0, BossRushTriggers.OrphanOfKos)
-    IfFlagOn(0, Flags.OrphanFogEntered)
+    # IfFlagOn(0, Flags.OrphanFogEntered)
 
     GotoIfClient(Label.L0)
     SkipLinesIfFlagOn(1, 13604810)

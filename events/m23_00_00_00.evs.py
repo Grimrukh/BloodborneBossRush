@@ -27,9 +27,15 @@ from .m23_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.BloodStarvedBeast and not BossRushTriggers.DarkbeastPaarl:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=3, args=(2300951, 2301951, BossRushFlags.BossDead_BloodStarvedBeast))
+    RunEvent(7400, slot=6, args=(2300952, 2301952, BossRushFlags.BossDead_DarkbeastPaarl))
+
     RunEvent(7000, slot=5, args=(2300950, Objects.OldYharnamLantern, 999, 12307800))
-    RunEvent(7000, slot=6, args=(2300951, Objects.BloodStarvedBeastLantern, Flags.BloodStarvedBeastDead, 12307820))
-    RunEvent(7000, slot=7, args=(2300952, Objects.DarkbeastPaarlLantern, Flags.DarkbeastPaarlDead, 12307840))
+    # RunEvent(7000, slot=6, args=(2300951, Objects.BloodStarvedBeastLantern, Flags.BloodStarvedBeastDead, 12307820))
+    # RunEvent(7000, slot=7, args=(2300952, Objects.DarkbeastPaarlLantern, Flags.DarkbeastPaarlDead, 12307840))
     RunEvent(7100, slot=5, args=(72300200, Objects.OldYharnamLantern))
     RunEvent(7100, slot=6, args=(72300201, Objects.BloodStarvedBeastLantern))
     RunEvent(7100, slot=7, args=(72300202, Objects.DarkbeastPaarlLantern))
@@ -337,7 +343,7 @@ def Constructor():
     # BloodStarvedBeastFirstTime()
     EnterBloodStarvedBeastFog()
     EnterBloodStarvedBeastFogAsSummon()
-    Event12304802()
+    StartBloodStarvedBeastBattle()
     Event12304803()
     Event12304804()
     Event12304805()
@@ -353,7 +359,7 @@ def Constructor():
     # DarkbeastPaarlFirstTime()
     Event12304730()
     Event12304731()
-    Event12304702()
+    StartDarkbeastPaarlBattle()
     Event12304703()
     Event12304704()
     Event12304705()
@@ -741,29 +747,8 @@ def BloodStarvedBeastDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.BloodStarvedBeast)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.BossFog)
-    DeleteVFX(VFX.BossFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=OLD_YHARNAM, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.BloodStarvedBeast)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    EnableFlag(72400512)
-    AwardAchievement(22)
-    AwardItemLot(80000000, host_only=False)
-    EnableFlag(2300)
-    EnableFlag(9453)
-    StopPlayLogMeasurement(2300000)
-    StopPlayLogMeasurement(2300001)
-    StopPlayLogMeasurement(2300010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -892,7 +877,7 @@ def Event12304813():
     Restart()
 
 
-def Event12304802():
+def StartBloodStarvedBeastBattle():
     """ 12304802: Event 12304802 """
     EndIfFlagOn(Flags.BloodStarvedBeastDead)
     DisableAI(Characters.BloodStarvedBeast)
@@ -1040,33 +1025,8 @@ def DarkbeastPaarlDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.DarkbeastPaarl)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(2301810)
-    DisableObject(2301811)
-    DeleteVFX(2303810, erase_root_only=True)
-    DeleteVFX(2303811, erase_root_only=True)
     SetLockedCameraSlot(game_map=OLD_YHARNAM, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.DarkbeastPaarl)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(24)
-    SkipLinesIfFlagOn(2, 6644)
-    AwardItemLot(50800000, host_only=False)
-    SkipLines(1)
-    AwardItemLot(50800005, host_only=False)
-    EnableFlag(2301)
-    EnableFlag(9454)
-    StopPlayLogMeasurement(2300000)
-    StopPlayLogMeasurement(2300001)
-    StopPlayLogMeasurement(2300010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 120, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 120, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1205,7 +1165,7 @@ def Event12304733():
     Restart()
 
 
-def Event12304702():
+def StartDarkbeastPaarlBattle():
     """ 12304702: Event 12304702 """
     EndIfFlagOn(Flags.DarkbeastPaarlDead)
     DisableAI(Characters.DarkbeastPaarl)

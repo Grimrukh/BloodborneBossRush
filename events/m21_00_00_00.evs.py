@@ -24,10 +24,11 @@ from .m21_00_entities import *
 def Constructor():
     """ 0: Event 0 """
     BossRushFirstArrival()
+    ClearBossRushFlags()  # only runs if player does not spawn in boss arena trigger region
 
-    for boss_dead_flag in range(7601, 7623):
-        # Disable all (new) boss death flags every time you return to the Hunter's Dream.
-        DisableFlag(boss_dead_flag)
+    # Two new Lanterns for post-Gehrman and post-Moon Presence (no characters).
+    RunEvent(7400, slot=21, args=(0, 2100750, BossRushFlags.BossDead_Gehrman))
+    RunEvent(7400, slot=21, args=(0, 2100751, BossRushFlags.BossDead_MoonPresence))
 
     SkipLinesIfClient(2)
     SkipLinesIfFlagOff(1, 6600)
@@ -256,20 +257,20 @@ def Constructor():
 
 def Preconstructor():
     """ 50: Event 50 """
-    SkipLinesIfFlagOff(2, Flags.MeleeWeaponGiftReceived)
+    # SkipLinesIfFlagOff(2, Flags.MeleeWeaponGiftReceived)
     DisableBackread(Characters.MeleeWeaponGiftMessengers)
     DisableBackread(Characters.MeleeWeaponGift)
 
-    SkipLinesIfFlagOff(2, Flags.GunGiftReceived)
+    # SkipLinesIfFlagOff(2, Flags.GunGiftReceived)
     DisableBackread(Characters.GunGiftMessengers)
     DisableBackread(Characters.GunGift)
 
-    SkipLinesIfFlagOn(2, CommonFlags.WorkshopOnFire)
-    DisableBackread(Characters.GehrmanBoss)
-    DisableBackread(Characters.MoonPresence)
+    # SkipLinesIfFlagOn(2, CommonFlags.WorkshopOnFire)
+    # DisableBackread(Characters.GehrmanBoss)
+    # DisableBackread(Characters.MoonPresence)
 
-    SkipLinesIfFlagOn(1, Flags.GehrmanRefusalCutsceneDone)
-    EnableFlag(2100)
+    # SkipLinesIfFlagOn(1, Flags.GehrmanRefusalCutsceneDone)
+    # EnableFlag(2100)
 
     GotoIfFlagOff(Label.L0, 1003)
     DisableFlag(1003)
@@ -384,9 +385,9 @@ def Preconstructor():
     DisableCharacterCollision(Characters.ChaliceAltar4)
     DisableCharacterCollision(Characters.ChaliceAltar5)
     DisableCharacterCollision(Characters.ChaliceAltar6)
-    SkipLinesIfFlagOff(2, 12411000)
-    DisableBackread(Characters.GehrmanBoss)
-    DisableBackread(Characters.MoonPresence)
+    # SkipLinesIfFlagOff(2, 12411000)
+    # DisableBackread(Characters.GehrmanBoss)
+    # DisableBackread(Characters.MoonPresence)
 
 
 def Event12100100(_, arg_0_3: int, arg_4_7: int):
@@ -1158,22 +1159,9 @@ def GehrmanDies():
     """ 12101800: Gehrman is killed in his boss battle. """
     await Flags.GehrmanBattleStarted
     IfCharacterDead(0, Characters.GehrmanBoss)
-    EnableFlag(BossRushFlags.BossDead_Gehrman)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=HUNTERS_DREAM, camera_slot=0)
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))  # TODO: Insight amount for victory?
-    # TODO: Leaving play log stuff just in case.
-    StopPlayLogMeasurement(2100000)
-    StopPlayLogMeasurement(2100001)
-    StopPlayLogMeasurement(2100010)
-    CreatePlayLog(22)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 34, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 34, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 34, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 34, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1194,16 +1182,13 @@ def StartGehrmanBossBattle():
     DisableCharacter(Characters.GehrmanBoss)
 
     IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
-    IfFlagOn(1, BossRushFlags.RequestBoss_Gehrman)  # Only map that requires this.
+    IfFlagOff(1, BossRushFlags.MoonPresenceRequested)  # Only map that requires this.
     IfFlagOff(1, BossRushFlags.BossDead_Gehrman)
     IfConditionTrue(0, 1)
 
-    DisableFlag(BossRushFlags.RequestBoss_Gehrman)  # Disabled here instead of in common warp event.
     EnableCharacter(Characters.GehrmanBoss)
     EnableBossHealthBar(Characters.GehrmanBoss, name=BossNames.Gehrman, slot=0)
     SetCharacterEventTarget(Characters.GehrmanBoss, 2100801)
-    CreatePlayLog(64)
-    StartPlayLogMeasurement(2100010, 80, overwrite=True)
 
 
 def ControlGehrmanMusic():
@@ -1278,19 +1263,9 @@ def MoonPresenceDies():
     """ 12101850: Moon Presence is killed in battle. """
     await Flags.MoonPresenceBattleStarted
     IfCharacterDead(0, Characters.MoonPresence)
-    EnableFlag(BossRushFlags.BossDead_MoonPresence)
     EnableFlag(12104859)  # Stops music.
-    DisplayBanner(BannerType.NightmareSlain)
+    DisplayBanner(BannerType.PreySlaughtered)  # Nightmare Slain banner saved for boss rush completion
     SetLockedCameraSlot(game_map=HUNTERS_DREAM, camera_slot=0)
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(5,))
-    StopPlayLogMeasurement(2100011)
-    CreatePlayLog(22)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 96, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 96, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 96, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 96, PlayLogMultiplayerType.HostOnly)
     End()
 
     # --- 1 --- #
@@ -1311,15 +1286,13 @@ def StartMoonPresenceBossBattle():
     DisableCharacter(Characters.MoonPresence)
 
     IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
-    IfFlagOn(1, BossRushFlags.RequestBoss_MoonPresence)  # Only map that requires this.
+    IfFlagOn(1, BossRushFlags.MoonPresenceRequested)  # Only map that requires this.
     IfFlagOff(1, BossRushFlags.BossDead_MoonPresence)
     IfConditionTrue(0, 1)
 
-    DisableFlag(BossRushFlags.RequestBoss_MoonPresence)  # Disabled here instead of in common warp event.
+    DisableFlag(BossRushFlags.MoonPresenceRequested)
     EnableCharacter(Characters.MoonPresence)
     EnableBossHealthBar(Characters.MoonPresence, name=540000, slot=0)
-    CreatePlayLog(128)
-    StartPlayLogMeasurement(2100011, 146, overwrite=True)
 
 
 def ControlMoonPresenceMusic():
@@ -2618,7 +2591,7 @@ def WarpAtHeadstone(_, choice_flag: int, headstone: int, warp_point: int):
 
 
 def BossRushFirstArrival():
-    """ 9401: Gives player equipment and blood echoes, and sets up flags. """
+    """ 9401: Gives player items and sets up flags. """
     DisableNetworkSync()
     EndIfClient()
     EndIfThisEventOn()
@@ -2647,3 +2620,41 @@ def BossRushFirstArrival():
     EnableFlag(HeadstoneWarpUnlockedFlags.LivingFailures)
     EnableFlag(HeadstoneWarpUnlockedFlags.LadyMaria)
     EnableFlag(HeadstoneWarpUnlockedFlags.OrphanOfKos)
+
+    # Special flags for setup.
+    EnableFlag(13501801)  # Lady Maria first time done
+
+    # Special items.
+    AwardItemLot(BossRushItemLots.Bells)
+
+
+def ClearBossRushFlags():
+    """ 12100800: Disable active and boss death flags, unless we've spawned in Gehrman/Moon Presence fight."""
+    IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
+    EndIfConditionTrue(1)
+
+    DisableFlag(BossRushFlags.BossRushActive)
+    DisableFlag(BossRushFlags.BossRushCompleted)
+
+    DisableFlag(BossRushFlags.BossDead_ClericBeast)
+    DisableFlag(BossRushFlags.BossDead_FatherGascoigne)
+    DisableFlag(BossRushFlags.BossDead_BloodStarvedBeast)
+    DisableFlag(BossRushFlags.BossDead_WitchesOfHemwick)
+    DisableFlag(BossRushFlags.BossDead_VicarAmelia)
+    DisableFlag(BossRushFlags.BossDead_DarkbeastPaarl)
+    DisableFlag(BossRushFlags.BossDead_ShadowsOfYharnam)
+    DisableFlag(BossRushFlags.BossDead_Rom)
+    DisableFlag(BossRushFlags.BossDead_Amygdala)
+    DisableFlag(BossRushFlags.BossDead_MartyrLogarius)
+    DisableFlag(BossRushFlags.BossDead_TheOneReborn)
+    DisableFlag(BossRushFlags.BossDead_CelestialEmissary)
+    DisableFlag(BossRushFlags.BossDead_Ebrietas)
+    DisableFlag(BossRushFlags.BossDead_Micolash)
+    DisableFlag(BossRushFlags.BossDead_MergosWetNurse)
+    DisableFlag(BossRushFlags.BossDead_Ludwig)
+    DisableFlag(BossRushFlags.BossDead_LivingFailures)
+    DisableFlag(BossRushFlags.BossDead_LadyMaria)
+    DisableFlag(BossRushFlags.BossDead_Laurence)
+    DisableFlag(BossRushFlags.BossDead_OrphanOfKos)
+    DisableFlag(BossRushFlags.BossDead_Gehrman)
+    DisableFlag(BossRushFlags.BossDead_MoonPresence)

@@ -12,7 +12,7 @@ strings:
 110: N:\\SPRJ\\data\\Param\\event\\common.emevd
 186: 
 188: 
-190: 
+190:
 """
 from soulstruct.bloodborne.events import *
 from .boss_rush_entities import *
@@ -20,13 +20,23 @@ from .common_entities import *
 from .m34_00_entities import *
 
 
+# NOTE: Ludwig's head (all versions) have simply been deleted from this map, so those events will no longer operate.
+# Item corpse in arena has also been deleted.
+
+
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.Ludwig and not BossRushTriggers.Laurence:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=16, args=(3400952, 3401952, BossRushFlags.BossDead_Ludwig))
+    RunEvent(7400, slot=19, args=(3400953, 3401953, BossRushFlags.BossDead_Laurence))
+
     GotoIfFlagOn(Label.L0, 13400999)
     RunEvent(7000, slot=55, args=(3400950, 3401950, 999, 13407800))
     RunEvent(7000, slot=56, args=(3400951, 3401951, 999, 13407820))
-    RunEvent(7000, slot=57, args=(3400952, 3401952, Flags.LudwigDead, 13407840))
-    RunEvent(7000, slot=58, args=(3400953, 3401953, Flags.LaurenceDead, 13407860))
+    # RunEvent(7000, slot=57, args=(3400952, 3401952, Flags.LudwigDead, 13407840))
+    # RunEvent(7000, slot=58, args=(3400953, 3401953, Flags.LaurenceDead, 13407860))
     RunEvent(7100, slot=55, args=(73400200, 3401950))
     RunEvent(7100, slot=56, args=(73400201, 3401951))
     RunEvent(7100, slot=57, args=(73400202, 3401952))
@@ -107,7 +117,7 @@ def Constructor():
     Event13404806()
     Event13404807()
     ControlLudwigAnnouncer()
-    LudwigAnnouncerDies()
+    # LudwigAnnouncerDies()  # now respawns
     Event13404820()
     Event13404821()
     Event13404822()
@@ -156,7 +166,7 @@ def Constructor():
     RunEvent(13400220, slot=1, args=(3400681, 53401720))
     Event13405103()
     RunEvent(13400310, slot=0, args=(3400590, 3402341))
-    Event13400320()
+    # GetItemFromLaurence()  # no more item
     Event13404799()
     RunEvent(13405100, slot=0, args=(3401400, 3402531, 3402554))
     RunEvent(13405105, slot=0, args=(3402370, 3401350, 3401351, 0, 0, 0))
@@ -882,40 +892,9 @@ def LudwigDies():
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LudwigFog)
     DeleteVFX(VFX.LudwigFog, erase_root_only=True)
+    # NOTE: Exit fog will always be enabled, as flag 9471 (Ludwig's special death flag) is no longer enabled here.
     SetLockedCameraSlot(game_map=HUNTERS_NIGHTMARE, camera_slot=0)
-    Wait(3.0)
-    SkipLinesIfFinishedConditionTrue(2, 2)
-    KillBoss(Characters.LudwigTheAccursed)
-    SkipLines(1)
-    KillBoss(Characters.LudwigTheHolyBlade)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    SkipLinesIfFlagOff(4, 13400999)
-    Wait(3.0)
-    PlayCutscene(34000040, skippable=False, fade_out=False, player_id=PLAYER)
-    WaitFrames(1)
-    Unknown_2003_27(0)
-    AwardAchievement(Achievements.LudwigDefeated)
-    RunEvent(9350, 0, args=(3,))
-    SkipLinesIfFlagOn(2, 6674)
-    AwardItemLot(3401800, host_only=False)
-    SkipLines(1)
-    AwardItemLot(3401802, host_only=False)
-    EnableFlag(3400)
-    EnableFlag(3401)
-    EnableFlag(3402)
-    EnableFlag(3403)
-    EnableFlag(9471)
-    StopPlayLogMeasurement(9340000)
-    StopPlayLogMeasurement(9340001)
-    StopPlayLogMeasurement(9340010)
-    CreatePlayLog(0)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 12, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 12, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -1523,35 +1502,9 @@ def LaurenceDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.Laurence)
-    EnableFlag(3400)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.LaurenceFog)
-    DeleteVFX(VFX.LaurenceFog, erase_root_only=True)
     SetLockedCameraSlot(game_map=HUNTERS_NIGHTMARE, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.Laurence)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    AwardAchievement(Achievements.LaurenceDefeated)
-    RunEvent(9350, 0, args=(3,))
-    SkipLinesIfFlagOn(2, 6673)
-    AwardItemLot(3401850, host_only=False)
-    SkipLines(1)
-    AwardItemLot(3401852, host_only=False)
-    EnableFlag(3400)
-    EnableFlag(3401)
-    EnableFlag(3402)
-    EnableFlag(3403)
-    StopPlayLogMeasurement(3400020)
-    StopPlayLogMeasurement(3400021)
-    StopPlayLogMeasurement(3400030)
-    CreatePlayLog(0)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 80, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 80, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 80, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 80, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -2016,7 +1969,7 @@ def Event13400310(_, arg_0_3: int, arg_4_7: int):
 
 
 @RestartOnRest
-def Event13400320():
+def GetItemFromLaurence():
     """ 13400320: Event 13400320 """
     EndIfFlagOn(9470)
     IfCharacterHuman(1, PLAYER)

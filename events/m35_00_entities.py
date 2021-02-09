@@ -36,6 +36,11 @@ class Characters(Character):
 class Objects(Object):
     LadyMariaFog = 3501800
     LivingFailuresFog = 3501810
+    LadyMariaEmptyChair = 3501906
+    LadyMariaSitting1 = 3501907
+    LadyMariaSitting2 = 3501908
+    LadyMariaFloorPanels = 3501909
+    LadyMariaTable = 3501910
 
 
 class VFX(VFXEvent):

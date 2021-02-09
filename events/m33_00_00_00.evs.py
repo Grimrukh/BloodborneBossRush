@@ -23,8 +23,13 @@ from .m33_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.Amygdala:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=9, args=(3300951, 3301951, BossRushFlags.BossDead_Amygdala))
+
     RunEvent(7000, slot=50, args=(3300950, 3301950, 999, 13307800))
-    RunEvent(7000, slot=51, args=(3300951, 3301951, Flags.AmygdalaDead, 13307820))
+    # RunEvent(7000, slot=51, args=(3300951, 3301951, Flags.AmygdalaDead, 13307820))
     RunEvent(7100, slot=50, args=(73300200, 3301950))
     RunEvent(7100, slot=51, args=(73300201, 3301951))
     RunEvent(7200, slot=50, args=(73300100, 3301950, 2102953))
@@ -353,29 +358,8 @@ def AmygdalaDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.Amygdala)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.AmygdalaFog1)
-    DisableObject(Objects.AmygdalaFog2)
-    DeleteVFX(VFX.AmygdalaFog1, erase_root_only=True)
-    DeleteVFX(VFX.AmygdalaFog2, erase_root_only=True)
     SetLockedCameraSlot(game_map=NIGHTMARE_FRONTIER, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.Amygdala)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(3,))
-    AwardAchievement(25)
-    AwardItemLot(80000200, host_only=False)
-    EnableFlag(3300)
-    EnableFlag(9466)
-    StopPlayLogMeasurement(3300000)
-    StopPlayLogMeasurement(3300001)
-    StopPlayLogMeasurement(3300010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
+    # stripped
 
 
 def PlayAmygdalaDeathSound():

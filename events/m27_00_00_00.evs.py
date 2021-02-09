@@ -16,14 +16,18 @@ strings:
 """
 from soulstruct.bloodborne.events import *
 from .boss_rush_entities import *
-from .common_entities import *
 from .m27_00_entities import *
 
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.ShadowsOfYharnam:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=7, args=(2700951, 2701951, BossRushFlags.BossDead_ShadowsOfYharnam))
+
     RunEvent(7000, slot=35, args=(2700950, 2701950, 999, 12707800))
-    RunEvent(7000, slot=36, args=(2700951, 2701951, Flags.ShadowsOfYharnamDead, 12707820))
+    # RunEvent(7000, slot=36, args=(2700951, 2701951, Flags.ShadowsOfYharnamDead, 12707820))
     RunEvent(7100, slot=35, args=(72700200, 2701950))
     RunEvent(7100, slot=36, args=(72700201, 2701951))
     RunEvent(7200, slot=35, args=(72700100, 2701950, 2102951))
@@ -561,36 +565,10 @@ def ShadowsOfYharnamDie():
     IfCharacterDead(1, Characters.Shadow3)
     IfConditionTrue(0, input_condition=1)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(2701800)
-    DisableObject(2701801)
-    DeleteVFX(2703800, erase_root_only=True)
-    DeleteVFX(2703801, erase_root_only=True)
     DisableSpawner(2705001)
     DisableSpawner(2705002)
     DisableSpawner(2705003)
-    Wait(3.0)
-    KillBoss(Characters.Shadow1)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    AwardAchievement(Achievements.ShadowsOfYharnamDefeated)
-    SkipLinesIfFlagOn(2, 6321)
-    AwardItemLot(2700990, host_only=False)
-    SkipLines(1)
-    AwardItemLot(2700995, host_only=False)
-    EnableFlag(2700)
-    EnableFlag(2701)
-    EnableFlag(9463)
-    StopPlayLogMeasurement(2700000)
-    StopPlayLogMeasurement(2700001)
-    StopPlayLogMeasurement(2700010)
-    CreatePlayLog(40)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 52, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 52, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)

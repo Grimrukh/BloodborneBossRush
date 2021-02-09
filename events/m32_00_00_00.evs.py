@@ -19,15 +19,19 @@ strings:
 """
 from soulstruct.bloodborne.events import *
 from .boss_rush_entities import *
-from .common_entities import *
 from .m32_00_entities import *
 
 
 def Constructor():
     """ 0: Event 0 """
+    if not BossRushTriggers.Rom:
+        EnableFlag(BossRushFlags.RequestDreamReturn)
+
+    RunEvent(7400, slot=8, args=(3200952, 3201952, BossRushFlags.BossDead_Rom))
+
     RunEvent(7000, slot=45, args=(3200950, 3201950, 999, 13207800))
     RunEvent(7000, slot=46, args=(3200951, 3201951, 999, 13207820))
-    RunEvent(7000, slot=47, args=(3200952, 3201952, Flags.BloodMoonTriggered, 13207840))
+    # RunEvent(7000, slot=47, args=(3200952, 3201952, Flags.BloodMoonTriggered, 13207840))
     RunEvent(7000, slot=48, args=(3200953, 3201953, 999, 13207860))
     RunEvent(7100, slot=45, args=(73200200, 3201950))
     RunEvent(7100, slot=46, args=(73200201, 3201951))
@@ -84,7 +88,7 @@ def Constructor():
     RomDies()
     PlayRomDeathSound()
     # RomFirstTime()
-    TriggerBloodMoon()  # TODO: Handle post-boss events (remove).
+    TriggerBloodMoon()  # stripped
     EnterRomFog()
     EnterRomFogAsSummon()
     StartRomBattle()
@@ -757,29 +761,9 @@ def RomDies():
     DefineLabel(0)
     IfCharacterDead(0, Characters.Rom)
     DisplayBanner(BannerType.PreySlaughtered)
-    DisableObject(Objects.RomFog)
-    DeleteVFX(VFX.RomFog, erase_root_only=True)
-    DisableCollision(3204010)
+    DisableCollision(3204010)  # enemy-only collision at fog gate, doesn't matter here
     SetLockedCameraSlot(game_map=BYRGENWERTH, camera_slot=0)
-    Wait(3.0)
-    KillBoss(Characters.Rom)
-    DisableNetworkSync()
-    GotoIfClient(Label.L1)
-    IfCharacterHuman(0, PLAYER)
-    RunEvent(9350, 0, args=(2,))
-    AwardAchievement(17)
-    AwardItemLot(51001900, host_only=False)
-    EnableFlag(3200)
-    EnableFlag(9465)
-    StartPlayLogMeasurement(3200000, 22, overwrite=False)
-    StartPlayLogMeasurement(3200001, 40, overwrite=False)
-    StartPlayLogMeasurement(3200010, 62, overwrite=False)
-    CreatePlayLog(80)
-    PlayLogParameterOutput(PlayerPlayLogParameter.PrimaryParameters, 92, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 92, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 92, PlayLogMultiplayerType.HostOnly)
-    PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 92, PlayLogMultiplayerType.HostOnly)
-    End()
+    End()  # stripped
 
     # --- 1 --- #
     DefineLabel(1)
@@ -818,63 +802,8 @@ def RomFirstTime():
 @RestartOnRest
 def TriggerBloodMoon():
     """ 13201803: Trigger blood moon by approaching Queen Yharnam after Rom is defeated. """
-    GotoIfThisEventOff(Label.L0)
     DisableCharacter(Characters.QueenYharnam)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    DisableAI(Characters.QueenYharnam)
-    IfCharacterHuman(1, PLAYER)
-    SkipLinesIfConditionFalse(1, 1)
-    SetNetworkUpdateAuthority(Characters.QueenYharnam, UpdateAuthority.Forced)
-    GotoIfFlagOn(Label.L1, Flags.RomDead)
-    IfCharacterHuman(2, PLAYER)
-    GotoIfConditionFalse(Label.L2, input_condition=2)
-    IfFlagOn(0, Flags.RomDead)
-    IfCharacterHuman(3, PLAYER)
-    IfCharacterInsideRegion(3, PLAYER, region=3202811)
-    IfCharacterHuman(4, PLAYER)
-    IfCharacterInsideRegion(4, PLAYER, region=3202812)
-    IfCharacterHuman(5, PLAYER)
-    IfCharacterInsideRegion(5, PLAYER, region=3202813)
-    IfCharacterHuman(6, PLAYER)
-    IfCharacterInsideRegion(6, PLAYER, region=3202814)
-    IfConditionTrue(-1, input_condition=3)
-    IfConditionTrue(-1, input_condition=4)
-    IfConditionTrue(-1, input_condition=5)
-    IfConditionTrue(-1, input_condition=6)
-    IfConditionTrue(0, input_condition=-1)
-    SkipLinesIfFinishedConditionTrue(8, 3)
-    SkipLinesIfFinishedConditionTrue(5, 4)
-    SkipLinesIfFinishedConditionTrue(2, 5)
-    Move(Characters.QueenYharnam, destination=3202815, destination_type=CoordEntityType.Region, short_move=True)
-    Goto(Label.L1)
-    Move(Characters.QueenYharnam, destination=3202816, destination_type=CoordEntityType.Region, short_move=True)
-    Goto(Label.L1)
-    Move(Characters.QueenYharnam, destination=3202817, destination_type=CoordEntityType.Region, short_move=True)
-    Goto(Label.L1)
-    Move(Characters.QueenYharnam, destination=3202818, destination_type=CoordEntityType.Region, short_move=True)
-
-    # --- 1 --- #
-    DefineLabel(1)
-    ForceAnimation(Characters.QueenYharnam, 7001)
-    IfCharacterHuman(8, PLAYER)
-    IfEntityWithinDistance(8, PLAYER, Characters.QueenYharnam, radius=12.0)
-    IfConditionTrue(0, input_condition=8)
-    EnableFlag(CommonFlags.CutsceneActive)
-    WaitFrames(1)
-    PlayCutsceneAndSetTimePeriod(32000000, CutsceneType.Skippable, 10000, 3)
-    WaitFrames(1)
-    DisableFlag(CommonFlags.CutsceneActive)
-    EnableFlag(70002802)
-    WarpPlayerToRespawnPoint(2802958)  # Yahar'gul entrance with Amygdala
-    End()
-
-    # --- 2 --- #
-    DefineLabel(2)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
+    End()  # stripped
 
 
 def SummonStartRomBattle():

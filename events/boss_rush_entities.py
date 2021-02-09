@@ -1,73 +1,89 @@
 """
 TODO:
-    Make sure player always respawns in Hunter's Dream (no other spawn points ever set).
-    Change all starting origins to "Bloodstained Gladiator" (with new desc).
-    Change all headstone destination names to the boss name.
+    Warp straight to Dream from Clinic at game start.
     Check there are no special "first-time arrival" events in maps that cause stuff to happen.
     Have each area's skybox be in the state you would normally find it for that boss.
+    Make sure there are no sources of souls (e.g. minions).
+        - Enemies that appear on stairway in Micolash fight should be adjusted.
+        -
 """
 
 from soulstruct.game_types import *
 
 
 class BossRushFlags(Flag):
-    """BOSS RUSH MOD FLAGS (seemingly unused in vanilla game)."""
-    # 7400+ slots are post-boss lantern appearance/activation events.
-    # 7496 is the story boss order choice event.
-    # 7497 is the random boss order choice event.
-    # 7500-7599 are boss warp request flags, which trigger warps immediately when activated.
-    # 7600-7699 are boss death flags, which prevent bosses from being re-selected during a random rush.
-    BossRushCompleted = 7498
-    BossRushRandomized = 7499
-    NextBossChosen = 7500
-    RequestBoss_ClericBeast = 7501
-    RequestBoss_FatherGascoigne = 7502
-    RequestBoss_BloodStarvedBeast = 7503
-    RequestBoss_WitchesOfHemwick = 7504
-    RequestBoss_VicarAmelia = 7505
-    RequestBoss_DarkbeastPaarl = 7506
-    RequestBoss_ShadowsOfYharnam = 7507
-    RequestBoss_Rom = 7508
-    RequestBoss_Amygdala = 7509
-    RequestBoss_MartyrLogarius = 7510
-    RequestBoss_TheOneReborn = 7511
-    RequestBoss_CelestialEmissary = 7512
-    RequestBoss_Ebrietas = 7513
-    RequestBoss_Micolash = 7514
-    RequestBoss_MergosWetNurse = 7515
-    RequestBoss_Ludwig = 7516
-    RequestBoss_LivingFailures = 7517
-    RequestBoss_LadyMaria = 7518
-    RequestBoss_Laurence = 7519
-    RequestBoss_OrphanOfKos = 7520
-    RequestBoss_Gehrman = 7521
-    RequestBoss_MoonPresence = 7522
-    BossDead_ClericBeast = 7601
-    BossDead_FatherGascoigne = 7602
-    BossDead_BloodStarvedBeast = 7603
-    BossDead_WitchesOfHemwick = 7604
-    BossDead_VicarAmelia = 7605
-    BossDead_DarkbeastPaarl = 7606
-    BossDead_ShadowsOfYharnam = 7607
-    BossDead_Rom = 7608
-    BossDead_Amygdala = 7609
-    BossDead_MartyrLogarius = 7610
-    BossDead_TheOneReborn = 7611
-    BossDead_CelestialEmissary = 7612
-    BossDead_Ebrietas = 7613
-    BossDead_Micolash = 7614
-    BossDead_MergosWetNurse = 7615
-    BossDead_Ludwig = 7616
-    BossDead_LivingFailures = 7617
-    BossDead_LadyMaria = 7618
-    BossDead_Laurence = 7619
-    BossDead_OrphanOfKos = 7620
-    BossDead_Gehrman = 7621
-    BossDead_MoonPresence = 7622
+    """BOSS RUSH MOD FLAGS. Stolen from Abandoned Old Workshop flag range (1000+) that is never used in vanilla.
+
+    Common event 7400 (22 slots) is used to control the lanterns and request warps.
+    Common event 7450 (22 slots) is used to execute warps to bosses.
+    Event 7493 listens for the Story Boss Rush bell request.
+    Event 7494 listens for the Random Boss Rush bell request.
+    Event 7495 is the completion monitoring event.
+    Event 7496 is the story boss order choice event.
+    Event 7497 is the random boss order choice event.
+    Event 7498 is used to warp back to the Hunter's Dream, as requested by flag 7499.
+    """
+    RequestDreamReturn = 7499
+    BossRushActive = 12111800
+    BossRushCompleted = 12111801
+    MoonPresenceRequested = 12111998  # boss requires disambiguity separate from warp request flag
+    BossRushRandomized = 12111999
+
+    # Boss warp requests ignored while this flag is enabled (during random search).
+    ChoosingRandomBoss = 12111000
+    # Boss warp request flags, which trigger warps immediately when activated.
+    RequestBoss_ClericBeast = 12111001
+    RequestBoss_FatherGascoigne = 12111002
+    RequestBoss_BloodStarvedBeast = 12111003
+    RequestBoss_WitchesOfHemwick = 12111004
+    RequestBoss_VicarAmelia = 12111005
+    RequestBoss_DarkbeastPaarl = 12111006
+    RequestBoss_ShadowsOfYharnam = 12111007
+    RequestBoss_Rom = 12111008
+    RequestBoss_Amygdala = 12111009
+    RequestBoss_MartyrLogarius = 12111010
+    RequestBoss_TheOneReborn = 12111011
+    RequestBoss_CelestialEmissary = 12111012
+    RequestBoss_Ebrietas = 12111013
+    RequestBoss_Micolash = 12111014
+    RequestBoss_MergosWetNurse = 12111015
+    RequestBoss_Ludwig = 12111016
+    RequestBoss_LivingFailures = 12111017
+    RequestBoss_LadyMaria = 12111018
+    RequestBoss_Laurence = 12111019
+    RequestBoss_OrphanOfKos = 12111020
+    RequestBoss_Gehrman = 12111021
+    RequestBoss_MoonPresence = 12111022
+
+    # Boss death flags. These are the same as in the vanilla game, but are disabled every time you return to the Dream.
+    BossDead_ClericBeast = 12411700
+    BossDead_FatherGascoigne = 12411800
+    BossDead_BloodStarvedBeast = 12301800
+    BossDead_WitchesOfHemwick = 12201800
+    BossDead_VicarAmelia = 12401800
+    BossDead_DarkbeastPaarl = 12301700
+    BossDead_ShadowsOfYharnam = 12701800
+    BossDead_Rom = 13201800
+    BossDead_Amygdala = 13301800
+    BossDead_MartyrLogarius = 12501800
+    BossDead_TheOneReborn = 12801800
+    BossDead_CelestialEmissary = 12421700
+    BossDead_Ebrietas = 12421800
+    BossDead_Micolash = 12601850
+    BossDead_MergosWetNurse = 12601800
+    BossDead_Ludwig = 13401800
+    BossDead_LivingFailures = 13501850
+    BossDead_LadyMaria = 13501800
+    BossDead_Laurence = 13401850
+    BossDead_OrphanOfKos = 13601800
+    BossDead_Gehrman = 12101800
+    BossDead_MoonPresence = 12101850
+
+    MicolashDyingWordsDone = 72600301
 
 
 class BossRushWarpPoints(SpawnPointEvent):
-    HuntersDream = 2102950  # Normal start position.
+    HuntersDream = 2102962  # Normal start position.
     GehrmanOrMoonPresence = 2102965  # Shared (checks warp flag).
     WitchesOfHemwick = 2202951
     BloodStarvedBeast = 2302951
@@ -143,3 +159,23 @@ class BossRushTriggers(Region):
     LivingFailures = 3502751
     LadyMaria = 3502752
     OrphanOfKos = 3602752
+
+
+class BossRushText(EventText):
+    FaceNextFoe = 70011002
+
+
+class BossRushItemLots(ItemLotParam):
+    VialBulletRefill = 1000
+    Bells = 10010
+
+
+class BossRushGoods(GoodParam):
+    QuicksilverBullet = 900
+    BloodBullet = 901
+    BloodVial = 1000
+
+
+class BossRushEffects(SpecialEffectParam):
+    StoryRushRequest = 9500
+    RandomRushRequest = 9501
