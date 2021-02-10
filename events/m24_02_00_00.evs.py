@@ -732,7 +732,7 @@ def CelestialEmissaryDies():
     DisableAI(Characters.CelestialMinion5)
     DisableAI(Characters.CelestialMinion6)
     DisableAI(Characters.CelestialMinion7)
-    DisableObject(Objects.CelestialEmissaryFog)
+    DisableObject(Objects.CelestialEmissaryEntranceFog)
     DisableObject(Objects.CelestialEmissaryExitFog)
     DeleteVFX(VFX.CelestialEmissaryEntranceFog, erase_root_only=False)
     DeleteVFX(VFX.CelestialEmissaryExitFog, erase_root_only=False)

@@ -47,7 +47,7 @@ class CommonFlags(Flag):
     InsightGained_DarkbeastPaarlBattle = 9340
     InsightGained_GehrmanBattle = 9343
     HuntersDreamVisited = 9401
-    CentralYharnamVisited = 9403  # TODO: probably. Could be a more specific region.
+    CentralYharnamVisited = 9403
     WorkshopOnFire = 9462  # enabled when Mergo's Wet Nurse is defeated
 
     EveningPhase = 9800

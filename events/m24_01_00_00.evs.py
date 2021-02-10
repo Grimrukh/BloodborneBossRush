@@ -555,7 +555,7 @@ def Preconstructor():
     Event12410701()
     Event12410780()
 
-    # TODO: Not sure how flag 12411000 is ever enabled (if it ever is). Probably demo/debug.
+    # Not sure how flag 12411000 is ever enabled (if it ever is). Probably demo/debug.
     SkipLinesIfFlagOff(11, 12411000)
     DisableBackread(2410901)
     DisableBackread(2410740)
@@ -594,7 +594,7 @@ def Event12411010():
 
 
 @RestartOnRest
-def EnableCharacterIfHighInsightAndClose(_, character: CharacterTyping, insight_threshold: uchar, distance: float):
+def EnableCharacterIfHighInsightAndClose(_, character: int, insight_threshold: uchar, distance: float):
     """ 12414000: Enable the given character if the player is human, has enough insight, and is within some distance.
 
     Character plays animation 6200 when they appear, which faintly implies it's an NPC character.
@@ -612,7 +612,7 @@ def EnableCharacterIfHighInsightAndClose(_, character: CharacterTyping, insight_
 
 
 @RestartOnRest
-def KillCharacterIfLowInsight(_, character: CharacterTyping, insight_threshold: uchar, required_flag: int):
+def KillCharacterIfLowInsight(_, character: int, insight_threshold: uchar, required_flag: int):
     """ 12414010: Event 12414010 """
     # TODO: Unused event. Would have PERMANENTLY killed (without souls) some character given a flag AND low insight.
     GotoIfThisEventSlotOn(Label.L0)
@@ -695,7 +695,7 @@ def Event12410005(_, arg_0_3: int):
 
 
 @RestartOnRest
-def TriggerEnemyAI(_, enemy: CharacterTyping, trigger_region_1: RegionTyping, trigger_region_2: RegionTyping,
+def TriggerEnemyAI(_, enemy: int, trigger_region_1: int, trigger_region_2: int,
                    trigger_distance: float):
     """ 12415060: Enemy AI is activated by one of two trigger regions, a distance threshold, or being attacked.
 
@@ -719,7 +719,7 @@ def TriggerEnemyAI(_, enemy: CharacterTyping, trigger_region_1: RegionTyping, tr
 
 @RestartOnRest
 def Event12415080(
-    _, enemy: CharacterTyping, standby_anim: int, death_anim: int, trigger_region: int, standby_ai_param: int,
+    _, enemy: int, standby_anim: int, death_anim: int, trigger_region: int, standby_ai_param: int,
     normal_ai_param: int, trigger_distance: float,
 ):
     """ 12415080: Event 12415080 """
@@ -3278,7 +3278,7 @@ def Event12410677():
     SaveRequest()
 
 
-def AggroEmissary(_, enemy: CharacterTyping):
+def AggroEmissary(_, enemy: int):
     """ 12410680: Attack a Small Celestial Emissary and aggravate it. """
     IfAttacked(0, enemy, attacker=PLAYER)
     SetAIParamID(enemy, 250000)

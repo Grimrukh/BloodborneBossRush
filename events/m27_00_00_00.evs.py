@@ -577,7 +577,7 @@ def ShadowsOfYharnamDie():
 
 
 def PlayShadowsOfYharnamDeathSound():
-    """ 12701801: TODO: What are these references to 2420800? Ebrietas? Were Shadows originally in UCW?"""
+    """ 12701801: What are these references to 2420800? Ebrietas? Were Shadows originally in UCW?"""
     DisableNetworkSync()
     EndIfFlagOn(Flags.ShadowsOfYharnamDead)
     IfFlagOn(1, Flags.ShadowsOfYharnamDead)

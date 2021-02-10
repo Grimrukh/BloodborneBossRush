@@ -198,7 +198,7 @@ def Constructor():
     InitializeBathMessengers()
     # No `BathMessengerAppearance` events (all of them are enabled by default).
 
-    InitializeStoryProgressionFlags()  # TODO: I don't think I need this.
+    # InitializeStoryProgressionFlags()  # disabling this
 
     InitializeInsightShop()
 
@@ -2464,7 +2464,6 @@ def InitializeStoryProgressionFlags():
 @RestartOnRest
 def InitializeInsightShop():
     """ 12105043: Second Insight shop messenger wakes up when player has 1 insight. """
-    # TODO: Sell armor sets at this shop.
     DisableNetworkSync()
     IfCharacterHuman(15, PLAYER)
     EndIfConditionFalse(15)

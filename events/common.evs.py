@@ -214,9 +214,6 @@ def Constructor():
     WarpToBoss(19, BossRushFlags.RequestBoss_OrphanOfKos, BossRushWarpPoints.OrphanOfKos)
     WarpToBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
     WarpToBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
-    # TODO: Create a unique flag for "MoonPresenceRequested" that is checked in Hunter's Dream boss events.
-    #  This flag should be enabled when RequestBoss_MoonPresence flag is enabled. If it's disabled when Hunter's Dream
-    #  loads boss events, Gehrman is assumed.
 
     WarpBackToDream()
 
@@ -2355,7 +2352,7 @@ def EnableRandomBossWarpFlag():
 
 
 def WarpBackToDream():
-    """ 7499: Warp player back to Hunter's Dream. """
+    """ 7498: Warp player back to Hunter's Dream. """
     Await(FlagEnabled(BossRushFlags.RequestDreamReturn))  # ignores 'ChoosingRandomBoss' flag, for emergencies
     DisableFlag(BossRushFlags.RequestDreamReturn)
     WarpPlayerToRespawnPoint(BossRushWarpPoints.HuntersDream)

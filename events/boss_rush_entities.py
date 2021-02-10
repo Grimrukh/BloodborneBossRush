@@ -1,7 +1,3 @@
-"""
-TODO:
-    Warp straight to Dream from Clinic at game start.
-"""
 
 from soulstruct.game_types import *
 

@@ -318,17 +318,16 @@ def set_goods_and_effects(game_param_bnd: GameParamBND):
     game_param_bnd.Goods[225]["refId"] = 9501
 
 
-def modify():
-    """Apply all modifications."""
-
+def main():
+    """Apply all modifications to vanilla file and save."""
     game_param_bnd = GameParamBND(BB_PATH + "/param/gameparam/gameparam.parambnd.dcx")
     set_boss_levels(game_param_bnd)
     set_starting_classes(game_param_bnd)
     set_shop_lineups(game_param_bnd)
     set_new_item_lots(game_param_bnd)
     set_goods_and_effects(game_param_bnd)
-    # TODO: SAVE FILE.
+    game_param_bnd.write("../package/param/gameparam/gameparam.parambnd.dcx")
 
 
 if __name__ == '__main__':
-    modify()
+    main()

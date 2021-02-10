@@ -29,7 +29,8 @@ NEW_EVENT_TEXT = {
 }
 
 
-if __name__ == '__main__':
+def main():
+    """Apply all modifications to vanilla file and save."""
     msg_directory = MSGDirectory(BB_PATH + "/msg/engus")
 
     msg_directory.EventText.update(NEW_EVENT_TEXT)
@@ -55,4 +56,8 @@ if __name__ == '__main__':
         "Ring from within the memory to return to the Dream."
     )
 
-    # TODO: SAVE FILE.
+    msg_directory.write("../package/msg/engus")
+
+
+if __name__ == '__main__':
+    main()
