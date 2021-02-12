@@ -10,6 +10,10 @@ from soulstruct.bloodborne.params import GameParamBND
 from soulstruct.config import BB_PATH
 
 
+BOSS_LEVEL = 7001  # Testing level
+# BOSS_LEVEL = 7022  # Moon Presence level (highest level there is)
+
+
 class StartingClasses(IntEnum):
     """Player param IDs. Add 1000 to get the identical param displayed in the character creation screen."""
     Milquetoast = 2000
@@ -82,9 +86,6 @@ def print_change(entry, field, value):
 
 def set_boss_levels(game_param_bnd: GameParamBND):
     """Set special effects to scale difficulty of bosses. Also removes any soul rewards."""
-    # TODO: For Lobos to test it, use level 1 (7001) instead for all bosses.
-    # TODO: Even with +10 weapons and level 70, level 7022 could get tough without powerful Blood Gems?
-    new_level = 7022  # Moon Presence level (highest level there is)
     ng_plus_level = 7413  # Moon Presence NG+ level
 
     for boss in BossCharacterParam:
@@ -93,7 +94,7 @@ def set_boss_levels(game_param_bnd: GameParamBND):
         if boss == BossCharacterParam.Micolash:
             pass  # leaving Micolash as he is (he's almost end-game level anyway)
         else:
-            print_change(boss_entry, "spEffectID6", new_level)
+            print_change(boss_entry, "spEffectID6", BOSS_LEVEL)
             print_change(boss_entry, "GameClearSpEffectID", ng_plus_level)
 
 
@@ -261,6 +262,7 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
             _set_insight_price(row_id, 3)
         elif check_row_id in weapons:
             _set_insight_price(row_id, 5)
+            row["equipId"] += 10  # Change weapon to +10.
         elif check_row_id in armor_pieces:
             if str(row['equipId']).endswith("1000"):
                 _set_insight_price(row_id, 2)  # Body armor
