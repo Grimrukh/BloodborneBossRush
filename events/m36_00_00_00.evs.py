@@ -25,7 +25,7 @@ def Constructor():
     if not BossRushTriggers.OrphanOfKos:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=20, args=(3600952, 3601952, BossRushFlags.BossDead_OrphanOfKos))
+    RunEvent(7200, slot=20, args=(3600952, 3601952, BossRushFlags.BossDead_OrphanOfKos))
 
     RunEvent(7000, slot=65, args=(3600950, 3601950, 999, 13607800))
     RunEvent(7000, slot=66, args=(3600951, 3601951, 999, 13607820))
@@ -33,9 +33,9 @@ def Constructor():
     RunEvent(7100, slot=65, args=(73600200, 3601950))
     RunEvent(7100, slot=66, args=(73600201, 3601951))
     RunEvent(7100, slot=67, args=(73600202, 3601952))
-    RunEvent(7200, slot=65, args=(73600100, 3601950, 2102953))
-    RunEvent(7200, slot=66, args=(73600101, 3601951, 2102953))
-    RunEvent(7200, slot=67, args=(73600102, 3601952, 2102953))
+    # RunEvent(7200, slot=65, args=(73600100, 3601950, 2102953))
+    # RunEvent(7200, slot=66, args=(73600101, 3601951, 2102953))
+    # RunEvent(7200, slot=67, args=(73600102, 3601952, 2102953))
     RunEvent(7300, slot=65, args=(72103600, 3601950))
     RunEvent(7300, slot=66, args=(72103601, 3601951))
     RunEvent(7300, slot=67, args=(72103602, 3601952))

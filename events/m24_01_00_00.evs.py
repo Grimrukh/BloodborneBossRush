@@ -30,8 +30,8 @@ def Constructor():
         # This warps the player to the Dream when the game first begins, as well.
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=1, args=(2410952, 2411952, BossRushFlags.BossDead_ClericBeast))
-    RunEvent(7400, slot=2, args=(2410953, 2411953, BossRushFlags.BossDead_FatherGascoigne))
+    RunEvent(7200, slot=1, args=(2410952, 2411952, BossRushFlags.BossDead_ClericBeast))
+    RunEvent(7200, slot=2, args=(2410953, 2411953, BossRushFlags.BossDead_FatherGascoigne))
 
     RunEvent(7000, slot=15, args=(2410950, 2411950, CommonFlags.HuntersDreamVisited, 12417800))
     RunEvent(7000, slot=16, args=(2410951, 2411951, 999, 12417820))
@@ -42,10 +42,6 @@ def Constructor():
     RunEvent(7100, slot=16, args=(72410201, 2411951))
     RunEvent(7100, slot=17, args=(72410202, 2411952))
     RunEvent(7100, slot=18, args=(72410203, 2411953))
-    RunEvent(7200, slot=15, args=(72410100, 2411950, 2102950))
-    RunEvent(7200, slot=16, args=(72410101, 2411951, 2102950))
-    RunEvent(7200, slot=17, args=(72410102, 2411952, 2102950))
-    RunEvent(7200, slot=18, args=(72410103, 2411953, 2102950))
     RunEvent(7300, slot=15, args=(72102410, 2411950))
     RunEvent(7300, slot=16, args=(72102411, 2411951))
     RunEvent(7300, slot=17, args=(72102412, 2411952))

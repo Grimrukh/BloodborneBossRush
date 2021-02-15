@@ -27,7 +27,7 @@ def Constructor():
     if not BossRushTriggers.Rom:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=8, args=(3200952, 3201952, BossRushFlags.BossDead_Rom))
+    RunEvent(7200, slot=8, args=(3200952, 3201952, BossRushFlags.BossDead_Rom))
 
     RunEvent(7000, slot=45, args=(3200950, 3201950, 999, 13207800))
     RunEvent(7000, slot=46, args=(3200951, 3201951, 999, 13207820))
@@ -37,10 +37,10 @@ def Constructor():
     RunEvent(7100, slot=46, args=(73200201, 3201951))
     RunEvent(7100, slot=47, args=(73200202, 3201952))
     RunEvent(7100, slot=48, args=(73200203, 3201953))
-    RunEvent(7200, slot=45, args=(73200100, 3201950, 2102951))
-    RunEvent(7200, slot=46, args=(73200101, 3201951, 2102953))
-    RunEvent(7200, slot=47, args=(73200102, 3201952, 2102951))
-    RunEvent(7200, slot=48, args=(73200103, 3201953, 2102953))
+    # RunEvent(7200, slot=45, args=(73200100, 3201950, 2102951))
+    # RunEvent(7200, slot=46, args=(73200101, 3201951, 2102953))
+    # RunEvent(7200, slot=47, args=(73200102, 3201952, 2102951))
+    # RunEvent(7200, slot=48, args=(73200103, 3201953, 2102953))
     RunEvent(7300, slot=45, args=(72103200, 3201950))
     RunEvent(7300, slot=46, args=(72103201, 3201951))
     RunEvent(7300, slot=47, args=(72103202, 3201952))

@@ -35,7 +35,7 @@ def Constructor():
     if not BossRushTriggers.VicarAmelia:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=5, args=(2400951, 2401951, BossRushFlags.BossDead_VicarAmelia))
+    RunEvent(7200, slot=5, args=(2400951, 2401951, BossRushFlags.BossDead_VicarAmelia))
 
     RunEvent(7600, slot=20, args=(2401999, 2403999))
     RunEvent(7600, slot=21, args=(2401998, 2403998))
@@ -46,8 +46,8 @@ def Constructor():
     # RunEvent(7000, slot=11, args=(2400951, 2401951, Flags.VicarAmeliaDead, 12407820))
     RunEvent(7100, slot=10, args=(72400200, 2401950))
     RunEvent(7100, slot=11, args=(72400201, 2401951))
-    RunEvent(7200, slot=10, args=(72400100, 2401950, 2102950))
-    RunEvent(7200, slot=11, args=(72400101, 2401951, 2102950))
+    # RunEvent(7200, slot=10, args=(72400100, 2401950, 2102950))
+    # RunEvent(7200, slot=11, args=(72400101, 2401951, 2102950))
     RunEvent(7300, slot=10, args=(72102400, 2401950))
     RunEvent(7300, slot=11, args=(72102401, 2401951))
     RunEvent(9200, slot=2, args=(2403900,))

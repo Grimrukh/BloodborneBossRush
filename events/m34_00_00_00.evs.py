@@ -29,8 +29,8 @@ def Constructor():
     if not BossRushTriggers.Ludwig and not BossRushTriggers.Laurence:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=16, args=(3400952, 3401952, BossRushFlags.BossDead_Ludwig))
-    RunEvent(7400, slot=19, args=(3400953, 3401953, BossRushFlags.BossDead_Laurence))
+    RunEvent(7200, slot=16, args=(3400952, 3401952, BossRushFlags.BossDead_Ludwig))
+    RunEvent(7200, slot=19, args=(3400953, 3401953, BossRushFlags.BossDead_Laurence))
 
     GotoIfFlagOn(Label.L0, 13400999)
     RunEvent(7000, slot=55, args=(3400950, 3401950, 999, 13407800))
@@ -41,10 +41,10 @@ def Constructor():
     RunEvent(7100, slot=56, args=(73400201, 3401951))
     RunEvent(7100, slot=57, args=(73400202, 3401952))
     RunEvent(7100, slot=58, args=(73400203, 3401953))
-    RunEvent(7200, slot=55, args=(73400100, 3401950, 2102953))
-    RunEvent(7200, slot=56, args=(73400101, 3401951, 2102953))
-    RunEvent(7200, slot=57, args=(73400102, 3401952, 2102953))
-    RunEvent(7200, slot=58, args=(73400103, 3401953, 2102953))
+    # RunEvent(7200, slot=55, args=(73400100, 3401950, 2102953))
+    # RunEvent(7200, slot=56, args=(73400101, 3401951, 2102953))
+    # RunEvent(7200, slot=57, args=(73400102, 3401952, 2102953))
+    # RunEvent(7200, slot=58, args=(73400103, 3401953, 2102953))
     RunEvent(7300, slot=55, args=(72103400, 3401950))
     RunEvent(7300, slot=56, args=(72103401, 3401951))
     RunEvent(7300, slot=57, args=(72103402, 3401952))

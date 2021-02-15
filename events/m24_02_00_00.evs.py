@@ -25,8 +25,8 @@ def Constructor():
     if not BossRushTriggers.Ebrietas and not BossRushTriggers.CelestialEmissary:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=13, args=(2420951, 2421951, BossRushFlags.BossDead_Ebrietas))
-    RunEvent(7400, slot=12, args=(2420952, 2421952, BossRushFlags.BossDead_CelestialEmissary))
+    RunEvent(7200, slot=13, args=(2420951, 2421951, BossRushFlags.BossDead_Ebrietas))
+    RunEvent(7200, slot=12, args=(2420952, 2421952, BossRushFlags.BossDead_CelestialEmissary))
 
     RunEvent(7000, slot=20, args=(2420950, 2421950, 999, 12427800))
     # RunEvent(7000, slot=21, args=(2420951, 2421951, Flags.EbrietasDead, 12427820))
@@ -34,9 +34,9 @@ def Constructor():
     RunEvent(7100, slot=20, args=(72420200, 2421950))
     RunEvent(7100, slot=21, args=(72420201, 2421951))
     RunEvent(7100, slot=22, args=(72420202, 2421952))
-    RunEvent(7200, slot=20, args=(72420100, 2421950, 2102950))
-    RunEvent(7200, slot=21, args=(72420101, 2421951, 2102950))
-    RunEvent(7200, slot=22, args=(72420102, 2421952, 2102950))
+    # RunEvent(7200, slot=20, args=(72420100, 2421950, 2102950))
+    # RunEvent(7200, slot=21, args=(72420101, 2421951, 2102950))
+    # RunEvent(7200, slot=22, args=(72420102, 2421952, 2102950))
     RunEvent(7300, slot=20, args=(72102420, 2421950))
     RunEvent(7300, slot=21, args=(72102421, 2421951))
     RunEvent(7300, slot=22, args=(72102422, 2421952))

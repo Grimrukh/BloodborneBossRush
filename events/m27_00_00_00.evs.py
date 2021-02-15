@@ -24,14 +24,14 @@ def Constructor():
     if not BossRushTriggers.ShadowsOfYharnam:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=7, args=(2700951, 2701951, BossRushFlags.BossDead_ShadowsOfYharnam))
+    RunEvent(7200, slot=7, args=(2700951, 2701951, BossRushFlags.BossDead_ShadowsOfYharnam))
 
     RunEvent(7000, slot=35, args=(2700950, 2701950, 999, 12707800))
     # RunEvent(7000, slot=36, args=(2700951, 2701951, Flags.ShadowsOfYharnamDead, 12707820))
     RunEvent(7100, slot=35, args=(72700200, 2701950))
     RunEvent(7100, slot=36, args=(72700201, 2701951))
-    RunEvent(7200, slot=35, args=(72700100, 2701950, 2102951))
-    RunEvent(7200, slot=36, args=(72700101, 2701951, 2102951))
+    # RunEvent(7200, slot=35, args=(72700100, 2701950, 2102951))
+    # RunEvent(7200, slot=36, args=(72700101, 2701951, 2102951))
     RunEvent(7300, slot=35, args=(72102700, 2701950))
     RunEvent(7300, slot=36, args=(72102701, 2701951))
     RunEvent(7600, slot=50, args=(2701999, 2703999))

@@ -31,14 +31,14 @@ def Constructor():
     if not BossRushTriggers.WitchesOfHemwick:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=4, args=(2200951, 2201951, BossRushFlags.BossDead_WitchesOfHemwick))
+    RunEvent(7200, slot=4, args=(2200951, 2201951, BossRushFlags.BossDead_WitchesOfHemwick))
 
     RunEvent(7000, slot=0, args=(2200950, 2201950, 999, 12207800))
     # RunEvent(7000, slot=1, args=(2200951, 2201951, Flags.WitchesOfHemwickDead, 12207820))
     RunEvent(7100, slot=0, args=(72200200, 2201950))
     RunEvent(7100, slot=1, args=(72200201, 2201951))
-    RunEvent(7200, slot=0, args=(72200100, 2201950, 2102951))
-    RunEvent(7200, slot=1, args=(72200101, 2201951, 2102951))
+    # RunEvent(7200, slot=0, args=(72200100, 2201950, 2102951))
+    # RunEvent(7200, slot=1, args=(72200101, 2201951, 2102951))
     RunEvent(7300, slot=0, args=(72102200, 2201950))
     RunEvent(7300, slot=1, args=(72102201, 2201951))
     RunEvent(7600, slot=0, args=(2201999, 2203999))

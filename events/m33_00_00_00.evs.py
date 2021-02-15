@@ -26,14 +26,14 @@ def Constructor():
     if not BossRushTriggers.Amygdala:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=9, args=(3300951, 3301951, BossRushFlags.BossDead_Amygdala))
+    RunEvent(7200, slot=9, args=(3300951, 3301951, BossRushFlags.BossDead_Amygdala))
 
     RunEvent(7000, slot=50, args=(3300950, 3301950, 999, 13307800))
     # RunEvent(7000, slot=51, args=(3300951, 3301951, Flags.AmygdalaDead, 13307820))
     RunEvent(7100, slot=50, args=(73300200, 3301950))
     RunEvent(7100, slot=51, args=(73300201, 3301951))
-    RunEvent(7200, slot=50, args=(73300100, 3301950, 2102953))
-    RunEvent(7200, slot=51, args=(73300101, 3301951, 2102953))
+    # RunEvent(7200, slot=50, args=(73300100, 3301950, 2102953))
+    # RunEvent(7200, slot=51, args=(73300101, 3301951, 2102953))
     RunEvent(7300, slot=50, args=(72103300, 3301950))
     RunEvent(7300, slot=51, args=(72103301, 3301951))
     RunEvent(9200, slot=10, args=(3303900,))

@@ -29,7 +29,7 @@ def Constructor():
     GetItemFromOldHunterHeadstone()  # Old Hunter Bone
     RunEvent(7000, slot=52, args=(2110950, 2111950, 999, 12117800))
     RunEvent(7100, slot=52, args=(72110200, 2111950))
-    RunEvent(7200, slot=52, args=(72110100, 2111950, 2102952))
+    # RunEvent(7200, slot=52, args=(72110100, 2111950, 2102952))
     RunEvent(7300, slot=52, args=(72102110, 2111950))
 
 

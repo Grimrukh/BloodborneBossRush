@@ -27,10 +27,7 @@ def Constructor():
     RunEvent(9182)
     RunEvent(9183)
     RunEvent(9186)
-    RunEvent(6680)
     RunEvent(6681)
-    RunEvent(6682)
-    RunEvent(6683)
     RunEvent(6684)
     RunEvent(6685)
     RunEvent(6686)
@@ -44,7 +41,6 @@ def Constructor():
     RunEvent(6694)
     RunEvent(6695)
     RunEvent(6696)
-    RunEvent(6697)
     RunEvent(5500, slot=0, args=(23010000,))
     RunEvent(5500, slot=1, args=(23020000,))
     RunEvent(5500, slot=2, args=(24010000,))
@@ -121,7 +117,6 @@ def Constructor():
     RunEvent(9440, slot=0, args=(9440, 10500))
     RunEvent(9440, slot=1, args=(9441, 11500))
     RunEvent(9440, slot=2, args=(9442, 12500))
-    RunEvent(9215)
     RunEvent(9421)
     RunEvent(9422)
     RunEvent(9400)
@@ -215,6 +210,9 @@ def Constructor():
     WarpToBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
     WarpToBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
 
+    # MonitorStoryBossRushRequest()
+    # MonitorRandomBossRushRequest()
+    FinishBossRush()
     WarpBackToDream()
 
 
@@ -291,21 +289,7 @@ def Preconstructor():
     # --- 2 --- #
     DefineLabel(2)
     DisableFlag(CommonFlags.CutsceneActive)
-    RunEvent(9360, slot=19, args=(1324, 1324, 1324, 6001))
-    RunEvent(9360, slot=20, args=(1342, 1346, 1350, 6001))
-    RunEvent(9360, slot=22, args=(1368, 1368, 1368, 1376))
-    RunEvent(9360, slot=25, args=(12300210, 12300210, 12300210, 6001))
-    RunEvent(9360, slot=26, args=(12800700, 12800700, 12800700, 6001))
-    RunEvent(9360, slot=27, args=(12800701, 12800701, 12800701, 6001))
-    RunEvent(9360, slot=28, args=(12800702, 12800702, 12800702, 6001))
-    RunEvent(9360, slot=30, args=(12410810, 12410810, 12410810, 6001))
-    RunEvent(9360, slot=31, args=(12400654, 12400654, 12400654, 6001))
-    RunEvent(9360, slot=32, args=(13300220, 13300220, 13300220, 6001))
-    RunEvent(9360, slot=33, args=(13300221, 13300221, 13300221, 6001))
-    RunEvent(9360, slot=34, args=(12400865, 12400865, 12400865, 6001))
-    RunEvent(9360, slot=35, args=(12400866, 12400866, 12400866, 6001))
-    RunEvent(9360, slot=36, args=(12600500, 12600500, 12600500, 6001))
-    RunEvent(9360, slot=37, args=(13200500, 13200500, 13200500, 6001))
+    # Old 9360 calls (Blood Dreg rewards) removed.
     RunEvent(9480, slot=0, args=(1710, 1711, 1712, 1713, 73600521))
     RunEvent(9480, slot=1, args=(1730, 1730, 1730, 1730, 6001))
     RunEvent(9480, slot=2, args=(1790, 1790, 1790, 1790, 6001))
@@ -446,42 +430,6 @@ def Event3500(_, arg_0_3: int, arg_4_7: int, arg_8_11: int, arg_12_15: int):
     DisableFlag(arg_12_15)
 
 
-def Event3503():
-    """ 3503: Event 3503 """
-    DisableNetworkSync()
-    IfCharacterHuman(15, PLAYER)
-    EndIfConditionFalse(15)
-    IfFlagOff(0, 6899)
-    RemoveGoodFromPlayer(4311, quantity=99)
-    DisableFlag(50000100)
-    DisableFlag(12101029)
-    DisableFlag(13407810)
-    DisableFlag(13407830)
-    DisableFlag(13407850)
-    DisableFlag(13407870)
-    DisableFlag(13507810)
-    DisableFlag(13507830)
-    DisableFlag(13507850)
-    DisableFlag(13607810)
-    DisableFlag(13607830)
-    DisableFlag(13607850)
-    DisableFlag(73400200)
-    DisableFlag(73400201)
-    DisableFlag(73400202)
-    DisableFlag(73400203)
-    DisableFlag(73500200)
-    DisableFlag(73500201)
-    DisableFlag(73500202)
-    DisableFlag(73600200)
-    DisableFlag(73600201)
-    DisableFlag(73600202)
-    IfInsideMap(-1, game_map=HUNTERS_NIGHTMARE)
-    IfInsideMap(-1, game_map=RESEARCH_HALL)
-    IfInsideMap(-1, game_map=FISHING_HAMLET)
-    IfConditionTrue(0, input_condition=-1)
-    WarpPlayerToRespawnPoint(2102961)
-
-
 @RestartOnRest
 def Event6002():
     """ 6002: Event 6002 """
@@ -497,33 +445,6 @@ def Event5500(_, arg_0_3: int):
     EndIfConditionFalse(1)
     EndIfThisEventSlotOn()
     IfPlayerHasWeapon(0, arg_0_3, including_box=False)
-    Wait(0.0)
-
-
-def Event6680():
-    """ 6680: Event 6680 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6680)
-    IfPlayerHasWeapon(-1, 9000000, including_box=True)
-    IfPlayerHasWeapon(-1, 9000100, including_box=True)
-    IfPlayerHasWeapon(-1, 9000200, including_box=True)
-    IfPlayerHasWeapon(-1, 9000300, including_box=True)
-    IfPlayerHasWeapon(-1, 9000400, including_box=True)
-    IfPlayerHasWeapon(-1, 9000500, including_box=True)
-    IfPlayerHasWeapon(-1, 9000600, including_box=True)
-    IfPlayerHasWeapon(-1, 9000700, including_box=True)
-    IfPlayerHasWeapon(-1, 9000800, including_box=True)
-    IfPlayerHasWeapon(-1, 9000900, including_box=True)
-    IfPlayerHasWeapon(-1, 9001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6680)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
     Wait(0.0)
 
 
@@ -546,60 +467,6 @@ def Event6681():
     IfPlayerHasWeapon(-1, 15001000, including_box=True)
     IfConditionTrue(0, input_condition=-1)
     EnableFlag(6681)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6682():
-    """ 6682: Event 6682 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6682)
-    IfPlayerHasWeapon(-1, 20000000, including_box=True)
-    IfPlayerHasWeapon(-1, 20000100, including_box=True)
-    IfPlayerHasWeapon(-1, 20000200, including_box=True)
-    IfPlayerHasWeapon(-1, 20000300, including_box=True)
-    IfPlayerHasWeapon(-1, 20000400, including_box=True)
-    IfPlayerHasWeapon(-1, 20000500, including_box=True)
-    IfPlayerHasWeapon(-1, 20000600, including_box=True)
-    IfPlayerHasWeapon(-1, 20000700, including_box=True)
-    IfPlayerHasWeapon(-1, 20000800, including_box=True)
-    IfPlayerHasWeapon(-1, 20000900, including_box=True)
-    IfPlayerHasWeapon(-1, 20001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6682)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6683():
-    """ 6683: Event 6683 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6683)
-    IfPlayerHasWeapon(-1, 23000000, including_box=True)
-    IfPlayerHasWeapon(-1, 23000100, including_box=True)
-    IfPlayerHasWeapon(-1, 23000200, including_box=True)
-    IfPlayerHasWeapon(-1, 23000300, including_box=True)
-    IfPlayerHasWeapon(-1, 23000400, including_box=True)
-    IfPlayerHasWeapon(-1, 23000500, including_box=True)
-    IfPlayerHasWeapon(-1, 23000600, including_box=True)
-    IfPlayerHasWeapon(-1, 23000700, including_box=True)
-    IfPlayerHasWeapon(-1, 23000800, including_box=True)
-    IfPlayerHasWeapon(-1, 23000900, including_box=True)
-    IfPlayerHasWeapon(-1, 23001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6683)
     End()
 
     # --- 0 --- #
@@ -959,33 +826,6 @@ def Event6696():
     Wait(0.0)
 
 
-def Event6697():
-    """ 6697: Event 6697 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6697)
-    IfPlayerHasWeapon(-1, 19100000, including_box=True)
-    IfPlayerHasWeapon(-1, 19100100, including_box=True)
-    IfPlayerHasWeapon(-1, 19100200, including_box=True)
-    IfPlayerHasWeapon(-1, 19100300, including_box=True)
-    IfPlayerHasWeapon(-1, 19100400, including_box=True)
-    IfPlayerHasWeapon(-1, 19100500, including_box=True)
-    IfPlayerHasWeapon(-1, 19100600, including_box=True)
-    IfPlayerHasWeapon(-1, 19100700, including_box=True)
-    IfPlayerHasWeapon(-1, 19100800, including_box=True)
-    IfPlayerHasWeapon(-1, 19100900, including_box=True)
-    IfPlayerHasWeapon(-1, 19101000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6697)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
 def Event6788():
     """ 6788: Event 6788 """
     DisableNetworkSync()
@@ -1082,21 +922,6 @@ def LightLantern(_, light_lantern_request_flag: int, lantern_obj: int):
     IfCharacterHuman(15, PLAYER)
     EndIfConditionFalse(15)
     EnableFlag(6715)
-
-
-def ReturnToHuntersDream(_, warp_request_flag: int, lantern_obj: int, respawn_point: int):
-    """ 7200: Event 7200 """
-    EndIfClient()
-    IfFlagOn(0, warp_request_flag)
-    DisableFlag(warp_request_flag)
-    RotateToFaceEntity(PLAYER, lantern_obj, animation=101160, wait_for_completion=False)
-    Wait(1.0)
-    CreateTemporaryVFX(100320, anchor_entity=lantern_obj, anchor_type=CoordEntityType.Object, model_point=100)
-    Wait(3.0)
-    SkipLinesIfFlagOff(2, CommonFlags.HuntersDreamVisited)
-    WarpPlayerToRespawnPoint(respawn_point)
-    End()
-    WarpPlayerToRespawnPoint(2102962)
 
 
 def ArriveAtLantern(_, trigger_flag: int, lantern_obj: int):
@@ -1338,22 +1163,6 @@ def Event9200(_, arg_0_3: int):
     Restart()
 
 
-def Event9215():
-    """ 9215: Event 9215 """
-    DisableNetworkSync()
-    IfFlagOn(1, 9468)
-    IfFlagOff(1, 1730)
-    IfInsideMap(-1, game_map=RESEARCH_HALL)
-    IfInsideMap(-1, game_map=FISHING_HAMLET)
-    IfConditionTrue(1, input_condition=-1)
-    IfConditionTrue(0, input_condition=1)
-    WaitRandomSeconds(min_seconds=60.0, max_seconds=120.0)
-    PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.s_SFX, sound_id=10307)
-    WaitRandomSeconds(min_seconds=2.0, max_seconds=4.0)
-    PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.s_SFX, sound_id=10307)
-    Restart()
-
-
 @RestartOnRest
 def Event9220(_, arg_0_3: int, arg_4_7: int, arg_8_11: int, arg_12_15: int, arg_16_16: uchar, arg_17_17: uchar):
     """ 9220: Event 9220 """
@@ -1516,29 +1325,6 @@ def GainInsight(_, insight_count: int):
     DefineLabel(1)
     AddSpecialEffect(PLAYER, 4680, affect_npc_part_hp=False)
     WaitFrames(10)
-
-
-def Event9360(_, arg_0_3: int, arg_4_7: int, arg_8_11: int, arg_12_15: int):
-    """ 9360: Event 9360 """
-    EndIfThisEventSlotOn()
-    EndIfFlagOn(arg_0_3)
-    EndIfFlagOn(arg_4_7)
-    EndIfFlagOn(arg_8_11)
-    IfFlagOn(-1, arg_0_3)
-    IfFlagOn(-1, arg_4_7)
-    IfFlagOn(-1, arg_8_11)
-    IfConditionTrue(1, input_condition=-1)
-    IfFlagOn(2, arg_12_15)
-    IfConditionTrue(-2, input_condition=1)
-    IfConditionTrue(-2, input_condition=2)
-    IfConditionTrue(0, input_condition=-2)
-    EndIfFinishedConditionTrue(2)
-    IfCharacterHuman(-3, PLAYER)
-    IfCharacterType(-3, PLAYER, CharacterType.WhitePhantom)
-    IfConditionTrue(3, input_condition=-3)
-    IfCharacterHasSpecialEffect(3, PLAYER, 6100)
-    EndIfConditionFalse(3)
-    AwardItemLot(5520, host_only=True)
 
 
 def Event9400():
@@ -1997,7 +1783,7 @@ def Event9910():
 
 
 def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag: int):
-    """ 7400: Enable given lantern when given boss death flag is enabled, and monitor interaction with it.
+    """ 7200: Enable given lantern when given boss death flag is enabled, and monitor interaction with it.
 
     Alternatively, just warps player back to the dream automatically if there's no next boss to go to, because this is
     either a single fight or because you just finished the boss rush.
@@ -2008,6 +1794,8 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
     The `boss_dead_flag` should only be enabled on map load if there are multiple bosses in this map and the player is
     currently fighting another one. In that case, this event will end immediately after the lantern is disabled (so
     Gehrman and Moon Presence lanterns behave correctly).
+
+    This event ID used to warp the player back to Hunter's Dream when a lantern was used properly.
     """
     if lantern_chr != 0:
         DisableCharacter(lantern_chr)  # always disabled, since prompt is so simple
@@ -2069,14 +1857,21 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
 
 
 def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
-    """ 7450: Warp player to requested next boss in Boss Rush."""
+    """ 9360: Warp player to requested next boss in Boss Rush.
+
+    This event ID used to be for awarding Blood Dregs.
+    """
+    Wait(2.0)  # give other events a chance to run first
     Await(FlagEnabled(required_boss_warp_flag) and not BossRushFlags.ChoosingRandomBoss)
     DisableFlag(required_boss_warp_flag)
     WarpPlayerToRespawnPoint(warp_point)
 
 
 def MonitorStoryBossRushRequest():
-    """ 7493: Starts a new Story Boss Rush when bell is rung, or ends current boss rush. """
+    """ 6682: Starts a new Story Boss Rush when bell is rung, or ends current boss rush.
+
+    This event ID used to monitor Hunter's Torch possession.
+    """
     Await(HasSpecialEffect(PLAYER, BossRushEffects.StoryRushRequest))
 
     if not InsideMap(HUNTERS_DREAM):
@@ -2100,7 +1895,10 @@ def MonitorStoryBossRushRequest():
 
 
 def MonitorRandomBossRushRequest():
-    """ 7494: Starts a new Random Boss Rush when bell is rung, or ends current boss rush. """
+    """ 6697: Starts a new Random Boss Rush when bell is rung, or ends current boss rush.
+
+    This event ID used to monitor Loch Shield possession.
+    """
     Await(HasSpecialEffect(PLAYER, BossRushEffects.RandomRushRequest))
 
     if not InsideMap(HUNTERS_DREAM):
@@ -2124,7 +1922,10 @@ def MonitorRandomBossRushRequest():
 
 
 def FinishBossRush():
-    """ 7495: Enables completion flag when every boss is dead. """
+    """ 6683: Enables completion flag when every boss is dead.
+
+    This event ID used to monitor Beasthunter Saif possession.
+    """
     IfFlagOn(1, BossRushFlags.BossDead_ClericBeast)
     IfFlagOn(1, BossRushFlags.BossDead_FatherGascoigne)
     IfFlagOn(1, BossRushFlags.BossDead_BloodStarvedBeast)
@@ -2152,7 +1953,10 @@ def FinishBossRush():
 
 
 def EnableNextStoryBossWarpFlag():
-    """ 7496: Enable the next story boss warp flag, based on the last-numbered boss death flag. """
+    """ 6680: Enable the next story boss warp flag, based on the last-numbered boss death flag.
+
+    This event ID used to monitor Beast Claw possession.
+    """
 
     SkipLinesIfFlagOff(3, BossRushFlags.BossDead_Gehrman)
     EnableFlag(BossRushFlags.RequestBoss_MoonPresence)
@@ -2245,11 +2049,13 @@ def EnableNextStoryBossWarpFlag():
 
 
 def EnableRandomBossWarpFlag():
-    """ 7497: Enable a random boss warp flag whose dead flag is disabled.
+    """ 3503: Enable a random boss warp flag whose dead flag is disabled.
 
     Keeps restarting until a flag is enabled for a non-dead boss. Of course, this could theoretically take forever if
     you're infinitely unlucky, but in reality it's fine and too annoying to do anything better (like randomly ordering
     1-22 and trying each one in turn).
+
+    This event ID used to kick the player out of the DLC if they lost access.
     """
     EnableFlag(BossRushFlags.ChoosingRandomBoss)
 
@@ -2352,7 +2158,10 @@ def EnableRandomBossWarpFlag():
 
 
 def WarpBackToDream():
-    """ 7498: Warp player back to Hunter's Dream. """
+    """ 9215: Warp back to Hunter's Dream when requested.
+
+    This event ID used to play some random sounds in the DLC.
+    """
     Await(FlagEnabled(BossRushFlags.RequestDreamReturn))  # ignores 'ChoosingRandomBoss' flag, for emergencies
     DisableFlag(BossRushFlags.RequestDreamReturn)
     WarpPlayerToRespawnPoint(BossRushWarpPoints.HuntersDream)

@@ -31,7 +31,7 @@ def Constructor():
     if not BossRushTriggers.MartyrLogarius:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=10, args=(2500952, 2501952, BossRushFlags.BossDead_MartyrLogarius))
+    RunEvent(7200, slot=10, args=(2500952, 2501952, BossRushFlags.BossDead_MartyrLogarius))
 
     RunEvent(7000, slot=25, args=(2500950, 2501950, 999, 12507800))
     RunEvent(7000, slot=26, args=(2500951, 2501951, 999, 12507820))
@@ -39,9 +39,9 @@ def Constructor():
     RunEvent(7100, slot=25, args=(72500200, 2501950))
     RunEvent(7100, slot=26, args=(72500201, 2501951))
     RunEvent(7100, slot=27, args=(72500202, 2501952))
-    RunEvent(7200, slot=25, args=(72500100, 2501950, 2102952))
-    RunEvent(7200, slot=26, args=(72500101, 2501951, 2102952))
-    RunEvent(7200, slot=27, args=(72500102, 2501952, 2102952))
+    # RunEvent(7200, slot=25, args=(72500100, 2501950, 2102952))
+    # RunEvent(7200, slot=26, args=(72500101, 2501951, 2102952))
+    # RunEvent(7200, slot=27, args=(72500102, 2501952, 2102952))
     RunEvent(7300, slot=25, args=(72102500, 2501950))
     RunEvent(7300, slot=26, args=(72102501, 2501951))
     RunEvent(7300, slot=27, args=(72102502, 2501952))

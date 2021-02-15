@@ -34,7 +34,7 @@ def Constructor():
     if not BossRushTriggers.TheOneReborn:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=11, args=(2800951, 2801951, BossRushFlags.BossDead_TheOneReborn))
+    RunEvent(7200, slot=11, args=(2800951, 2801951, BossRushFlags.BossDead_TheOneReborn))
 
     RegisterLadder(start_climbing_flag=12800350, stop_climbing_flag=12800351, obj=2801250)
     RunEvent(7600, slot=60, args=(2801999, 2803999))
@@ -49,11 +49,11 @@ def Constructor():
     SkipLinesIfFlagOn(1, 9802)
     RunEvent(7100, slot=42, args=(72800202, 2801952))
     RunEvent(7100, slot=43, args=(72800203, 2801953))
-    RunEvent(7200, slot=40, args=(72800100, 2801950, 2102952))
-    RunEvent(7200, slot=41, args=(72800101, 2801951, 2102952))
+    # RunEvent(7200, slot=40, args=(72800100, 2801950, 2102952))
+    # RunEvent(7200, slot=41, args=(72800101, 2801951, 2102952))
     SkipLinesIfFlagOn(1, 9802)
-    RunEvent(7200, slot=42, args=(72800102, 2801952, 2102952))
-    RunEvent(7200, slot=43, args=(72800103, 2801953, 2102953))
+    # RunEvent(7200, slot=42, args=(72800102, 2801952, 2102952))
+    # RunEvent(7200, slot=43, args=(72800103, 2801953, 2102953))
     RunEvent(7300, slot=40, args=(72102800, 2801950))
     RunEvent(7300, slot=41, args=(72102801, 2801951))
     SkipLinesIfFlagOn(1, 9802)

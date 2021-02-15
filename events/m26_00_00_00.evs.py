@@ -32,8 +32,8 @@ def Constructor():
     if not BossRushTriggers.MergosWetNurse and not BossRushTriggers.Micolash:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=15, args=(2600951, 2601951, BossRushFlags.BossDead_MergosWetNurse))
-    RunEvent(7400, slot=14, args=(2600952, 2601952, BossRushFlags.BossDead_Micolash))
+    RunEvent(7200, slot=15, args=(2600951, 2601951, BossRushFlags.BossDead_MergosWetNurse))
+    RunEvent(7200, slot=14, args=(2600952, 2601952, BossRushFlags.BossDead_Micolash))
 
     RunEvent(7000, slot=30, args=(2600950, 2601950, 999, 12607800))
     # RunEvent(7000, slot=31, args=(2600951, 2601951, Flags.MergosWetNurseDead, 12607820))
@@ -43,10 +43,10 @@ def Constructor():
     RunEvent(7100, slot=31, args=(72600201, 2601951))
     RunEvent(7100, slot=32, args=(72600202, 2601952))
     RunEvent(7100, slot=33, args=(72600203, 2601953))
-    RunEvent(7200, slot=30, args=(72600100, 2601950, 2102953))
-    RunEvent(7200, slot=31, args=(72600101, 2601951, 2102953))
-    RunEvent(7200, slot=32, args=(72600102, 2601952, 2102953))
-    RunEvent(7200, slot=33, args=(72600103, 2601953, 2102953))
+    # RunEvent(7200, slot=30, args=(72600100, 2601950, 2102953))
+    # RunEvent(7200, slot=31, args=(72600101, 2601951, 2102953))
+    # RunEvent(7200, slot=32, args=(72600102, 2601952, 2102953))
+    # RunEvent(7200, slot=33, args=(72600103, 2601953, 2102953))
     RunEvent(7300, slot=30, args=(72102600, 2601950))
     RunEvent(7300, slot=31, args=(72102601, 2601951))
     RunEvent(7300, slot=32, args=(72102602, 2601952))

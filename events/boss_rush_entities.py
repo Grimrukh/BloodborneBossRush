@@ -5,6 +5,7 @@ from soulstruct.game_types import *
 class BossRushFlags(Flag):
     """BOSS RUSH MOD FLAGS. Stolen from Abandoned Old Workshop flag range (1000+) that is never used in vanilla.
 
+    TODO: Event IDs have been updated to existing common ones, because of weird crashing issues with new IDs.
     Common event 7400 (22 slots) is used to control the lanterns and request warps.
     Common event 7450 (22 slots) is used to execute warps to bosses.
     Event 7493 listens for the Story Boss Rush bell request.
@@ -12,9 +13,9 @@ class BossRushFlags(Flag):
     Event 7495 is the completion monitoring event.
     Event 7496 is the story boss order choice event.
     Event 7497 is the random boss order choice event.
-    Event 7498 is used to warp back to the Hunter's Dream, as requested by flag 7499.
+    Event 7498 is used to warp back to the Hunter's Dream, as requested by flag 12111990.
     """
-    RequestDreamReturn = 7499
+    RequestDreamReturn = 12111990
     BossRushActive = 12111800
     BossRushCompleted = 12111801
     MoonPresenceRequested = 12111998  # boss requires disambiguity separate from warp request flag

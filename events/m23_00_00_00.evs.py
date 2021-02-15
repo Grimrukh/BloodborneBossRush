@@ -30,8 +30,8 @@ def Constructor():
     if not BossRushTriggers.BloodStarvedBeast and not BossRushTriggers.DarkbeastPaarl:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=3, args=(2300951, 2301951, BossRushFlags.BossDead_BloodStarvedBeast))
-    RunEvent(7400, slot=6, args=(2300952, 2301952, BossRushFlags.BossDead_DarkbeastPaarl))
+    RunEvent(7200, slot=3, args=(2300951, 2301951, BossRushFlags.BossDead_BloodStarvedBeast))
+    RunEvent(7200, slot=6, args=(2300952, 2301952, BossRushFlags.BossDead_DarkbeastPaarl))
 
     RunEvent(7000, slot=5, args=(2300950, Objects.OldYharnamLantern, 999, 12307800))
     # RunEvent(7000, slot=6, args=(2300951, Objects.BloodStarvedBeastLantern, Flags.BloodStarvedBeastDead, 12307820))
@@ -39,9 +39,9 @@ def Constructor():
     RunEvent(7100, slot=5, args=(72300200, Objects.OldYharnamLantern))
     RunEvent(7100, slot=6, args=(72300201, Objects.BloodStarvedBeastLantern))
     RunEvent(7100, slot=7, args=(72300202, Objects.DarkbeastPaarlLantern))
-    RunEvent(7200, slot=5, args=(72300100, Objects.OldYharnamLantern, 2102950))
-    RunEvent(7200, slot=6, args=(72300101, Objects.BloodStarvedBeastLantern, 2102950))
-    RunEvent(7200, slot=7, args=(72300102, Objects.DarkbeastPaarlLantern, 2102950))
+    # RunEvent(7200, slot=5, args=(72300100, Objects.OldYharnamLantern, 2102950))
+    # RunEvent(7200, slot=6, args=(72300101, Objects.BloodStarvedBeastLantern, 2102950))
+    # RunEvent(7200, slot=7, args=(72300102, Objects.DarkbeastPaarlLantern, 2102950))
     RunEvent(7300, slot=5, args=(72102300, Objects.OldYharnamLantern))
     RunEvent(7300, slot=6, args=(72102301, Objects.BloodStarvedBeastLantern))
     RunEvent(7300, slot=7, args=(72102302, Objects.DarkbeastPaarlLantern))

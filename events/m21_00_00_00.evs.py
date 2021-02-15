@@ -27,8 +27,8 @@ def Constructor():
     ClearBossRushFlags()  # only runs if player does not spawn in boss arena trigger region
 
     # Two new Lanterns for post-Gehrman and post-Moon Presence (no characters).
-    RunEvent(7400, slot=21, args=(0, 2100750, BossRushFlags.BossDead_Gehrman))
-    RunEvent(7400, slot=21, args=(0, 2100751, BossRushFlags.BossDead_MoonPresence))
+    RunEvent(7200, slot=21, args=(0, 2100750, BossRushFlags.BossDead_Gehrman))
+    RunEvent(7200, slot=21, args=(0, 2100751, BossRushFlags.BossDead_MoonPresence))
 
     SkipLinesIfClient(2)
     SkipLinesIfFlagOff(1, 6600)
@@ -2594,6 +2594,9 @@ def BossRushFirstArrival():
     DisableNetworkSync()
     EndIfClient()
     EndIfThisEventOn()
+
+    # Disable warp request range.
+    DisableFlagRange((BossRushFlags.RequestBoss_ClericBeast, BossRushFlags.RequestBoss_MoonPresence))
 
     # Set respawn point to Hunter's Dream. (This is the one and only respawn point in the mod.)
     SetRespawnPoint(2102961)

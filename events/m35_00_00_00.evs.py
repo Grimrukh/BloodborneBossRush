@@ -24,8 +24,8 @@ def Constructor():
     if not BossRushTriggers.LivingFailures and not BossRushTriggers.LadyMaria:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
-    RunEvent(7400, slot=17, args=(3500951, 3501951, BossRushFlags.BossDead_LivingFailures))
-    RunEvent(7400, slot=18, args=(3500952, 3501952, BossRushFlags.BossDead_LadyMaria))
+    RunEvent(7200, slot=17, args=(3500951, 3501951, BossRushFlags.BossDead_LivingFailures))
+    RunEvent(7200, slot=18, args=(3500952, 3501952, BossRushFlags.BossDead_LadyMaria))
 
     Event13501810()
     IfCharacterHuman(15, PLAYER)
@@ -40,9 +40,9 @@ def Constructor():
     RunEvent(7100, slot=60, args=(73500200, 3501950))
     RunEvent(7100, slot=61, args=(73500201, 3501951))
     RunEvent(7100, slot=62, args=(73500202, 3501952))
-    RunEvent(7200, slot=60, args=(73500100, 3501950, 2102953))
-    RunEvent(7200, slot=61, args=(73500101, 3501951, 2102953))
-    RunEvent(7200, slot=62, args=(73500102, 3501952, 2102953))
+    # RunEvent(7200, slot=60, args=(73500100, 3501950, 2102953))
+    # RunEvent(7200, slot=61, args=(73500101, 3501951, 2102953))
+    # RunEvent(7200, slot=62, args=(73500102, 3501952, 2102953))
     RunEvent(7300, slot=60, args=(72103500, 3501950))
     RunEvent(7300, slot=61, args=(72103501, 3501951))
     RunEvent(7300, slot=62, args=(72103502, 3501952))
