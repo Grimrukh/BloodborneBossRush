@@ -1,4 +1,7 @@
 """Modify Bloodborne `MSGDirectory` to rename warp destination names and add new prompts."""
+import os
+from pathlib import Path
+
 from soulstruct.bloodborne.text import MSGDirectory
 from soulstruct.config import BB_PATH
 
@@ -31,32 +34,35 @@ NEW_EVENT_TEXT = {
 
 def main():
     """Apply all modifications to vanilla file and save."""
-    msg_directory = MSGDirectory(BB_PATH + "/msg/engus")
+    for language in ("engus", "enggb"):
+        msg_directory = MSGDirectory(BB_PATH + f"/msg/{language}")
 
-    msg_directory.EventText.update(NEW_EVENT_TEXT)
+        msg_directory.EventText.update(NEW_EVENT_TEXT)
 
-    for class_name in range(402401, 402410):
-        msg_directory.MenuText_SP[class_name] = "Gladiator"
-        msg_directory.MenuHelpSnippets_SP[class_name] = "Champion from a distant land.\nThirsts for bloodshed."
+        for class_name in range(402401, 402410):
+            msg_directory.MenuText_SP[class_name] = "Gladiator"
+            msg_directory.MenuHelpSnippets_SP[class_name] = "Champion from a distant land.\nThirsts for bloodshed."
 
-    msg_directory.GoodNames[200] = "Bell of Memories"
-    msg_directory.GoodSummaries[200] = "Ring to face legendary foes from an old tale"
-    msg_directory.GoodDescriptions[200] = (
-        "Great old bell left behind by an unknown hunter.\n\n"
-        "Its ring conjures memories of beasts and monsters from the hunter's journey through Yharnam, and beyond.\n\n"
-        "Ring from within the memory to return to the Dream."
-    )
+        msg_directory.GoodNames[200] = "Bell of Memories"
+        msg_directory.GoodSummaries[200] = "Ring to face legendary foes from an old tale"
+        msg_directory.GoodDescriptions[200] = (
+            "Great old bell left behind by an unknown hunter.\n\n"
+            "Its toll conjures memories of monsters from the hunter's journey through Yharnam, and beyond.\n\n"
+            "Ring from within the memory to return to the Dream."
+        )
 
-    msg_directory.GoodNames[225] = "Bell of Chaos"
-    msg_directory.GoodSummaries[225] = "Ring to face legendary foes from scattered recollection"
-    msg_directory.GoodDescriptions[225] = (
-        "Strange bell left behind by an unknown hunter.\n\n"
-        "Its ring conjures memories of a hunter's journey, but the nightmare has twisted their sequence "
-        "unpredictably.\n\n"
-        "Ring from within the memory to return to the Dream."
-    )
+        msg_directory.GoodNames[225] = "Bell of Chaos"
+        msg_directory.GoodSummaries[225] = "Ring to face legendary foes from scattered recollection"
+        msg_directory.GoodDescriptions[225] = (
+            "Strange bell left behind by an unknown hunter.\n\n"
+            "Its toll conjures memories of a hunter's journey, but the nightmare has twisted their recollection.\n\n"
+            "Ring from within the memory to return to the Dream."
+        )
 
-    msg_directory.write("../package/msg/engus")
+        msg_directory.write(f"../package/msg/{language}")
+
+    for bak_file in Path("../package/msg").rglob("*.bak"):
+        os.remove(bak_file)
 
 
 if __name__ == '__main__':

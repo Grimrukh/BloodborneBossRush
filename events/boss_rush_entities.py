@@ -3,49 +3,55 @@ from soulstruct.game_types import *
 
 
 class BossRushFlags(Flag):
-    """BOSS RUSH MOD FLAGS. Stolen from Abandoned Old Workshop flag range (1000+) that is never used in vanilla.
+    """BOSS RUSH MOD FLAGS.
 
-    TODO: Event IDs have been updated to existing common ones, because of weird crashing issues with new IDs.
-    Common event 7400 (22 slots) is used to control the lanterns and request warps.
-    Common event 7450 (22 slots) is used to execute warps to bosses.
-    Event 7493 listens for the Story Boss Rush bell request.
-    Event 7494 listens for the Random Boss Rush bell request.
-    Event 7495 is the completion monitoring event.
-    Event 7496 is the story boss order choice event.
-    Event 7497 is the random boss order choice event.
-    Event 7498 is used to warp back to the Hunter's Dream, as requested by flag 12111990.
+    These flags apparently HAVE to replace existing flags; any invalid flags seem to be "always on", and using invalid
+    event IDs just crashes the game (Lance's build at least).
+
+    Common event 7200 (22 slots) is used to control the lanterns and request warps.
+        This replaces vanilla event 7200, which controlled standard lantern warping behavior.
+    Common event 9360 (22 slots) is used to execute warps to bosses.
+        This replaces vanilla event 9360, which awarded Blood Dregs after killing other Hunter NPCs.
+    Event 6682 listens for the Story Boss Rush bell request.
+    Event 6697 listens for the Random Boss Rush bell request.
+    Event 6683 is the boss rush completion monitoring event.
+    Event 6680 is the story boss order choice event.
+    Event 3503 is the random boss order choice event.
+    Event 9215 is used to warp back to the Hunter's Dream, as requested by flag 9421.
     """
-    RequestDreamReturn = 12111990
-    BossRushActive = 12111800
-    BossRushCompleted = 12111801
-    MoonPresenceRequested = 12111998  # boss requires disambiguity separate from warp request flag
-    BossRushRandomized = 12111999
+    RequestDreamReturn = 9421
+    BossRushActive = 9422
+    BossRushCompleted = 9410  # replaces cut event
+    MoonPresenceRequested = 6681  # boss requires disambiguity separate from warp request flag
+    BossRushRandomized = 9404
 
     # Boss warp requests ignored while this flag is enabled (during random search).
-    ChoosingRandomBoss = 12111000
+    ChoosingRandomBoss = 9400
+
     # Boss warp request flags, which trigger warps immediately when activated.
-    RequestBoss_ClericBeast = 12111001
-    RequestBoss_FatherGascoigne = 12111002
-    RequestBoss_BloodStarvedBeast = 12111003
-    RequestBoss_WitchesOfHemwick = 12111004
-    RequestBoss_VicarAmelia = 12111005
-    RequestBoss_DarkbeastPaarl = 12111006
-    RequestBoss_ShadowsOfYharnam = 12111007
-    RequestBoss_Rom = 12111008
-    RequestBoss_Amygdala = 12111009
-    RequestBoss_MartyrLogarius = 12111010
-    RequestBoss_TheOneReborn = 12111011
-    RequestBoss_CelestialEmissary = 12111012
-    RequestBoss_Ebrietas = 12111013
-    RequestBoss_Micolash = 12111014
-    RequestBoss_MergosWetNurse = 12111015
-    RequestBoss_Ludwig = 12111016
-    RequestBoss_LivingFailures = 12111017
-    RequestBoss_LadyMaria = 12111018
-    RequestBoss_Laurence = 12111019
-    RequestBoss_OrphanOfKos = 12111020
-    RequestBoss_Gehrman = 12111021
-    RequestBoss_MoonPresence = 12111022
+    #   These replace slots 0-21 of vanilla event 5500, which monitored possession of Uncanny/Lost DLC weapons.
+    RequestBoss_ClericBeast = 5500
+    RequestBoss_FatherGascoigne = 5501
+    RequestBoss_BloodStarvedBeast = 5502
+    RequestBoss_WitchesOfHemwick = 5503
+    RequestBoss_VicarAmelia = 5504
+    RequestBoss_DarkbeastPaarl = 5505
+    RequestBoss_ShadowsOfYharnam = 5506
+    RequestBoss_Rom = 5507
+    RequestBoss_Amygdala = 5508
+    RequestBoss_MartyrLogarius = 5509
+    RequestBoss_TheOneReborn = 5510
+    RequestBoss_CelestialEmissary = 5511
+    RequestBoss_Ebrietas = 5512
+    RequestBoss_Micolash = 5513
+    RequestBoss_MergosWetNurse = 5514
+    RequestBoss_Ludwig = 5515
+    RequestBoss_LivingFailures = 5516
+    RequestBoss_LadyMaria = 5517
+    RequestBoss_Laurence = 5518
+    RequestBoss_OrphanOfKos = 5519
+    RequestBoss_Gehrman = 5520
+    RequestBoss_MoonPresence = 5521
 
     # Boss death flags. These are the same as in the vanilla game, but are disabled every time you return to the Dream.
     BossDead_ClericBeast = 12411700

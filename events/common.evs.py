@@ -27,7 +27,10 @@ def Constructor():
     RunEvent(9182)
     RunEvent(9183)
     RunEvent(9186)
-    RunEvent(6681)
+    # 6680 hijacked.
+    # 6681 hijacked.
+    # 6682 hijacked.
+    # 6683 hijacked.
     RunEvent(6684)
     RunEvent(6685)
     RunEvent(6686)
@@ -41,28 +44,10 @@ def Constructor():
     RunEvent(6694)
     RunEvent(6695)
     RunEvent(6696)
-    RunEvent(5500, slot=0, args=(23010000,))
-    RunEvent(5500, slot=1, args=(23020000,))
-    RunEvent(5500, slot=2, args=(24010000,))
-    RunEvent(5500, slot=3, args=(24020000,))
-    RunEvent(5500, slot=4, args=(30010000,))
-    RunEvent(5500, slot=5, args=(30020000,))
-    RunEvent(5500, slot=6, args=(32010000,))
-    RunEvent(5500, slot=7, args=(32020000,))
-    RunEvent(5500, slot=8, args=(26010000,))
-    RunEvent(5500, slot=9, args=(26020000,))
-    RunEvent(5500, slot=10, args=(27010000,))
-    RunEvent(5500, slot=11, args=(27020000,))
-    RunEvent(5500, slot=12, args=(31010000,))
-    RunEvent(5500, slot=13, args=(31020000,))
-    RunEvent(5500, slot=14, args=(28010000,))
-    RunEvent(5500, slot=15, args=(28020000,))
-    RunEvent(5500, slot=16, args=(29010000,))
-    RunEvent(5500, slot=17, args=(29020000,))
-    RunEvent(5500, slot=18, args=(25010000,))
-    RunEvent(5500, slot=19, args=(25020000,))
-    RunEvent(5500, slot=20, args=(38010000,))
-    RunEvent(5500, slot=21, args=(38020000,))
+    # 6697 hijacked.
+
+    # 5500-5521 hijacked (5500, slots 0 to 21).
+
     RunEvent(9500, slot=0, args=(3400, 100000))
     RunEvent(9500, slot=1, args=(3401, 100010))
     RunEvent(9500, slot=2, args=(3402, 100020))
@@ -117,10 +102,12 @@ def Constructor():
     RunEvent(9440, slot=0, args=(9440, 10500))
     RunEvent(9440, slot=1, args=(9441, 11500))
     RunEvent(9440, slot=2, args=(9442, 12500))
-    RunEvent(9421)
-    RunEvent(9422)
-    RunEvent(9400)
-    RunEvent(9404)
+
+    # 9421 hijacked.
+    # 9422 hijacked.
+    # 9400 hijacked.
+    # 9404 hijacked.
+
     RunEvent(9040, slot=2, args=(9042, 17000))
     RunEvent(9040, slot=5, args=(9045, 22000))
     RunEvent(9040, slot=6, args=(9046, 23000))
@@ -210,8 +197,8 @@ def Constructor():
     WarpToBoss(20, BossRushFlags.RequestBoss_Gehrman, BossRushWarpPoints.GehrmanOrMoonPresence)
     WarpToBoss(21, BossRushFlags.RequestBoss_MoonPresence, BossRushWarpPoints.GehrmanOrMoonPresence)
 
-    # MonitorStoryBossRushRequest()
-    # MonitorRandomBossRushRequest()
+    MonitorStoryBossRushRequest()
+    MonitorRandomBossRushRequest()
     FinishBossRush()
     WarpBackToDream()
 
@@ -435,44 +422,6 @@ def Event6002():
     """ 6002: Event 6002 """
     EnableFlag(6000)
     DisableFlag(6001)
-
-
-@RestartOnRest
-def Event5500(_, arg_0_3: int):
-    """ 5500: Event 5500 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    EndIfConditionFalse(1)
-    EndIfThisEventSlotOn()
-    IfPlayerHasWeapon(0, arg_0_3, including_box=False)
-    Wait(0.0)
-
-
-def Event6681():
-    """ 6681: Event 6681 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6681)
-    IfPlayerHasWeapon(-1, 15000000, including_box=True)
-    IfPlayerHasWeapon(-1, 15000100, including_box=True)
-    IfPlayerHasWeapon(-1, 15000200, including_box=True)
-    IfPlayerHasWeapon(-1, 15000300, including_box=True)
-    IfPlayerHasWeapon(-1, 15000400, including_box=True)
-    IfPlayerHasWeapon(-1, 15000500, including_box=True)
-    IfPlayerHasWeapon(-1, 15000600, including_box=True)
-    IfPlayerHasWeapon(-1, 15000700, including_box=True)
-    IfPlayerHasWeapon(-1, 15000800, including_box=True)
-    IfPlayerHasWeapon(-1, 15000900, including_box=True)
-    IfPlayerHasWeapon(-1, 15001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6681)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
 
 
 def Event6684():
@@ -1325,64 +1274,6 @@ def GainInsight(_, insight_count: int):
     DefineLabel(1)
     AddSpecialEffect(PLAYER, 4680, affect_npc_part_hp=False)
     WaitFrames(10)
-
-
-def Event9400():
-    """ 9400: Event 9400 """
-    EndIfClient()
-    EndIfFlagOn(12410999)
-    EndIfFlagOn(CommonFlags.HuntersDreamVisited)
-    SkipLinesIfFlagOn(1, 9402)
-    IfInsideMap(0, game_map=CENTRAL_YHARNAM)
-    EnableFlag(9402)
-    IfCharacterDead(0, PLAYER)
-    SetRespawnPoint(2102962)
-
-
-def Event9404():
-    """ 9404: Event 9404 """
-    EndIfClient()
-    EndIfThisEventOn()
-    IfFlagOn(1, CommonFlags.HuntersDreamVisited)
-    IfPlayerInsightAmountGreaterThanOrEqual(1, 1)
-    IfCharacterDead(1, PLAYER)
-    IfConditionTrue(0, input_condition=1)
-    SetRespawnPoint(2102961)
-
-
-def Event9410():
-    """ 9410: Event 9410 """
-    EndIfThisEventOn()
-    IfFlagOn(1, 13201803)
-    IfCharacterHuman(1, PLAYER)
-    IfCharacterInsideRegion(1, PLAYER, region=2802010)
-    IfConditionTrue(0, input_condition=1)
-    Wait(0.0)
-    AwardItemLot(3200800, host_only=False)
-
-
-def Event9421():
-    """ 9421: Event 9421 """
-    EndIfFlagOn(9423)
-    EndIfClient()
-    IfFlagOn(0, 9420)
-    SetRespawnPoint(2802959)
-    DisableFlag(9420)
-
-
-def Event9422():
-    """ 9422: Event 9422 """
-    EndIfFlagOn(9423)
-    EndIfClient()
-    IfFlagOn(1, 9421)
-    IfInsideMap(1, game_map=YAHARGUL)
-    EndIfConditionFalse(1)
-    EnableFlag(CommonFlags.CutsceneActive)
-    PlayCutscene(28000010, skippable=True, fade_out=True, player_id=PLAYER)
-    WaitFrames(1)
-    DisableFlag(CommonFlags.CutsceneActive)
-    EnableFlag(9423)
-    AddSpecialEffect(PLAYER, 4680, affect_npc_part_hp=False)
 
 
 def Event9440(_, arg_0_3: int, arg_4_7: int):

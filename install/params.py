@@ -4,7 +4,9 @@
     - adjust starting classes
     - set up new Bath Messengers (weapons, items) and Insight Messengers (armor) shop lineups
 """
+import os
 from enum import IntEnum
+from pathlib import Path
 
 from soulstruct.bloodborne.params import GameParamBND
 from soulstruct.config import BB_PATH
@@ -329,6 +331,9 @@ def main():
     set_new_item_lots(game_param_bnd)
     set_goods_and_effects(game_param_bnd)
     game_param_bnd.write("../package/param/gameparam/gameparam.parambnd.dcx")
+
+    for bak_file in Path("../package/param/gameparam").glob("*.bak"):
+        os.remove(bak_file)
 
 
 if __name__ == '__main__':
