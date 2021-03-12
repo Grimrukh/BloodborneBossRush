@@ -27,24 +27,8 @@ def Constructor():
     RunEvent(9182)
     RunEvent(9183)
     RunEvent(9186)
-    # 6680 hijacked.
-    # 6681 hijacked.
-    # 6682 hijacked.
-    # 6683 hijacked.
-    RunEvent(6684)
-    RunEvent(6685)
-    RunEvent(6686)
-    RunEvent(6687)
-    RunEvent(6688)
-    RunEvent(6689)
-    RunEvent(6690)
-    RunEvent(6691)
-    RunEvent(6692)
-    RunEvent(6693)
-    RunEvent(6694)
-    RunEvent(6695)
-    RunEvent(6696)
-    # 6697 hijacked.
+
+    # Events 6680 to 6697 monitored possession of various weapons (any upgrade level). I've hijacked them.
 
     # 5500-5521 hijacked (5500, slots 0 to 21).
 
@@ -424,355 +408,7 @@ def Event6002():
     DisableFlag(6001)
 
 
-def Event6684():
-    """ 6684: Event 6684 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6684)
-    IfPlayerHasWeapon(-1, 24000000, including_box=True)
-    IfPlayerHasWeapon(-1, 24000100, including_box=True)
-    IfPlayerHasWeapon(-1, 24000200, including_box=True)
-    IfPlayerHasWeapon(-1, 24000300, including_box=True)
-    IfPlayerHasWeapon(-1, 24000400, including_box=True)
-    IfPlayerHasWeapon(-1, 24000500, including_box=True)
-    IfPlayerHasWeapon(-1, 24000600, including_box=True)
-    IfPlayerHasWeapon(-1, 24000700, including_box=True)
-    IfPlayerHasWeapon(-1, 24000800, including_box=True)
-    IfPlayerHasWeapon(-1, 24000900, including_box=True)
-    IfPlayerHasWeapon(-1, 24001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6684)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6685():
-    """ 6685: Event 6685 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6685)
-    IfPlayerHasWeapon(-1, 30000000, including_box=True)
-    IfPlayerHasWeapon(-1, 30000100, including_box=True)
-    IfPlayerHasWeapon(-1, 30000200, including_box=True)
-    IfPlayerHasWeapon(-1, 30000300, including_box=True)
-    IfPlayerHasWeapon(-1, 30000400, including_box=True)
-    IfPlayerHasWeapon(-1, 30000500, including_box=True)
-    IfPlayerHasWeapon(-1, 30000600, including_box=True)
-    IfPlayerHasWeapon(-1, 30000700, including_box=True)
-    IfPlayerHasWeapon(-1, 30000800, including_box=True)
-    IfPlayerHasWeapon(-1, 30000900, including_box=True)
-    IfPlayerHasWeapon(-1, 30001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6685)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6686():
-    """ 6686: Event 6686 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6686)
-    IfPlayerHasWeapon(-1, 32000000, including_box=True)
-    IfPlayerHasWeapon(-1, 32000100, including_box=True)
-    IfPlayerHasWeapon(-1, 32000200, including_box=True)
-    IfPlayerHasWeapon(-1, 32000300, including_box=True)
-    IfPlayerHasWeapon(-1, 32000400, including_box=True)
-    IfPlayerHasWeapon(-1, 32000500, including_box=True)
-    IfPlayerHasWeapon(-1, 32000600, including_box=True)
-    IfPlayerHasWeapon(-1, 32000700, including_box=True)
-    IfPlayerHasWeapon(-1, 32000800, including_box=True)
-    IfPlayerHasWeapon(-1, 32000900, including_box=True)
-    IfPlayerHasWeapon(-1, 32001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6686)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6687():
-    """ 6687: Event 6687 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6687)
-    IfPlayerHasWeapon(-1, 26000000, including_box=True)
-    IfPlayerHasWeapon(-1, 26000100, including_box=True)
-    IfPlayerHasWeapon(-1, 26000200, including_box=True)
-    IfPlayerHasWeapon(-1, 26000300, including_box=True)
-    IfPlayerHasWeapon(-1, 26000400, including_box=True)
-    IfPlayerHasWeapon(-1, 26000500, including_box=True)
-    IfPlayerHasWeapon(-1, 26000600, including_box=True)
-    IfPlayerHasWeapon(-1, 26000700, including_box=True)
-    IfPlayerHasWeapon(-1, 26000800, including_box=True)
-    IfPlayerHasWeapon(-1, 26000900, including_box=True)
-    IfPlayerHasWeapon(-1, 26001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6687)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6688():
-    """ 6688: Event 6688 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6688)
-    IfPlayerHasWeapon(-1, 27000000, including_box=True)
-    IfPlayerHasWeapon(-1, 27000100, including_box=True)
-    IfPlayerHasWeapon(-1, 27000200, including_box=True)
-    IfPlayerHasWeapon(-1, 27000300, including_box=True)
-    IfPlayerHasWeapon(-1, 27000400, including_box=True)
-    IfPlayerHasWeapon(-1, 27000500, including_box=True)
-    IfPlayerHasWeapon(-1, 27000600, including_box=True)
-    IfPlayerHasWeapon(-1, 27000700, including_box=True)
-    IfPlayerHasWeapon(-1, 27000800, including_box=True)
-    IfPlayerHasWeapon(-1, 27000900, including_box=True)
-    IfPlayerHasWeapon(-1, 27001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6688)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6689():
-    """ 6689: Event 6689 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6689)
-    IfPlayerHasWeapon(-1, 31000000, including_box=True)
-    IfPlayerHasWeapon(-1, 31000100, including_box=True)
-    IfPlayerHasWeapon(-1, 31000200, including_box=True)
-    IfPlayerHasWeapon(-1, 31000300, including_box=True)
-    IfPlayerHasWeapon(-1, 31000400, including_box=True)
-    IfPlayerHasWeapon(-1, 31000500, including_box=True)
-    IfPlayerHasWeapon(-1, 31000600, including_box=True)
-    IfPlayerHasWeapon(-1, 31000700, including_box=True)
-    IfPlayerHasWeapon(-1, 31000800, including_box=True)
-    IfPlayerHasWeapon(-1, 31000900, including_box=True)
-    IfPlayerHasWeapon(-1, 31001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6689)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6690():
-    """ 6690: Event 6690 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6690)
-    IfPlayerHasWeapon(-1, 28000000, including_box=True)
-    IfPlayerHasWeapon(-1, 28000100, including_box=True)
-    IfPlayerHasWeapon(-1, 28000200, including_box=True)
-    IfPlayerHasWeapon(-1, 28000300, including_box=True)
-    IfPlayerHasWeapon(-1, 28000400, including_box=True)
-    IfPlayerHasWeapon(-1, 28000500, including_box=True)
-    IfPlayerHasWeapon(-1, 28000600, including_box=True)
-    IfPlayerHasWeapon(-1, 28000700, including_box=True)
-    IfPlayerHasWeapon(-1, 28000800, including_box=True)
-    IfPlayerHasWeapon(-1, 28000900, including_box=True)
-    IfPlayerHasWeapon(-1, 28001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6690)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6691():
-    """ 6691: Event 6691 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6691)
-    IfPlayerHasWeapon(-1, 29000000, including_box=True)
-    IfPlayerHasWeapon(-1, 29000100, including_box=True)
-    IfPlayerHasWeapon(-1, 29000200, including_box=True)
-    IfPlayerHasWeapon(-1, 29000300, including_box=True)
-    IfPlayerHasWeapon(-1, 29000400, including_box=True)
-    IfPlayerHasWeapon(-1, 29000500, including_box=True)
-    IfPlayerHasWeapon(-1, 29000600, including_box=True)
-    IfPlayerHasWeapon(-1, 29000700, including_box=True)
-    IfPlayerHasWeapon(-1, 29000800, including_box=True)
-    IfPlayerHasWeapon(-1, 29000900, including_box=True)
-    IfPlayerHasWeapon(-1, 29001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6691)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6692():
-    """ 6692: Event 6692 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6692)
-    IfPlayerHasWeapon(-1, 25000000, including_box=True)
-    IfPlayerHasWeapon(-1, 25000100, including_box=True)
-    IfPlayerHasWeapon(-1, 25000200, including_box=True)
-    IfPlayerHasWeapon(-1, 25000300, including_box=True)
-    IfPlayerHasWeapon(-1, 25000400, including_box=True)
-    IfPlayerHasWeapon(-1, 25000500, including_box=True)
-    IfPlayerHasWeapon(-1, 25000600, including_box=True)
-    IfPlayerHasWeapon(-1, 25000700, including_box=True)
-    IfPlayerHasWeapon(-1, 25000800, including_box=True)
-    IfPlayerHasWeapon(-1, 25000900, including_box=True)
-    IfPlayerHasWeapon(-1, 25001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6692)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6693():
-    """ 6693: Event 6693 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6693)
-    IfPlayerHasWeapon(-1, 38000000, including_box=True)
-    IfPlayerHasWeapon(-1, 38000100, including_box=True)
-    IfPlayerHasWeapon(-1, 38000200, including_box=True)
-    IfPlayerHasWeapon(-1, 38000300, including_box=True)
-    IfPlayerHasWeapon(-1, 38000400, including_box=True)
-    IfPlayerHasWeapon(-1, 38000500, including_box=True)
-    IfPlayerHasWeapon(-1, 38000600, including_box=True)
-    IfPlayerHasWeapon(-1, 38000700, including_box=True)
-    IfPlayerHasWeapon(-1, 38000800, including_box=True)
-    IfPlayerHasWeapon(-1, 38000900, including_box=True)
-    IfPlayerHasWeapon(-1, 38001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6693)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6694():
-    """ 6694: Event 6694 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6694)
-    IfPlayerHasWeapon(-1, 33000000, including_box=True)
-    IfPlayerHasWeapon(-1, 33000100, including_box=True)
-    IfPlayerHasWeapon(-1, 33000200, including_box=True)
-    IfPlayerHasWeapon(-1, 33000300, including_box=True)
-    IfPlayerHasWeapon(-1, 33000400, including_box=True)
-    IfPlayerHasWeapon(-1, 33000500, including_box=True)
-    IfPlayerHasWeapon(-1, 33000600, including_box=True)
-    IfPlayerHasWeapon(-1, 33000700, including_box=True)
-    IfPlayerHasWeapon(-1, 33000800, including_box=True)
-    IfPlayerHasWeapon(-1, 33000900, including_box=True)
-    IfPlayerHasWeapon(-1, 33001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6694)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6695():
-    """ 6695: Event 6695 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6695)
-    IfPlayerHasWeapon(-1, 35000000, including_box=True)
-    IfPlayerHasWeapon(-1, 35000100, including_box=True)
-    IfPlayerHasWeapon(-1, 35000200, including_box=True)
-    IfPlayerHasWeapon(-1, 35000300, including_box=True)
-    IfPlayerHasWeapon(-1, 35000400, including_box=True)
-    IfPlayerHasWeapon(-1, 35000500, including_box=True)
-    IfPlayerHasWeapon(-1, 35000600, including_box=True)
-    IfPlayerHasWeapon(-1, 35000700, including_box=True)
-    IfPlayerHasWeapon(-1, 35000800, including_box=True)
-    IfPlayerHasWeapon(-1, 35000900, including_box=True)
-    IfPlayerHasWeapon(-1, 35001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6695)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
-
-
-def Event6696():
-    """ 6696: Event 6696 """
-    DisableNetworkSync()
-    IfCharacterHuman(1, PLAYER)
-    GotoIfConditionFalse(Label.L0, input_condition=1)
-    EndIfFlagOn(6696)
-    IfPlayerHasWeapon(-1, 34000000, including_box=True)
-    IfPlayerHasWeapon(-1, 34000100, including_box=True)
-    IfPlayerHasWeapon(-1, 34000200, including_box=True)
-    IfPlayerHasWeapon(-1, 34000300, including_box=True)
-    IfPlayerHasWeapon(-1, 34000400, including_box=True)
-    IfPlayerHasWeapon(-1, 34000500, including_box=True)
-    IfPlayerHasWeapon(-1, 34000600, including_box=True)
-    IfPlayerHasWeapon(-1, 34000700, including_box=True)
-    IfPlayerHasWeapon(-1, 34000800, including_box=True)
-    IfPlayerHasWeapon(-1, 34000900, including_box=True)
-    IfPlayerHasWeapon(-1, 34001000, including_box=True)
-    IfConditionTrue(0, input_condition=-1)
-    EnableFlag(6696)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
-    IfFlagOn(0, 6001)
-    Wait(0.0)
+# Events 6680 to 6697 (weapon monitors) hijacked.
 
 
 def Event6788():
@@ -1708,8 +1344,9 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
     if BossRushFlags.BossRushCompleted:
         Wait(5.0)
         DisplayBanner(BannerType.NightmareSlain)
+        AwardItemLot(BossRushItemLots.BossRushReward)  # first time only (item lot flag 6620)
         GainInsight(0, 5)  # Can only apply up to 9 insight in one event call, so doing 10 * 5.
-        GainInsight(1, 5)  # Fortunately, slots 1-9 do not clash with other event IDs.
+        GainInsight(1, 5)  # Fortunately, slots 1-9 of 9350 do not appear to clash with other event IDs.
         GainInsight(2, 5)
         GainInsight(3, 5)
         GainInsight(4, 5)
@@ -1759,7 +1396,7 @@ def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
 
 
 def MonitorStoryBossRushRequest():
-    """ 6682: Starts a new Story Boss Rush when bell is rung, or ends current boss rush.
+    """ 6680: Starts a new Story Boss Rush when bell is rung, or ends current boss rush.
 
     This event ID used to monitor Hunter's Torch possession.
     """
@@ -1786,7 +1423,7 @@ def MonitorStoryBossRushRequest():
 
 
 def MonitorRandomBossRushRequest():
-    """ 6697: Starts a new Random Boss Rush when bell is rung, or ends current boss rush.
+    """ 6681: Starts a new Random Boss Rush when bell is rung, or ends current boss rush.
 
     This event ID used to monitor Loch Shield possession.
     """
@@ -1813,7 +1450,7 @@ def MonitorRandomBossRushRequest():
 
 
 def FinishBossRush():
-    """ 6683: Enables completion flag when every boss is dead.
+    """ 6682: Enables completion flag when every boss is dead.
 
     This event ID used to monitor Beasthunter Saif possession.
     """
@@ -1844,7 +1481,7 @@ def FinishBossRush():
 
 
 def EnableNextStoryBossWarpFlag():
-    """ 6680: Enable the next story boss warp flag, based on the last-numbered boss death flag.
+    """ 6683: Enable the next story boss warp flag, based on the last-numbered boss death flag.
 
     This event ID used to monitor Beast Claw possession.
     """
@@ -1935,12 +1572,12 @@ def EnableNextStoryBossWarpFlag():
     EnableFlag(BossRushFlags.RequestBoss_ClericBeast)
 
     # --- 0 --- #
-
+    DefineLabel(Label.L0)
     DisableFlag(BossRushFlags.ChoosingRandomBoss)  # just in case
 
 
 def EnableRandomBossWarpFlag():
-    """ 3503: Enable a random boss warp flag whose dead flag is disabled.
+    """ 6684: Enable a random boss warp flag whose dead flag is disabled.
 
     Keeps restarting until a flag is enabled for a non-dead boss. Of course, this could theoretically take forever if
     you're infinitely unlucky, but in reality it's fine and too annoying to do anything better (like randomly ordering
@@ -2049,7 +1686,7 @@ def EnableRandomBossWarpFlag():
 
 
 def WarpBackToDream():
-    """ 9215: Warp back to Hunter's Dream when requested.
+    """ 6685: Warp back to Hunter's Dream when requested.
 
     This event ID used to play some random sounds in the DLC.
     """

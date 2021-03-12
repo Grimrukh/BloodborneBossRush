@@ -2637,6 +2637,7 @@ def ClearBossRushFlags():
 
     DisableFlag(BossRushFlags.BossRushActive)
     DisableFlag(BossRushFlags.BossRushCompleted)
+    DisableFlag(BossRushFlags.ChoosingRandomBoss)
 
     DisableFlag(BossRushFlags.BossDead_ClericBeast)
     DisableFlag(BossRushFlags.BossDead_FatherGascoigne)

@@ -37,6 +37,13 @@ def main():
     for language in ("engus", "enggb"):
         msg_directory = MSGDirectory(BB_PATH + f"/msg/{language}")
 
+        msg_directory.ArmorNames[250000] = "Grand Hunter's Crown"
+        msg_directory.ArmorDescriptions[250000] = (
+            "Crown of a hunter who has conquered death in all its forms, and those who dole it out.\n\n"
+            "Bestows no special abilities, but makes into timid subjects all who lay eyes upon it.\n\n"
+            "Rightfully so."
+        )
+
         msg_directory.EventText.update(NEW_EVENT_TEXT)
 
         for class_name in range(402401, 402410):

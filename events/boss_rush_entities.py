@@ -12,24 +12,25 @@ class BossRushFlags(Flag):
         This replaces vanilla event 7200, which controlled standard lantern warping behavior.
     Common event 9360 (22 slots) is used to execute warps to bosses.
         This replaces vanilla event 9360, which awarded Blood Dregs after killing other Hunter NPCs.
-    Event 6682 listens for the Story Boss Rush bell request.
-    Event 6697 listens for the Random Boss Rush bell request.
-    Event 6683 is the boss rush completion monitoring event.
-    Event 6680 is the story boss order choice event.
-    Event 3503 is the random boss order choice event.
-    Event 9215 is used to warp back to the Hunter's Dream, as requested by flag 9421.
+    Event 6680 listens for the Story Boss Rush bell request.
+    Event 6681 listens for the Random Boss Rush bell request.
+    Event 6682 is the boss rush completion monitoring event.
+    Event 6683 is the story boss order choice event.
+    Event 6684 is the random boss order choice event.
+    Event 6685 is used to warp back to the Hunter's Dream.
     """
-    RequestDreamReturn = 9421
-    BossRushActive = 9422
-    BossRushCompleted = 9410  # replaces cut event
-    MoonPresenceRequested = 6681  # boss requires disambiguity separate from warp request flag
-    BossRushRandomized = 9404
+    RequestDreamReturn = 6686
+    BossRushActive = 6687
+    BossRushCompleted = 6688
+    MoonPresenceRequested = 6689
+    BossRushRandomized = 6690
 
     # Boss warp requests ignored while this flag is enabled (during random search).
-    ChoosingRandomBoss = 9400
+    ChoosingRandomBoss = 6691
 
     # Boss warp request flags, which trigger warps immediately when activated.
     #   These replace slots 0-21 of vanilla event 5500, which monitored possession of Uncanny/Lost DLC weapons.
+    #   (Complete coincidence that exactly 22 slots were available - the number of non-Chalice bosses.)
     RequestBoss_ClericBeast = 5500
     RequestBoss_FatherGascoigne = 5501
     RequestBoss_BloodStarvedBeast = 5502
@@ -77,7 +78,7 @@ class BossRushFlags(Flag):
     BossDead_Gehrman = 12101800
     BossDead_MoonPresence = 12101850
 
-    MicolashDyingWordsDone = 72600301
+    MicolashDyingWordsDone = 72600301  # disabled when his battle starts
 
 
 class BossRushWarpPoints(SpawnPointEvent):
@@ -165,6 +166,7 @@ class BossRushText(EventText):
 
 class BossRushItemLots(ItemLotParam):
     VialBulletRefill = 1000
+    BossRushReward = 10000
     Bells = 10010
 
 

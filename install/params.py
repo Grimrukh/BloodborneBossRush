@@ -286,7 +286,7 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     _copy_armor_set(200030, 200074, 190000, "Student Set")
     _copy_armor_set(200030, 200078, 220000, "Doll Set")
 
-    _copy_armor_piece(200030, 200082, 250000, "Crown of Illusions")
+    # _copy_armor_piece(200030, 200082, 250000, "Crown of Illusions")
     _copy_armor_piece(200030, 200083, 270000, "Iron Yahar'gul Helm")
     _copy_armor_piece(200030, 200084, 280000, "Top Hat")
     _copy_armor_piece(200030, 200085, 281000, "Hunter Garb")
@@ -307,19 +307,38 @@ def set_new_item_lots(game_param_bnd: GameParamBND):
     bullet_refill["lotItemNum01"] = 10
     game_param_bnd.ItemLots[1001] = bullet_refill
 
-    bell_of_chaos = game_param_bnd.ItemLots[10010].copy()
+    boss_rush_reward = game_param_bnd.ItemLots[10000]  # overwriting Notebook drop
+    boss_rush_reward["lotItemCategory01"] = 1  # Armor
+    boss_rush_reward["lotItemId01"] = 250000  # Grand Hunter's Crown
+
+    bell_of_chaos = game_param_bnd.ItemLots[10010].copy()  # added to Beckoning Bell (Bell of Memories) drop
     bell_of_chaos["lotItemId01"] = 225
     game_param_bnd.ItemLots[10011] = bell_of_chaos
 
 
 def set_goods_and_effects(game_param_bnd: GameParamBND):
-    request_story_boss_rush = game_param_bnd.SpecialEffects[9000].copy()  # Beckoning Bell
+    template_effect = game_param_bnd.SpecialEffects[9000].copy()
+    template_effect["stateInfo"] = 0
+    request_story_boss_rush = template_effect.copy()
     game_param_bnd.SpecialEffects[9500] = request_story_boss_rush
-    game_param_bnd.Goods[200]["refId"] = 9500
+    bell_of_memories = game_param_bnd.Goods[200]  # Beckoning Bell
+    bell_of_memories.name = "Bell of Memories"
+    bell_of_memories.update(
+        refId=9500,
+        replaceItemId_bySpEffect=-1,
+        replaceTriggerSpEffectId=-1,
+    )
 
-    request_random_boss_rush = game_param_bnd.SpecialEffects[9025].copy()  # Sinister Resonant Bell
+    request_random_boss_rush = template_effect.copy()
     game_param_bnd.SpecialEffects[9501] = request_random_boss_rush
-    game_param_bnd.Goods[225]["refId"] = 9501
+    bell_of_chaos = game_param_bnd.Goods[225]  # Sinister Resonant Bell
+    bell_of_chaos.name = "Bell of Chaos"
+    bell_of_chaos.update(
+        refId=9501,
+        useLimitCategory=0,
+        replaceItemId_bySpEffect=-1,
+        replaceTriggerSpEffectId=-1,
+    )
 
 
 def main():
