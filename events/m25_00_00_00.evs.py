@@ -28,7 +28,7 @@ from .m25_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.MartyrLogarius:
+    if InsideMap(CASTLE_CAINHURST) and not BossRushTriggers.MartyrLogarius:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=10, args=(2500952, 2501952, BossRushFlags.BossDead_MartyrLogarius))
@@ -410,7 +410,7 @@ def Constructor():
     Event12504813()
     MartyrLogariusDies()
     PlayMartyrLogariusDeathSound()
-    # MartyrLogariusFirstTime()
+    MartyrLogariusFirstTime()
     EnterMartyrLogariusFog()
     EnterMartyrLogariusFogAsSummon()
     StartMartyrLogariusBattle()
@@ -1245,12 +1245,6 @@ def Event101():
 
 def PlayerDiscoversVilebloodQueenChamber():
     """ 12500810: Event 12500810 """
-    GotoIfThisEventOff(Label.L0)
-    DisableObject(2501810)
-    End()
-
-    # --- 0 --- #
-    DefineLabel(0)
     DisableMapPiece(2506000)
     DisableMapPiece(2506001)
     DisableMapPiece(2506002)

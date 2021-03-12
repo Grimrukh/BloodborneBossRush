@@ -27,7 +27,7 @@ from .m23_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.BloodStarvedBeast and not BossRushTriggers.DarkbeastPaarl:
+    if InsideMap(OLD_YHARNAM) and not BossRushTriggers.BloodStarvedBeast and not BossRushTriggers.DarkbeastPaarl:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=3, args=(2300951, 2301951, BossRushFlags.BossDead_BloodStarvedBeast))
@@ -340,7 +340,7 @@ def Constructor():
     Event12304813()
     BloodStarvedBeastDies()
     PlayBloodStarvedBeastDeathSound()
-    # BloodStarvedBeastFirstTime()
+    BloodStarvedBeastFirstTime()
     EnterBloodStarvedBeastFog()
     EnterBloodStarvedBeastFogAsSummon()
     StartBloodStarvedBeastBattle()
@@ -356,7 +356,7 @@ def Constructor():
     Event12304733()
     DarkbeastPaarlDies()
     PlayDarkbeastPaarlDeathSound()
-    # DarkbeastPaarlFirstTime()
+    DarkbeastPaarlFirstTime()
     Event12304730()
     Event12304731()
     StartDarkbeastPaarlBattle()

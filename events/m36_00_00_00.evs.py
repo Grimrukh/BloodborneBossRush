@@ -22,7 +22,7 @@ from m36_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.OrphanOfKos:
+    if InsideMap(FISHING_HAMLET) and not BossRushTriggers.OrphanOfKos:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=20, args=(3600952, 3601952, BossRushFlags.BossDead_OrphanOfKos))
@@ -126,8 +126,8 @@ def Constructor():
 
     # ORPHAN OF KOS
     OrphanDies()
-    # OrphanFirstTimeTrigger()
-    # OrphanFirstTimeCutscene()
+    OrphanFirstTimeTrigger()
+    OrphanFirstTimeCutscene()
     EnterOrphanFog()
     EnterOrphanFogAsSummon()
     StartOrphanBattle()

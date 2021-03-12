@@ -24,7 +24,7 @@ from .m32_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.Rom:
+    if InsideMap(BYRGENWERTH) and not BossRushTriggers.Rom:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=8, args=(3200952, 3201952, BossRushFlags.BossDead_Rom))
@@ -87,7 +87,7 @@ def Constructor():
     Event13204834()
     RomDies()
     PlayRomDeathSound()
-    # RomFirstTime()
+    RomFirstTime()
     TriggerBloodMoon()  # stripped
     EnterRomFog()
     EnterRomFogAsSummon()

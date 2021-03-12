@@ -21,7 +21,7 @@ from .m27_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.ShadowsOfYharnam:
+    if InsideMap(FORBIDDEN_WOODS) and not BossRushTriggers.ShadowsOfYharnam:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=7, args=(2700951, 2701951, BossRushFlags.BossDead_ShadowsOfYharnam))
@@ -294,7 +294,7 @@ def Constructor():
     Event12704843()
     ShadowsOfYharnamDie()
     PlayShadowsOfYharnamDeathSound()
-    # ShadowsOfYharnamFirstTime()
+    ShadowsOfYharnamFirstTime()
     EnterShadowsOfYharnamFog()
     EnterShadowsOfYharnamFogAsSummon()
     StartShadowsOfYharnamBattle()

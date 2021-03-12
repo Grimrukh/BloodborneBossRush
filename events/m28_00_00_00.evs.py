@@ -31,7 +31,7 @@ from .m28_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.TheOneReborn:
+    if InsideMap(YAHARGUL) and not BossRushTriggers.TheOneReborn:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=11, args=(2800951, 2801951, BossRushFlags.BossDead_TheOneReborn))
@@ -144,7 +144,7 @@ def Constructor():
     Event12804883()
     OneRebornDies()
     PlayOneRebornDeathSound()
-    # OneRebornFirstTime()
+    OneRebornFirstTime()
     EnterOneRebornFog()
     EnterOneRebornFogAsSummon()
     StartOneRebornBattle()

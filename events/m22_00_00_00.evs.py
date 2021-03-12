@@ -28,7 +28,7 @@ from .m22_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.WitchesOfHemwick:
+    if InsideMap(HEMWICK_CHARNEL_LANE) and not BossRushTriggers.WitchesOfHemwick:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=4, args=(2200951, 2201951, BossRushFlags.BossDead_WitchesOfHemwick))
@@ -95,7 +95,7 @@ def Constructor():
     Event12204893()
     WitchesOfHemwickDie()
     PlayWitchesOfHemwickDeathSound()
-    # WitchesOfHemwickFirstTime()
+    WitchesOfHemwickFirstTime()
     DisableBossMadOneSpawners()
     EnterWitchesOfHemwickBossFog()
     EnterWitchesOfHemwickBossFogAsSummon()

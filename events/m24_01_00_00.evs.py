@@ -26,7 +26,7 @@ from .m24_01_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.ClericBeast and not BossRushTriggers.FatherGascoigne:
+    if InsideMap(CENTRAL_YHARNAM) and not BossRushTriggers.ClericBeast and not BossRushTriggers.FatherGascoigne:
         # This warps the player to the Dream when the game first begins, as well.
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
@@ -241,7 +241,7 @@ def Constructor():
     Event12414733()
     ClericBeastDies()
     PlayClericBeastDeathSound()
-    # ClericBeastFirstTime()
+    ClericBeastFirstTime()
     EnterClericBeastFog()
     EnterClericBeastFogAsSummon()
     StartClericBeastBattle()
@@ -381,7 +381,7 @@ def Constructor():
     Event12414813()
     FatherGascoigneDies()
     PlayFatherGascoigneDeathSound()
-    # FatherGascoigneFirstTime()
+    FatherGascoigneFirstTime()
     EnterFatherGascoigneFog()
     EnterFatherGascoigneFogAsSummon()
     StartFatherGascoigneBattle()

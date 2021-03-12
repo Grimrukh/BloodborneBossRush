@@ -21,7 +21,7 @@ from .m35_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.LivingFailures and not BossRushTriggers.LadyMaria:
+    if InsideMap(RESEARCH_HALL) and not BossRushTriggers.LivingFailures and not BossRushTriggers.LadyMaria:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=17, args=(3500951, 3501951, BossRushFlags.BossDead_LivingFailures))
@@ -147,7 +147,7 @@ def Constructor():
     
     # LIVING FAILURES
     LivingFailuresDie()
-    # LivingFailuresFirstTime()
+    LivingFailuresFirstTime()
     SummonStartLivingFailuresBattle()
     EnterLivingFailuresFog()
     EnterLivingFailuresFogAsSummon()
@@ -816,7 +816,7 @@ def LadyMariaDies():
 
 def LadyMariaFirstTime():
     """ 13501801: Event 13501801 """
-    DeleteVFX(3503820, erase_root_only=False)  # stripped
+    DeleteVFX(3503820, erase_root_only=False)  # stripped (wouldn't work anyway)
 
 
 @RestartOnRest

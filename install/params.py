@@ -317,6 +317,8 @@ def set_new_item_lots(game_param_bnd: GameParamBND):
 
 
 def set_goods_and_effects(game_param_bnd: GameParamBND):
+    # TODO: Use Hunter's Mark (and Chaos copy) instead of Bells, which don't want to be useable sometimes.
+
     template_effect = game_param_bnd.SpecialEffects[9000].copy()
     template_effect["stateInfo"] = 0
     request_story_boss_rush = template_effect.copy()
@@ -325,9 +327,11 @@ def set_goods_and_effects(game_param_bnd: GameParamBND):
     bell_of_memories.name = "Bell of Memories"
     bell_of_memories.update(
         refId=9500,
+        consumeHeroPoint=0,
         replaceItemId_bySpEffect=-1,
         replaceTriggerSpEffectId=-1,
     )
+    bell_of_memories["disableUseAtColiseum:1"] = False
 
     request_random_boss_rush = template_effect.copy()
     game_param_bnd.SpecialEffects[9501] = request_random_boss_rush
@@ -336,9 +340,12 @@ def set_goods_and_effects(game_param_bnd: GameParamBND):
     bell_of_chaos.update(
         refId=9501,
         useLimitCategory=0,
+        consumeHeroPoint=0,
         replaceItemId_bySpEffect=-1,
         replaceTriggerSpEffectId=-1,
     )
+    bell_of_chaos["disable_offline:1"] = False
+    bell_of_chaos["disableUseAtColiseum:1"] = False
 
 
 def main():

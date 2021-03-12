@@ -1,3 +1,13 @@
+"""
+TODO:
+    - Swap Bells for Hunter's Mark. (Use another rune for the Chaos version.)
+    - Foxy mentioned that the passage to Queen Annalise behind Logarius was open.
+        - Could be an isolated thing. Have tried to fix.
+    - Spawn point was also set by Logarius fight? Ah, warp must change respawn. Need to set it on every map load...
+        - Actually, maybe KEEP that spawn point unless it's a boss rush.
+        - Also, if not a boss rush, refresh vials/bullets on map load.
+"""
+
 
 from soulstruct.game_types import *
 
@@ -79,6 +89,28 @@ class BossRushFlags(Flag):
     BossDead_MoonPresence = 12101850
 
     MicolashDyingWordsDone = 72600301  # disabled when his battle starts
+
+    FirstTimeDone_ClericBeast = 12411702
+    FirstTimeDone_FatherGascoigne = 12411802
+    FirstTimeDone_BloodStarvedBeast = 12301802
+    FirstTimeDone_WitchesOfHemwick = 12201802
+    FirstTimeDone_VicarAmelia = 12401802
+    FirstTimeDone_DarkbeastPaarl = 12301702
+    FirstTimeDone_ShadowsOfYharnam = 12701802
+    FirstTimeDone_Rom = 13201802
+    FirstTimeDone_Amygdala = 13301802
+    FirstTimeDone_MartyrLogarius = 12501802
+    FirstTimeDone_TheOneReborn = 12801802
+    FirstTimeDone_CelestialEmissary = 12421702
+    FirstTimeDone_Ebrietas = 12421802
+    FirstTimeDone_Micolash = 12601852
+    FirstTimeDone_MergosWetNurse = 12601802
+    FirstTimeDone_Ludwig = 13401801
+    FirstTimeDone_LivingFailures = 13501851
+    FirstTimeDone_LadyMaria = 13501801
+    FirstTimeDone_Laurence = 13401851
+    FirstTimeDone_OrphanOfKos = 13601801
+    # No first-time flags for Gehrman or Moon Presence (events stripped).
 
 
 class BossRushWarpPoints(SpawnPointEvent):

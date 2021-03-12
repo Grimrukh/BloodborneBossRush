@@ -32,7 +32,7 @@ from .m24_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.VicarAmelia:
+    if InsideMap(CATHEDRAL_WARD) and not BossRushTriggers.VicarAmelia:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=5, args=(2400951, 2401951, BossRushFlags.BossDead_VicarAmelia))
@@ -411,7 +411,7 @@ def Constructor():
     Event12404843()
     VicarAmeliaDies()
     PlayVicarAmeliaDeathSound()
-    # VicarAmeliaFirstTime()
+    VicarAmeliaFirstTime()
     PlayMasterWillemCutscene()  # stripped
     EnterVicarAmeliaBossFog()
     EnterVicarAmeliaBossFogAsSummon()

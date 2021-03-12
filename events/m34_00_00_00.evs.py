@@ -26,7 +26,7 @@ from .m34_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.Ludwig and not BossRushTriggers.Laurence:
+    if InsideMap(HUNTERS_NIGHTMARE) and not BossRushTriggers.Ludwig and not BossRushTriggers.Laurence:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=16, args=(3400952, 3401952, BossRushFlags.BossDead_Ludwig))
@@ -106,8 +106,8 @@ def Constructor():
     Event13404740()
     Event13404742()
     LudwigDies()
-    # LudwigFirstTimeTrigger()  # triggers first-time cutscene
-    # LudwigFirstTimeCutscene()  # 1801 in this map instead of 1802
+    LudwigFirstTimeTrigger()  # triggers first-time cutscene
+    LudwigFirstTimeCutscene()  # 1801 in this map instead of 1802
     EnterLudwigFog()
     EnterLudwigFogAsSummon()
     StartLudwigBattle()
@@ -140,7 +140,7 @@ def Constructor():
     # LAURENCE, THE FIRST VICAR
     LaurenceDies()
     LaurenceAwakens()
-    # LaurenceFirstTime()
+    LaurenceFirstTime()
     EnterLaurenceFog()
     EnterLaurenceFogAsSummon()
     StartLaurenceBattle()

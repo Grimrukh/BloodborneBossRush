@@ -29,7 +29,7 @@ from .m26_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.MergosWetNurse and not BossRushTriggers.Micolash:
+    if InsideMap(NIGHTMARE_OF_MENSIS) and not BossRushTriggers.MergosWetNurse and not BossRushTriggers.Micolash:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=15, args=(2600951, 2601951, BossRushFlags.BossDead_MergosWetNurse))
@@ -71,7 +71,7 @@ def Constructor():
     Event12604848()
     MergosWetNurseDies()
     PlayMergosWetNurseDeathSound()
-    # MergosWetNurseFirstTime()
+    MergosWetNurseFirstTime()
     EnterMergosWetNurseFog()
     EnterMergosWetNurseFogAsSummon()
     StartMergosWetNurseBattle()
@@ -97,7 +97,7 @@ def Constructor():
     Event12604863()
     MicolashDies()
     PlayMicolashDeathSound()
-    # MicolashFirstTime()
+    MicolashFirstTime()
     OpenMicolashTrapGate()
     EnterMicolashFog()
     EnterMicolashFogAsSummon()

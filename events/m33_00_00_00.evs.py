@@ -23,7 +23,7 @@ from .m33_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.Amygdala:
+    if InsideMap(NIGHTMARE_FRONTIER) and not BossRushTriggers.Amygdala:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=9, args=(3300951, 3301951, BossRushFlags.BossDead_Amygdala))

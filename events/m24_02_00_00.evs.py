@@ -22,7 +22,7 @@ from .m24_02_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if not BossRushTriggers.Ebrietas and not BossRushTriggers.CelestialEmissary:
+    if InsideMap(UPPER_CATHEDRAL_WARD) and not BossRushTriggers.Ebrietas and not BossRushTriggers.CelestialEmissary:
         EnableFlag(BossRushFlags.RequestDreamReturn)
 
     RunEvent(7200, slot=13, args=(2420951, 2421951, BossRushFlags.BossDead_Ebrietas))
@@ -117,7 +117,7 @@ def Constructor():
     Event12424813()
     EbrietasDies()
     Event12421801()
-    # EbrietasFirstTime()
+    EbrietasFirstTime()
     EnterEbrietasFog()
     EnterEbrietasFogAsSummon()
     StartEbrietasBattle()
@@ -138,7 +138,7 @@ def Constructor():
     Event12424713()
     CelestialEmissaryDies()
     PlayCelestialEmissaryDeathSound()
-    # CelestialEmissaryFirstTime()
+    CelestialEmissaryFirstTime()
     EnterCelestialEmissaryFog()
     EnterCelestialEmissaryFogAsSummon()
     StartCelestialEmissaryBattle()

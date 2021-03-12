@@ -2601,6 +2601,29 @@ def BossRushFirstArrival():
     # Set respawn point to Hunter's Dream. (This is the one and only respawn point in the mod.)
     SetRespawnPoint(2102961)
 
+    # Enable first-time flags for all boss fights.
+    EnableFlag(BossRushFlags.FirstTimeDone_ClericBeast)
+    EnableFlag(BossRushFlags.FirstTimeDone_FatherGascoigne)
+    EnableFlag(BossRushFlags.FirstTimeDone_BloodStarvedBeast)
+    EnableFlag(BossRushFlags.FirstTimeDone_WitchesOfHemwick)
+    EnableFlag(BossRushFlags.FirstTimeDone_VicarAmelia)
+    EnableFlag(BossRushFlags.FirstTimeDone_DarkbeastPaarl)
+    EnableFlag(BossRushFlags.FirstTimeDone_ShadowsOfYharnam)
+    EnableFlag(BossRushFlags.FirstTimeDone_Rom)
+    EnableFlag(BossRushFlags.FirstTimeDone_Amygdala)
+    EnableFlag(BossRushFlags.FirstTimeDone_MartyrLogarius)
+    EnableFlag(BossRushFlags.FirstTimeDone_TheOneReborn)
+    EnableFlag(BossRushFlags.FirstTimeDone_CelestialEmissary)
+    EnableFlag(BossRushFlags.FirstTimeDone_Ebrietas)
+    EnableFlag(BossRushFlags.FirstTimeDone_Micolash)
+    EnableFlag(BossRushFlags.FirstTimeDone_MergosWetNurse)
+    EnableFlag(BossRushFlags.FirstTimeDone_Ludwig)
+    EnableFlag(BossRushFlags.FirstTimeDone_LivingFailures)
+    EnableFlag(BossRushFlags.FirstTimeDone_LadyMaria)
+    EnableFlag(BossRushFlags.FirstTimeDone_Laurence)
+    EnableFlag(BossRushFlags.FirstTimeDone_OrphanOfKos)
+    # No first-time flags for Gehrman or Moon Presence (events stripped below).
+
     # Enable warp flags for boss lanterns only.
     EnableFlag(HeadstoneWarpUnlockedFlags.WitchesOfHemwick)
     EnableFlag(HeadstoneWarpUnlockedFlags.BloodStarvedBeast)
