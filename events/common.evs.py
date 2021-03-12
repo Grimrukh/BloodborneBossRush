@@ -12,6 +12,17 @@ from .boss_rush_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+
+    # Get exactly 10 Vials and Bullets on map load if this is a single boss fight.
+    if OutsideMap(HUNTERS_DREAM) and not BossRushFlags.BossRushActive:
+        RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
+        RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
+        RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
+        AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
+        # Leave spawn point as whatever was warped to, for single boss fight.
+    else:
+        SetRespawnPoint(BossRushWarpPoints.HuntersDream)  # Hunter's Dream
+
     DisableFlag(7501)
     RunEvent(9190)
     RunEvent(9191)
@@ -1387,7 +1398,7 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
 def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
     """ 9360: Warp player to requested next boss in Boss Rush.
 
-    This event ID used to be for awarding Blood Dregs.
+    This event ID + slots used to be for awarding Blood Dregs.
     """
     Wait(2.0)  # give other events a chance to run first
     Await(FlagEnabled(required_boss_warp_flag) and not BossRushFlags.ChoosingRandomBoss)
@@ -1396,10 +1407,7 @@ def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
 
 
 def MonitorStoryBossRushRequest():
-    """ 6680: Starts a new Story Boss Rush when bell is rung, or ends current boss rush.
-
-    This event ID used to monitor Hunter's Torch possession.
-    """
+    """ 6680: Start a new Story Boss Rush when request item is used in the Dream. Return to the Dream otherwise. """
     Await(HasSpecialEffect(PLAYER, BossRushEffects.StoryRushRequest))
 
     if not InsideMap(HUNTERS_DREAM):

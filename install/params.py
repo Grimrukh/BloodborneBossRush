@@ -297,55 +297,52 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
 
 
 def set_new_item_lots(game_param_bnd: GameParamBND):
-    vial_refill = game_param_bnd.ItemLots[5500].copy()
+    game_param_bnd.ItemLots[1000] = vial_refill = game_param_bnd.ItemLots[5500].copy()
+    vial_refill.name = "Blood Vial Refill"
     vial_refill["lotItemId01"] = 1000
     vial_refill["lotItemNum01"] = 10
-    game_param_bnd.ItemLots[1000] = vial_refill
 
-    bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    game_param_bnd.ItemLots[1001] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    bullet_refill.name = "Quicksilver Bullet Refill"
     bullet_refill["lotItemId01"] = 900
     bullet_refill["lotItemNum01"] = 10
-    game_param_bnd.ItemLots[1001] = bullet_refill
 
     boss_rush_reward = game_param_bnd.ItemLots[10000]  # overwriting Notebook drop
+    boss_rush_reward.name = "Boss Rush Reward"
     boss_rush_reward["lotItemCategory01"] = 1  # Armor
     boss_rush_reward["lotItemId01"] = 250000  # Grand Hunter's Crown
 
-    bell_of_chaos = game_param_bnd.ItemLots[10010].copy()  # added to Beckoning Bell (Bell of Memories) drop
-    bell_of_chaos["lotItemId01"] = 225
-    game_param_bnd.ItemLots[10011] = bell_of_chaos
+    boss_rush_request_item_1 = game_param_bnd.ItemLots[10010]  # overwriting Beckoning Bell drop
+    boss_rush_request_item_1.name = "Skull of Memories"
+    boss_rush_request_item_1["lotItemId01"] = 100  # Skull of Memories
+    game_param_bnd.ItemLots[10011] = boss_rush_request_item_2 = boss_rush_request_item_1.copy()
+    boss_rush_request_item_2.name = "Skull of Chaos"
+    boss_rush_request_item_2["lotItemId01"] = 101  # Skull of Chaos
 
 
 def set_goods_and_effects(game_param_bnd: GameParamBND):
-    # TODO: Use Hunter's Mark (and Chaos copy) instead of Bells, which don't want to be useable sometimes.
-
     template_effect = game_param_bnd.SpecialEffects[9000].copy()
     template_effect["stateInfo"] = 0
     request_story_boss_rush = template_effect.copy()
     game_param_bnd.SpecialEffects[9500] = request_story_boss_rush
-    bell_of_memories = game_param_bnd.Goods[200]  # Beckoning Bell
-    bell_of_memories.name = "Bell of Memories"
-    bell_of_memories.update(
-        refId=9500,
-        consumeHeroPoint=0,
-        replaceItemId_bySpEffect=-1,
-        replaceTriggerSpEffectId=-1,
-    )
-    bell_of_memories["disableUseAtColiseum:1"] = False
-
     request_random_boss_rush = template_effect.copy()
     game_param_bnd.SpecialEffects[9501] = request_random_boss_rush
-    bell_of_chaos = game_param_bnd.Goods[225]  # Sinister Resonant Bell
-    bell_of_chaos.name = "Bell of Chaos"
-    bell_of_chaos.update(
-        refId=9501,
-        useLimitCategory=0,
-        consumeHeroPoint=0,
-        replaceItemId_bySpEffect=-1,
-        replaceTriggerSpEffectId=-1,
+
+    skull_of_memories = game_param_bnd.Goods[100]  # Hunter's Mark
+    skull_of_memories.name = "Skull of Memories"
+    skull_of_memories.update(
+        refId=9500,
+        iconId=76,  # Madman's Knowledge
+        yesNoDialogMessageId=0,
+        opmeMenuType=0,
     )
-    bell_of_chaos["disable_offline:1"] = False
-    bell_of_chaos["disableUseAtColiseum:1"] = False
+
+    game_param_bnd.Goods[101] = skull_of_chaos = skull_of_memories.copy()
+    skull_of_chaos.name = "Skull of Chaos"
+    skull_of_chaos.update(
+        refId=9501,
+        iconId=77,  # Great One's Wisdom
+    )
 
 
 def main():

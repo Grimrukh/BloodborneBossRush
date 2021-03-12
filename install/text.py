@@ -50,20 +50,20 @@ def main():
             msg_directory.MenuText_SP[class_name] = "Gladiator"
             msg_directory.MenuHelpSnippets_SP[class_name] = "Champion from a distant land.\nThirsts for bloodshed."
 
-        msg_directory.GoodNames[200] = "Bell of Memories"
-        msg_directory.GoodSummaries[200] = "Ring to face legendary foes from an old tale"
-        msg_directory.GoodDescriptions[200] = (
-            "Great old bell left behind by an unknown hunter.\n\n"
-            "Its toll conjures memories of monsters from the hunter's journey through Yharnam, and beyond.\n\n"
-            "Ring from within the memory to return to the Dream."
+        msg_directory.GoodNames[100] = "Skull of Memories"
+        msg_directory.GoodSummaries[100] = "Use to face legendary foes from an old tale"
+        msg_directory.GoodDescriptions[100] = (
+            "Old skull of an unknown hunter.\n\n"
+            "Its hollow gaze conjures memories of monsters from the hunter's journey through Yharnam, and beyond.\n\n"
+            "Use from within the memory to return to the Dream."
         )
 
-        msg_directory.GoodNames[225] = "Bell of Chaos"
-        msg_directory.GoodSummaries[225] = "Ring to face legendary foes from scattered recollection"
-        msg_directory.GoodDescriptions[225] = (
-            "Strange bell left behind by an unknown hunter.\n\n"
-            "Its toll conjures memories of a hunter's journey, but the nightmare has twisted their recollection.\n\n"
-            "Ring from within the memory to return to the Dream."
+        msg_directory.GoodNames[101] = "Skull of Chaos"
+        msg_directory.GoodSummaries[101] = "Use to face legendary foes from scattered recollection"
+        msg_directory.GoodDescriptions[101] = (
+            "Disfigured skull of an unknown hunter.\n\n"
+            "Its hollow gaze conjures violent memories, but the nightmare has twisted their chronology.\n\n"
+            "Use from within the memory to return to the Dream."
         )
 
         msg_directory.write(f"../package/msg/{language}")

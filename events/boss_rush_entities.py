@@ -1,11 +1,7 @@
 """
 TODO:
-    - Swap Bells for Hunter's Mark. (Use another rune for the Chaos version.)
     - Foxy mentioned that the passage to Queen Annalise behind Logarius was open.
         - Could be an isolated thing. Have tried to fix.
-    - Spawn point was also set by Logarius fight? Ah, warp must change respawn. Need to set it on every map load...
-        - Actually, maybe KEEP that spawn point unless it's a boss rush.
-        - Also, if not a boss rush, refresh vials/bullets on map load.
 """
 
 
@@ -199,7 +195,7 @@ class BossRushText(EventText):
 class BossRushItemLots(ItemLotParam):
     VialBulletRefill = 1000
     BossRushReward = 10000
-    Bells = 10010
+    BossRushRequestItems = 10010
 
 
 class BossRushGoods(GoodParam):

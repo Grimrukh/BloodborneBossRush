@@ -23,6 +23,10 @@ from .m21_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
+
+    # Always set respawn point to Hunter's Dream on arrival (should already be anyway).
+    SetRespawnPoint(BossRushWarpPoints.HuntersDream)
+
     BossRushFirstArrival()
     ClearBossRushFlags()  # only runs if player does not spawn in boss arena trigger region
 
@@ -2598,9 +2602,6 @@ def BossRushFirstArrival():
     # Disable warp request range.
     DisableFlagRange((BossRushFlags.RequestBoss_ClericBeast, BossRushFlags.RequestBoss_MoonPresence))
 
-    # Set respawn point to Hunter's Dream. (This is the one and only respawn point in the mod.)
-    SetRespawnPoint(2102961)
-
     # Enable first-time flags for all boss fights.
     EnableFlag(BossRushFlags.FirstTimeDone_ClericBeast)
     EnableFlag(BossRushFlags.FirstTimeDone_FatherGascoigne)
@@ -2646,11 +2647,8 @@ def BossRushFirstArrival():
     EnableFlag(HeadstoneWarpUnlockedFlags.LadyMaria)
     EnableFlag(HeadstoneWarpUnlockedFlags.OrphanOfKos)
 
-    # Special flags for setup.
-    EnableFlag(13501801)  # Lady Maria first time done
-
     # Special items.
-    AwardItemLot(BossRushItemLots.Bells)
+    AwardItemLot(BossRushItemLots.BossRushRequestItems)
 
 
 def ClearBossRushFlags():
