@@ -1,5 +1,6 @@
 """
 TODO:
+    - No way to start a single fight against Gehrman or Moon Presence yet.
     - Foxy mentioned that the passage to Queen Annalise behind Logarius was open.
         - Could be an isolated thing. Have tried to fix.
 """
@@ -136,7 +137,7 @@ class BossRushWarpPoints(SpawnPointEvent):
 
 class HeadstoneWarpUnlockedFlags(SpawnPointEvent):
     """All of these flags are simply enabled upon first arrival in the Hunter's Dream."""
-    # GehrmanOrMoonPresence = 2102965  # TODO: Single Gehrman and Moon Presence fights are activated elsewhere (gate?).
+    # No Gehrman/Moon Presence warps.
     WitchesOfHemwick = 12207820 + 10
     BloodStarvedBeast = 12307820 + 10
     DarkbeastPaarl = 12307840 + 10

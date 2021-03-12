@@ -13,14 +13,15 @@ from .boss_rush_entities import *
 def Constructor():
     """ 0: Event 0 """
 
-    # Get exactly 10 Vials and Bullets on map load if this is a single boss fight.
-    if OutsideMap(HUNTERS_DREAM) and not BossRushFlags.BossRushActive:
+    if (BossRushTriggers.GehrmanOrMoonPresence or OutsideMap(HUNTERS_DREAM)) and not BossRushFlags.BossRushActive:
+        # Get exactly 10 Vials and Bullets on map load if this is a single boss fight.
         RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
         RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
         RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
         AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
         # Leave spawn point as whatever was warped to, for single boss fight.
     else:
+        # Set respawn point to normal Hunter's Dream spawn.
         SetRespawnPoint(BossRushWarpPoints.HuntersDream)  # Hunter's Dream
 
     DisableFlag(7501)

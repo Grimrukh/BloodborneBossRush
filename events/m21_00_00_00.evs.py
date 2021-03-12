@@ -23,10 +23,6 @@ from .m21_00_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-
-    # Always set respawn point to Hunter's Dream on arrival (should already be anyway).
-    SetRespawnPoint(BossRushWarpPoints.HuntersDream)
-
     BossRushFirstArrival()
     ClearBossRushFlags()  # only runs if player does not spawn in boss arena trigger region
 
