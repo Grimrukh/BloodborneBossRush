@@ -598,20 +598,21 @@ def MergosWetNurseDies():
     DisableSoundEvent(2603802)
     DisableSoundEvent(2603803)
     DisableCharacter(Characters.MergosWetNurse)
-    DisableCharacter(Characters.MergosWetNurseClone1)
-    DisableCharacter(Characters.MergosWetNurseClone2)
+    DisableCharacter(Characters.MergosWetNurseClone)
+    DisableCharacter(Characters.MergosWetNurseHealthPool)
     DisableObject(Objects.MergosWetNurseFog)
     DeleteVFX(VFX.MergosWetNurseFog, erase_root_only=False)
     End()
 
     # --- 0 --- #
     DefineLabel(0)
-    IfHealthLessThanOrEqual(0, Characters.MergosWetNurseClone2, 0.0)
+    IfHealthLessThanOrEqual(0, Characters.MergosWetNurseHealthPool, 0.0)
     ResetAnimation(Characters.MergosWetNurse, disable_interpolation=True)
-    ResetAnimation(Characters.MergosWetNurseClone1, disable_interpolation=True)
+    ResetAnimation(Characters.MergosWetNurseClone, disable_interpolation=True)
     Kill(Characters.MergosWetNurse, award_souls=False)
-    Kill(Characters.MergosWetNurseClone1, award_souls=False)
+    Kill(Characters.MergosWetNurseClone, award_souls=False)
     IfCharacterDead(0, Characters.MergosWetNurse)
+    DisableBossHealthBar(Characters.MergosWetNurseHealthPool, name=551000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)  # Nightmare Slain banner saved for boss rush completion
     SetLockedCameraSlot(game_map=NIGHTMARE_OF_MENSIS, camera_slot=0)
     CancelSpecialEffect(PLAYER, 5630)
@@ -629,7 +630,7 @@ def PlayMergosWetNurseDeathSound():
     EndIfFlagOn(Flags.MergosWetNurseDead)
     IfFlagOn(1, Flags.MergosWetNurseDead)
     IfCharacterBackreadDisabled(2, Characters.MergosWetNurse)
-    IfHealthLessThanOrEqual(2, Characters.MergosWetNurseClone2, 0.0)
+    IfHealthLessThanOrEqual(2, Characters.MergosWetNurseHealthPool, 0.0)
     IfConditionTrue(-1, input_condition=1)
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
@@ -642,7 +643,7 @@ def MergosWetNurseFirstTime():
     EndIfFlagOn(Flags.MergosWetNurseDead)
     EndIfThisEventOn()
     DisableCharacter(Characters.MergosWetNurse)
-    DisableCharacter(Characters.MergosWetNurseClone1)
+    DisableCharacter(Characters.MergosWetNurseClone)
     EnableObjectInvulnerability(2601856)
     IfFlagOff(1, Flags.MergosWetNurseDead)
     IfThisEventOff(1)
@@ -769,14 +770,14 @@ def StartMergosWetNurseBattle():
     """ 12604802: Event 12604802 """
     EndIfFlagOn(Flags.MergosWetNurseDead)
     DisableAI(Characters.MergosWetNurse)
-    DisableAI(Characters.MergosWetNurseClone1)
-    DisableAI(Characters.MergosWetNurseClone2)
+    DisableAI(Characters.MergosWetNurseClone)
+    DisableAI(Characters.MergosWetNurseHealthPool)
     DisableHealthBar(Characters.MergosWetNurse)
-    DisableHealthBar(Characters.MergosWetNurseClone1)
-    DisableHealthBar(Characters.MergosWetNurseClone2)
-    DisableGravity(Characters.MergosWetNurseClone2)
+    DisableHealthBar(Characters.MergosWetNurseClone)
+    DisableHealthBar(Characters.MergosWetNurseHealthPool)
+    DisableGravity(Characters.MergosWetNurseHealthPool)
     EnableImmortality(Characters.MergosWetNurse)
-    EnableImmortality(Characters.MergosWetNurseClone1)
+    EnableImmortality(Characters.MergosWetNurseClone)
     GotoIfThisEventOn(Label.L0)
 
     IfPlayerInsideRegion(0, BossRushTriggers.MergosWetNurse)
@@ -786,8 +787,8 @@ def StartMergosWetNurseBattle():
     SkipLinesIfFlagOn(1, 12604732)
     NotifyBossBattleStart()
     SetNetworkUpdateAuthority(Characters.MergosWetNurse, UpdateAuthority.Forced)
-    SetNetworkUpdateAuthority(Characters.MergosWetNurseClone1, UpdateAuthority.Forced)
-    SetNetworkUpdateAuthority(Characters.MergosWetNurseClone2, UpdateAuthority.Forced)
+    SetNetworkUpdateAuthority(Characters.MergosWetNurseClone, UpdateAuthority.Forced)
+    SetNetworkUpdateAuthority(Characters.MergosWetNurseHealthPool, UpdateAuthority.Forced)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -804,32 +805,32 @@ def StartMergosWetNurseBattle():
     # --- 2 --- #
     DefineLabel(2)
     AddSpecialEffect(Characters.MergosWetNurse, 7500, affect_npc_part_hp=True)
-    AddSpecialEffect(Characters.MergosWetNurseClone1, 7500, affect_npc_part_hp=True)
-    AddSpecialEffect(Characters.MergosWetNurseClone2, 7500, affect_npc_part_hp=True)
+    AddSpecialEffect(Characters.MergosWetNurseClone, 7500, affect_npc_part_hp=True)
+    AddSpecialEffect(Characters.MergosWetNurseHealthPool, 7500, affect_npc_part_hp=True)
     WaitFrames(1)
     AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurse)
-    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone1)
-    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone2)
+    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone)
+    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseHealthPool)
     Goto(Label.L4)
 
     # --- 3 --- #
     DefineLabel(3)
     AddSpecialEffect(Characters.MergosWetNurse, 7501, affect_npc_part_hp=True)
-    AddSpecialEffect(Characters.MergosWetNurseClone1, 7501, affect_npc_part_hp=True)
-    AddSpecialEffect(Characters.MergosWetNurseClone2, 7501, affect_npc_part_hp=True)
+    AddSpecialEffect(Characters.MergosWetNurseClone, 7501, affect_npc_part_hp=True)
+    AddSpecialEffect(Characters.MergosWetNurseHealthPool, 7501, affect_npc_part_hp=True)
     WaitFrames(1)
     AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurse)
-    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone1)
-    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone2)
+    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseClone)
+    AdaptSpecialEffectHealthChangeToNPCPart(Characters.MergosWetNurseHealthPool)
     Goto(Label.L4)
 
     # --- 4 --- #
     DefineLabel(4)
     EnableAI(Characters.MergosWetNurse)
-    EnableAI(Characters.MergosWetNurseClone1)
-    EnableBossHealthBar(Characters.MergosWetNurseClone2, name=551000, slot=0)
-    ReferDamageToEntity(Characters.MergosWetNurse, Characters.MergosWetNurseClone2)
-    ReferDamageToEntity(Characters.MergosWetNurseClone1, Characters.MergosWetNurseClone2)
+    EnableAI(Characters.MergosWetNurseClone)
+    EnableBossHealthBar(Characters.MergosWetNurseHealthPool, name=551000, slot=0)
+    ReferDamageToEntity(Characters.MergosWetNurse, Characters.MergosWetNurseHealthPool)
+    ReferDamageToEntity(Characters.MergosWetNurseClone, Characters.MergosWetNurseHealthPool)
     CreatePlayLog(88)
     StartPlayLogMeasurement(2600010, 104, overwrite=True)
 
@@ -849,7 +850,7 @@ def ControlMergosWetNurseMusic():
     IfConditionTrue(0, input_condition=1)
     EnableBossMusic(2603802)
     EnableFlag(12604815)
-    IfHealthLessThan(0, Characters.MergosWetNurseClone2, 0.699999988079071)
+    IfHealthLessThan(0, Characters.MergosWetNurseHealthPool, 0.699999988079071)
 
     # --- 0 --- #
     DefineLabel(0)
@@ -886,9 +887,9 @@ def StopMergosWetNurseMusic():
 
 def DisableWetNurseClone():
     """ 12604806: Event 12604806 """
-    DisableCharacter(Characters.MergosWetNurseClone1)
-    DisableGravity(Characters.MergosWetNurseClone1)
-    DisableCharacterCollision(Characters.MergosWetNurseClone1)
+    DisableCharacter(Characters.MergosWetNurseClone)
+    DisableGravity(Characters.MergosWetNurseClone)
+    DisableCharacterCollision(Characters.MergosWetNurseClone)
 
 
 def LogPlayerEffect5630():
@@ -965,8 +966,8 @@ def MergosWetNurseNightmareMode():
     IfConditionTrue(0, input_condition=1)
     MoveObjectToCharacter(2601857, character=PLAYER, model_point=245)
     WaitFrames(1)
-    EnableCharacter(Characters.MergosWetNurseClone1)
-    ResetAnimation(Characters.MergosWetNurseClone1, disable_interpolation=False)
+    EnableCharacter(Characters.MergosWetNurseClone)
+    ResetAnimation(Characters.MergosWetNurseClone, disable_interpolation=False)
     DisableFlagRange((12604841, 12604844))
     EnableRandomFlagInRange((12604841, 12604844))
     GotoIfFlagOn(Label.L0, 12604841)
@@ -976,42 +977,42 @@ def MergosWetNurseNightmareMode():
 
     # --- 0 --- #
     DefineLabel(0)
-    Move(Characters.MergosWetNurseClone1, destination=2601857, destination_type=CoordEntityType.Object,
+    Move(Characters.MergosWetNurseClone, destination=2601857, destination_type=CoordEntityType.Object,
          model_point=4, short_move=True)
     Goto(Label.L4)
 
     # --- 1 --- #
     DefineLabel(1)
-    Move(Characters.MergosWetNurseClone1, destination=2601857, destination_type=CoordEntityType.Object,
+    Move(Characters.MergosWetNurseClone, destination=2601857, destination_type=CoordEntityType.Object,
          model_point=104, short_move=True)
     Goto(Label.L4)
 
     # --- 2 --- #
     DefineLabel(2)
-    Move(Characters.MergosWetNurseClone1, destination=2601857, destination_type=CoordEntityType.Object,
+    Move(Characters.MergosWetNurseClone, destination=2601857, destination_type=CoordEntityType.Object,
          model_point=10, short_move=True)
     Goto(Label.L4)
 
     # --- 3 --- #
     DefineLabel(3)
-    Move(Characters.MergosWetNurseClone1, destination=2601857, destination_type=CoordEntityType.Object,
+    Move(Characters.MergosWetNurseClone, destination=2601857, destination_type=CoordEntityType.Object,
          model_point=110, short_move=True)
 
     # --- 4 --- #
     DefineLabel(4)
     WaitFrames(1)
     CreateTemporaryVFX(
-        655105, anchor_entity=Characters.MergosWetNurseClone1, anchor_type=CoordEntityType.Character, model_point=220)
-    ReplanAI(Characters.MergosWetNurseClone1)
-    AICommand(Characters.MergosWetNurseClone1, command_id=100, slot=0)
-    AddSpecialEffect(Characters.MergosWetNurseClone1, 5631, affect_npc_part_hp=False)
-    IfHasTAEEvent(-1, Characters.MergosWetNurseClone1, tae_event_id=20)
-    IfAttackedWithDamageType(-1, attacked_entity=Characters.MergosWetNurseClone1, attacker=PLAYER)
+        655105, anchor_entity=Characters.MergosWetNurseClone, anchor_type=CoordEntityType.Character, model_point=220)
+    ReplanAI(Characters.MergosWetNurseClone)
+    AICommand(Characters.MergosWetNurseClone, command_id=100, slot=0)
+    AddSpecialEffect(Characters.MergosWetNurseClone, 5631, affect_npc_part_hp=False)
+    IfHasTAEEvent(-1, Characters.MergosWetNurseClone, tae_event_id=20)
+    IfAttackedWithDamageType(-1, attacked_entity=Characters.MergosWetNurseClone, attacker=PLAYER)
     IfConditionTrue(0, input_condition=-1)
     CreateTemporaryVFX(
-        655105, anchor_entity=Characters.MergosWetNurseClone1, anchor_type=CoordEntityType.Character, model_point=220)
+        655105, anchor_entity=Characters.MergosWetNurseClone, anchor_type=CoordEntityType.Character, model_point=220)
     WaitFrames(10)
-    DisableCharacter(Characters.MergosWetNurseClone1)
+    DisableCharacter(Characters.MergosWetNurseClone)
     Restart()
 
 
@@ -1037,6 +1038,7 @@ def MicolashDies():
     IfCharacterDead(0, Characters.Micolash)
     EnableFlag(Flags.DismissMicolashPuppets)
     IfFlagOn(0, BossRushFlags.MicolashDyingWordsDone)  # this flag is reset each time the battle starts
+    DisableBossHealthBar(Characters.Micolash, name=899000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetBackreadStateAlternate(Characters.Micolash, state=False)
     SetNetworkUpdateRate(Characters.Micolash, is_fixed=False, update_rate=CharacterUpdateRate.Always)

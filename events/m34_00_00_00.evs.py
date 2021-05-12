@@ -889,6 +889,7 @@ def LudwigDies():
     IfCharacterDead(2, Characters.LudwigTheHolyBlade)
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
+    DisableBossHealthBar(Characters.LudwigTheHolyBlade, name=451005, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableObject(Objects.LudwigFog)
     DeleteVFX(VFX.LudwigFog, erase_root_only=True)
@@ -1502,6 +1503,7 @@ def LaurenceDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.Laurence)
+    DisableBossHealthBar(Characters.Laurence, name=450000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=HUNTERS_NIGHTMARE, camera_slot=0)
     End()  # stripped

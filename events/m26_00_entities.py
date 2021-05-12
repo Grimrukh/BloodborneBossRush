@@ -20,8 +20,8 @@ class Flags(Flag):
 
 class Characters(Character):
     MergosWetNurse = 2600800
-    MergosWetNurseClone1 = 2600801
-    MergosWetNurseClone2 = 2600802
+    MergosWetNurseClone = 2600801
+    MergosWetNurseHealthPool = 2600802
     Micolash = 2600850
 
 

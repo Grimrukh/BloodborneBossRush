@@ -1299,6 +1299,7 @@ def ClericBeastDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.ClericBeast)
+    DisableBossHealthBar(Characters.ClericBeast, name=500000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=CENTRAL_YHARNAM, camera_slot=0)
     End()  # stripped
@@ -1659,6 +1660,8 @@ def FatherGascoigneDies():
     IfConditionTrue(-1, input_condition=1)
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
+    DisableBossHealthBar(Characters.GascoigneHuman, name=271000, slot=0)
+    DisableBossHealthBar(Characters.GascoigneBeast, name=272000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=CENTRAL_YHARNAM, camera_slot=0)
     SetNetworkUpdateRate(Characters.GascoigneBeast, is_fixed=True, update_rate=CharacterUpdateRate.EveryFiveFrames)

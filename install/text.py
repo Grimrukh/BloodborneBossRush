@@ -39,8 +39,8 @@ def main():
 
         msg_directory.ArmorNames[250000] = "Grand Hunter's Crown"
         msg_directory.ArmorDescriptions[250000] = (
-            "Crown of a hunter who has conquered death in all its forms, and those who dole it out.\n\n"
-            "Bestows no special abilities, but makes into timid subjects all who lay eyes upon it.\n\n"
+            "Crown of a hunter who has conquered death in all its forms, and those who deal in it.\n\n"
+            "Bestows no special abilities, but casts down all eyes laid upon it.\n\n"
             "Rightfully so."
         )
 

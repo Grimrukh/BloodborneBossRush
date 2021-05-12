@@ -357,6 +357,7 @@ def AmygdalaDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.Amygdala)
+    DisableBossHealthBar(Characters.Amygdala, name=512000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=NIGHTMARE_FRONTIER, camera_slot=0)
     # stripped

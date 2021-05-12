@@ -760,6 +760,7 @@ def RomDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.Rom)
+    DisableBossHealthBar(Characters.Rom, name=510000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     DisableCollision(3204010)  # enemy-only collision at fog gate, doesn't matter here
     SetLockedCameraSlot(game_map=BYRGENWERTH, camera_slot=0)

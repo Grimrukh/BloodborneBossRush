@@ -382,6 +382,8 @@ def WitchesOfHemwickDie():
     IfCharacterDead(1, Characters.FirstWitchOfHemwick)
     IfCharacterDead(1, Characters.SecondWitchOfHemwick)
     IfConditionTrue(0, input_condition=1)
+    DisableBossHealthBar(Characters.FirstWitchOfHemwick, name=210000, slot=0)
+    DisableBossHealthBar(Characters.SecondWitchOfHemwick, name=210000, slot=1)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=HEMWICK_CHARNEL_LANE, camera_slot=0)
     Wait(3.0)

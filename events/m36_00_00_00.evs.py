@@ -873,6 +873,7 @@ def OrphanDies():
     IfConditionTrue(-1, input_condition=1)
     IfConditionTrue(-1, input_condition=2)
     IfConditionTrue(0, input_condition=-1)
+    DisableBossHealthBar(Characters.OrphanWinged, name=453000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=FISHING_HAMLET, camera_slot=0)
     End()  # stripped
@@ -942,7 +943,6 @@ def ControlOrphanSpirit():
 
 def OrphanSpiritDies():
     """ 13601803: Trigger banner, cutscene, and moon swap when Orphan's immobile spirit is killed. """
-    GotoIfThisEventOn(Label.L0)
     DisableObject(Objects.MoonOrphanDead)
     End()  # stripped
 

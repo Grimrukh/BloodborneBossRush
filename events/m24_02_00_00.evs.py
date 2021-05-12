@@ -339,6 +339,7 @@ def EbrietasDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.Ebrietas)
+    DisableBossHealthBar(Characters.Ebrietas, name=251000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
     End()  # stripped
@@ -741,6 +742,7 @@ def CelestialEmissaryDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.CelestialEmissaryGiant)
+    DisableBossHealthBar(Characters.CelestialEmissaryGiant, name=257000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=UPPER_CATHEDRAL_WARD, camera_slot=0)
     DisableCharacter(2420750)  # tentacles

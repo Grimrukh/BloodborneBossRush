@@ -1347,6 +1347,7 @@ def MartyrLogariusDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.MartyrLogarius)
+    DisableBossHealthBar(Characters.MartyrLogarius, name=232000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=CASTLE_CAINHURST, camera_slot=0)
     End()  # stripped

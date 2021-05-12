@@ -5353,6 +5353,7 @@ def VicarAmeliaDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.VicarAmelia)
+    DisableBossHealthBar(Characters.VicarAmelia, name=502000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=CATHEDRAL_WARD, camera_slot=0)
     End()  # stripped

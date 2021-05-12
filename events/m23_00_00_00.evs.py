@@ -746,6 +746,7 @@ def BloodStarvedBeastDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.BloodStarvedBeast)
+    DisableBossHealthBar(Characters.BloodStarvedBeast, name=209000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=OLD_YHARNAM, camera_slot=0)
     End()  # stripped
@@ -1024,6 +1025,7 @@ def DarkbeastPaarlDies():
     # --- 0 --- #
     DefineLabel(0)
     IfCharacterDead(0, Characters.DarkbeastPaarl)
+    DisableBossHealthBar(Characters.DarkbeastPaarl, name=508000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=OLD_YHARNAM, camera_slot=0)
     End()  # stripped

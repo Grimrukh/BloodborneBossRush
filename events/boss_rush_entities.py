@@ -1,8 +1,9 @@
 """
 TODO:
     - No way to start a single fight against Gehrman or Moon Presence yet.
-    - Foxy mentioned that the passage to Queen Annalise behind Logarius was open.
-        - Could be an isolated thing. Have tried to fix.
+    - New Cleric Beast regions (and presumably Gascoigne) aren't being respected. My guess is that the game isn't using
+    the latest MSB version, as I assumed (_11). Easy fix: copy it to the other version numbers (_00, _01).
+    - The two boss rush trigger items and the Hunter's Mark
 """
 
 

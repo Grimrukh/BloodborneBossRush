@@ -1886,6 +1886,7 @@ def OneRebornDies():
     Kill(Characters.OneRebornMaiden4, award_souls=False)
     Kill(Characters.OneRebornMaiden5, award_souls=False)
     Kill(Characters.OneRebornMaiden6, award_souls=False)
+    DisableBossHealthBar(Characters.OneRebornHealthPool, name=507000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)
     SetLockedCameraSlot(game_map=YAHARGUL, camera_slot=0)
     End()  # stripped

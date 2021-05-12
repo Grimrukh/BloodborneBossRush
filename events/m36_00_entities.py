@@ -6,7 +6,7 @@ class Flags(Flag):
     OrphanDead = 13601800
     OrphanSpiritDead = 13601803
     OrphanFogEntered = 13604808
-    OrphanFirstTimeDone = 13604811
+    OrphanFirstTimeDone = 13601801
     OrphanPhaseTwo = 13604820
 
 
