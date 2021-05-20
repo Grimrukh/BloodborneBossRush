@@ -18,6 +18,7 @@ strings:
 222: 
 """
 from soulstruct.bloodborne.events import *
+from .common_entities import *
 from .boss_rush_entities import *
 from .m32_00_entities import *
 
@@ -55,7 +56,7 @@ def Constructor():
     RegisterLadder(start_climbing_flag=13200002, stop_climbing_flag=13200003, obj=3201131)
     Event13200990()
     Event13200950()
-    Event13200960()
+    # Event13200960()
     CreateObjectVFX(900130, obj=3201000, model_point=200)
     CreateObjectVFX(900130, obj=3201001, model_point=200)
     CreateObjectVFX(900130, obj=3201002, model_point=200)
@@ -602,7 +603,7 @@ def Event13200106():
     IfFlagOn(1, 13200101)
     IfEntityWithinDistance(1, PLAYER, 3200101, radius=5.0)
     IfConditionTrue(0, input_condition=1)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
 
 
 def Event13200107():
@@ -677,7 +678,7 @@ def Event13200121():
     DisableFlag(73200300)
     ForceAnimation(3200100, 7010)
     SkipLinesIfThisEventOn(1)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
     Restart()
 
 
@@ -796,7 +797,7 @@ def RomFirstTime():
     IfConditionTrue(0, input_condition=1)
     EnableFlag(Flags.RomLakeEntered)
     EndIfFlagOn(9303)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
     EnableFlag(9303)
 
 
@@ -1571,7 +1572,7 @@ def Event13200950():
     AddSpecialEffect(PLAYER, 115, affect_npc_part_hp=False)
     AddSpecialEffect(PLAYER, 116, affect_npc_part_hp=False)
     EndIfThisEventOn()
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
     End()
 
     # --- 0 --- #
@@ -1588,7 +1589,7 @@ def Event13200960():
     IfStandingOnCollision(-1, 3204001)
     IfStandingOnCollision(-1, 3204002)
     IfConditionTrue(0, input_condition=-1)
-    AwardAchievement(13)
+    AwardAchievement(Achievements.DiscoveredLectureBuilding)
     End()
 
     # --- 0 --- #

@@ -139,5 +139,5 @@ def AwardAbandonedOldWorkshopAchievement():
     PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 0, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 0, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 0, PlayLogMultiplayerType.HostOnly)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
     AwardAchievement(Achievements.DiscoveredAbandonedOldWorkshop)

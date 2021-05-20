@@ -59,7 +59,7 @@ def Constructor():
     SkipLinesIfFlagOn(1, 9802)
     RunEvent(7300, slot=42, args=(72102802, 2801952))
     RunEvent(7300, slot=43, args=(72102803, 2801953))
-    Event12800140()
+    # Event12800140()  # do not display "Seek the nightmare newborn" text
     RunEvent(9200, slot=8, args=(2803900,))
     Event12800160()
     RunEvent(9220, slot=7, args=(2800710, 12804220, 12804221, 2800, 28, 0), arg_types="iiiiBB")
@@ -1538,31 +1538,32 @@ def Event12800435():
     """ 12800435: Event 12800435 """
     DisableNetworkSync()
     DisableSoundEvent(2803600)
-    IfFlagOff(1, 9802)
-    IfInsideMap(1, game_map=YAHARGUL)
-    IfCharacterOutsideRegion(1, PLAYER, region=2802650)
-    IfConditionTrue(0, input_condition=1)
-    EnableSoundEvent(2803600)
-    IfFlagOn(-1, 9802)
-    IfOutsideMap(-1, game_map=YAHARGUL)
-    IfCharacterInsideRegion(-1, PLAYER, region=2802650)
-    IfConditionTrue(0, input_condition=-1)
-    DisableSoundEvent(2803600)
-    Restart()
+    # No "Hypogaen Gaol" music.
+    # IfFlagOff(1, 9802)
+    # IfInsideMap(1, game_map=YAHARGUL)
+    # IfCharacterOutsideRegion(1, PLAYER, region=2802650)
+    # IfConditionTrue(0, input_condition=1)
+    # EnableSoundEvent(2803600)
+    # IfFlagOn(-1, 9802)
+    # IfOutsideMap(-1, game_map=YAHARGUL)
+    # IfCharacterInsideRegion(-1, PLAYER, region=2802650)
+    # IfConditionTrue(0, input_condition=-1)
+    # DisableSoundEvent(2803600)
+    # Restart()
 
 
 def Event12800436():
     """ 12800436: Event 12800436 """
     DisableNetworkSync()
-    IfCharacterInsideRegion(1, PLAYER, region=2802020)
-    IfFlagOff(1, 9802)
-    IfConditionTrue(0, input_condition=1)
-    DisableSoundEvent(2803600)
-    IfCharacterInsideRegion(2, PLAYER, region=2802021)
-    IfFlagOff(2, 9802)
-    IfConditionTrue(0, input_condition=2)
-    EnableSoundEvent(2803600)
-    Restart()
+    # IfCharacterInsideRegion(1, PLAYER, region=2802020)
+    # IfFlagOff(1, 9802)
+    # IfConditionTrue(0, input_condition=1)
+    # DisableSoundEvent(2803600)
+    # IfCharacterInsideRegion(2, PLAYER, region=2802021)
+    # IfFlagOff(2, 9802)
+    # IfConditionTrue(0, input_condition=2)
+    # EnableSoundEvent(2803600)
+    # Restart()
 
 
 def Event12800460(_, arg_0_3: int, arg_4_7: int, arg_8_11: int):
@@ -1941,7 +1942,7 @@ def OneRebornFirstTime():
     EnableCharacter(Characters.OneRebornMain)
     EnableCharacter(Characters.OneRebornHumanPart)
     EndIfFlagOn(9305)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9305)
 
 

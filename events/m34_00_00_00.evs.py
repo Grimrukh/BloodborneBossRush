@@ -650,7 +650,7 @@ def Event13401000():
     AddSpecialEffect(PLAYER, 116, affect_npc_part_hp=False)
     SetRespawnPoint(3402958)
     EndIfThisEventOn()
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
 
 
 @RestartOnRest
@@ -945,7 +945,7 @@ def LudwigFirstTimeCutscene():
     EnableFlag(Flags.LudwigFogEntered)
     EnableCharacter(Characters.LudwigTheAccursed)
     EndIfFlagOn(9344)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9344)
     End()
 
@@ -1584,7 +1584,7 @@ def LaurenceFirstTime():
     EnableCharacterCollision(Characters.Laurence)
     ForceAnimation(Characters.Laurence, 3029)
     EndIfFlagOn(9302)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9302)
     End()
 
@@ -1930,8 +1930,8 @@ def Event13400100():
     EndIfThisEventOn()
     IfCharacterHuman(1, PLAYER)
     EndIfConditionFalse(1)
-    IfStandingOnCollision(0, 3404000)
-    RunEvent(9350, 0, args=(2,))
+    # IfStandingOnCollision(0, 3404000)
+    # RunEvent(9350, 0, args=(2,))
 
 
 @RestartOnRest

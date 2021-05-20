@@ -12,8 +12,8 @@ from soulstruct.bloodborne.params import GameParamBND
 from soulstruct.config import BB_PATH
 
 
-BOSS_LEVEL = 7001  # Testing level
-# BOSS_LEVEL = 7022  # Moon Presence level (highest level there is)
+DEBUG_BOSS_LEVEL = False  # all enemies have level 7001
+DEBUG_PLAYER_LVL = False
 
 
 class StartingClasses(IntEnum):
@@ -96,7 +96,12 @@ def set_boss_levels(game_param_bnd: GameParamBND):
         if boss == BossCharacterParam.Micolash:
             pass  # leaving Micolash as he is (he's almost end-game level anyway)
         else:
-            print_change(boss_entry, "spEffectID6", BOSS_LEVEL)
+            if DEBUG_BOSS_LEVEL:
+                print_change(boss_entry, "spEffectID6", 7001)
+            else:
+                if boss_entry["spEffectID6"] < 7017 or 7023 <= boss_entry["spEffectID6"] <= 7029:
+                    print_change(boss_entry, "spEffectID6", 7017)
+                # Otherwise, leave boss at standard level (including all DLC bosses).
             print_change(boss_entry, "GameClearSpEffectID", ng_plus_level)
 
 
@@ -107,14 +112,27 @@ def set_starting_classes(game_param_bnd: GameParamBND):
             player_entry = game_param_bnd.Players[class_id]
             print(f"Class {starting_class.name} ({class_id}):")
             print_change(player_entry, "soul", 687334)  # exactly enough to get from level 4 to 70
-            print_change(player_entry, "soulLv", 4)
-            print_change(player_entry, "baseVit", 10)
-            print_change(player_entry, "baseWil", 9)
-            print_change(player_entry, "baseStr", 10)
-            print_change(player_entry, "baseDex", 9)
-            print_change(player_entry, "baseMag", 7)
-            print_change(player_entry, "baseFai", 9)
+
+            if DEBUG_PLAYER_LVL:
+                print_change(player_entry, "soulLv", 99)
+                print_change(player_entry, "baseVit", 99)
+                print_change(player_entry, "baseWil", 50)
+                print_change(player_entry, "baseStr", 99)
+                print_change(player_entry, "baseDex", 99)
+                print_change(player_entry, "baseMag", 99)
+                print_change(player_entry, "baseFai", 99)
+            else:
+                print_change(player_entry, "soulLv", 4)
+                print_change(player_entry, "baseVit", 10)
+                print_change(player_entry, "baseWil", 9)
+                print_change(player_entry, "baseStr", 10)
+                print_change(player_entry, "baseDex", 9)
+                print_change(player_entry, "baseMag", 7)
+                print_change(player_entry, "baseFai", 9)
+
             print_change(player_entry, "baseHeroPoint", 10)  # insight
+            print_change(player_entry, "item_01", -1)  # remove Hunter's Mark  # TODO: add Rune Workshop Tool (4104)
+            print_change(player_entry, "itemNum_01", 1)
 
 
 def set_shop_lineups(game_param_bnd: GameParamBND):
@@ -258,14 +276,20 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
 
         if check_row_id in common_items:
             _set_insight_price(row_id, 1)
+            game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in uncommon_items:
             _set_insight_price(row_id, 2)
+            game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in rare_items:
             _set_insight_price(row_id, 3)
+            game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in weapons:
             _set_insight_price(row_id, 5)
-            row["equipId"] += 10  # Change weapon to +10.
+            if row["equipId"] + 1000 in game_param_bnd.Weapons:
+                row["equipId"] += 1000  # Change weapon ID to +10 (if available).
+            game_param_bnd.Weapons[row["equipId"]]["sellValue"] = 0
         elif check_row_id in armor_pieces:
+            game_param_bnd.Armor[row["equipId"]]["sellValue"] = 0
             if str(row['equipId']).endswith("1000"):
                 _set_insight_price(row_id, 2)  # Body armor
             else:
@@ -294,6 +318,14 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     _copy_armor_piece(200030, 200087, 291000, "White Church Garb")
     _copy_armor_piece(200030, 200088, 293000, "White Church Trousers")
     _copy_armor_piece(200030, 200089, 311000, "Alluring Dress")
+
+    # Remove miscellaneous sell values.
+    game_param_bnd.Goods[900]["sellValue"] = 0  # Quicksilver Bullet
+    game_param_bnd.Goods[1000]["sellValue"] = 0  # Blood Vial
+    game_param_bnd.Armor[230000]["sellValue"] = 0  # Black Hood
+    game_param_bnd.Armor[231000]["sellValue"] = 0  # Foreign Garb
+    game_param_bnd.Armor[232000]["sellValue"] = 0  # Sullied Bandage
+    game_param_bnd.Armor[233000]["sellValue"] = 0  # Foreign Trousers
 
 
 def set_new_item_lots(game_param_bnd: GameParamBND):
@@ -345,6 +377,17 @@ def set_goods_and_effects(game_param_bnd: GameParamBND):
     )
 
 
+def set_action_buttons(game_param_bnd: GameParamBND):
+    challenge_gehrman = game_param_bnd.ActionButtons[7002].copy()
+    challenge_gehrman["textId"] = 80001  # Challenge Gehrman, the First Hunter
+    challenge_gehrman.name = "Challenge Gehrman"
+    game_param_bnd.ActionButtons[7003] = challenge_gehrman
+    challenge_moon_presence = game_param_bnd.ActionButtons[7002].copy()
+    challenge_moon_presence["textId"] = 80002  # Challenge Moon Presence
+    challenge_moon_presence.name = "Challenge Moon Presence"
+    game_param_bnd.ActionButtons[7004] = challenge_moon_presence
+
+
 def main():
     """Apply all modifications to vanilla file and save."""
     game_param_bnd = GameParamBND(BB_PATH + "/param/gameparam/gameparam.parambnd.dcx")
@@ -353,6 +396,7 @@ def main():
     set_shop_lineups(game_param_bnd)
     set_new_item_lots(game_param_bnd)
     set_goods_and_effects(game_param_bnd)
+    set_action_buttons(game_param_bnd)
     game_param_bnd.write("../package/param/gameparam/gameparam.parambnd.dcx")
 
     for bak_file in Path("../package/param/gameparam").glob("*.bak"):

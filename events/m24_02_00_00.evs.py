@@ -53,7 +53,7 @@ def Constructor():
              arg_types="iiiiiBB")
     StartPlayLogMeasurement(2420000, 0, overwrite=True)
     StartPlayLogMeasurement(2420001, 18, overwrite=True)
-    Event12420990()
+    # Event12420990()
     Event12420400()
     RunEvent(7600, slot=40, args=(2421999, 2423999))
     RunEvent(7600, slot=41, args=(2421998, 2423998))
@@ -387,7 +387,7 @@ def EbrietasFirstTime():
     CancelSpecialEffect(Characters.Ebrietas, 5647)
     EnableFlag(Flags.EbrietasFogEntered)
     EndIfFlagOn(9304)
-    RunEvent(9350, 0, args=(3,))
+    # RunEvent(9350, 0, args=(3,))
     EnableFlag(9304)
 
 
@@ -2055,7 +2055,7 @@ def Event12420990():
     PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 154, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 154, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 154, PlayLogMultiplayerType.HostOnly)
-    AwardAchievement(11)
+    AwardAchievement(Achievements.DiscoveredUpperCathedralWard)
 
 
 @RestartOnRest

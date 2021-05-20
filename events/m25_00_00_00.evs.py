@@ -91,10 +91,10 @@ def Constructor():
     RunEvent(12500630, slot=3, args=(2500132, 7010, 7011))
     RunEvent(12500630, slot=4, args=(2500137, 7010, 7011))
     RunEvent(12500630, slot=5, args=(2500138, 7000, 7001))
-    RunEvent(12500454, slot=0, args=(2500172, 7023, 7013, 2502020, 4294967295, 122008, 122009, 150))
-    RunEvent(12500454, slot=1, args=(2500173, 7010, 7017, 2502021, 4294967295, 122008, 122009, 150))
-    RunEvent(12500454, slot=2, args=(2500182, 7028, 7018, 2502024, 4294967295, 122008, 122009, 150))
-    RunEvent(12500454, slot=3, args=(2500183, 7029, 7019, 2502024, 4294967295, 122008, 122009, 150))
+    RunEvent(12500454, slot=0, args=(2500172, 7023, 7013, 2502020, -1, 122008, 122009, 150))
+    RunEvent(12500454, slot=1, args=(2500173, 7010, 7017, 2502021, -1, 122008, 122009, 150))
+    RunEvent(12500454, slot=2, args=(2500182, 7028, 7018, 2502024, -1, 122008, 122009, 150))
+    RunEvent(12500454, slot=3, args=(2500183, 7029, 7019, 2502024, -1, 122008, 122009, 150))
     RunEvent(12500458, slot=0, args=(2500160, 7015, 2502022, 100, 2502023, 7025))
     RunEvent(12500458, slot=1, args=(2500161, 7016, 2502023, 100, 2502022, 7026))
     RunEvent(12500640, slot=0, args=(2500200,))
@@ -445,7 +445,7 @@ def CainhurstFirstArrivalCutscene():
     EnableFlag(12200134)
     PlayCutscene(25000000, skippable=True, fade_out=True, player_id=PLAYER)
     WaitFrames(1)
-    AwardAchievement(10)
+    AwardAchievement(Achievements.DiscoveredCainhurst)
     DisableFlag(CommonFlags.CutsceneActive)
 
 
@@ -453,8 +453,8 @@ def Event12500001():
     """ 12500001: Event 12500001 """
     EndIfThisEventOn()
     EndIfClient()
-    IfCharacterInsideRegion(0, PLAYER, region=2502500)
-    RunEvent(9350, 0, args=(2,))
+    # IfCharacterInsideRegion(0, PLAYER, region=2502500)
+    # RunEvent(9350, 0, args=(2,))
 
 
 def Event12500010():
@@ -598,9 +598,9 @@ def Event12500018():
     """ 12500018: Event 12500018 """
     EndIfClient()
     EndIfThisEventOn()
-    IfCharacterInsideRegion(1, PLAYER, region=2502500)
-    IfFlagOn(1, 1042)
-    RunEvent(9350, 0, args=(3,))
+    # IfCharacterInsideRegion(1, PLAYER, region=2502500)
+    # IfFlagOn(1, 1042)
+    # RunEvent(9350, 0, args=(3,))
 
 
 def Event12500019():
@@ -1397,7 +1397,7 @@ def MartyrLogariusFirstTime():
     DisableFlag(CommonFlags.CutsceneActive)
     EnableFlag(Flags.MartyrLogariusFogEntered)
     EndIfFlagOn(9341)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9341)
 
 
@@ -1794,7 +1794,7 @@ def Event12500090():
     PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 282, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 282, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 282, PlayLogMultiplayerType.HostOnly)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
 
 
 def Event12507010(_, arg_0_3: int, arg_4_7: int):

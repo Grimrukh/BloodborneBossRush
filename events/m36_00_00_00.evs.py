@@ -513,8 +513,8 @@ def Event13600000():
     EndIfThisEventOn()
     IfCharacterHuman(1, PLAYER)
     EndIfConditionFalse(1)
-    IfStandingOnCollision(0, 3604002)
-    RunEvent(9350, 0, args=(4,))
+    # IfStandingOnCollision(0, 3604002)
+    # RunEvent(9350, 0, args=(4,))
 
 
 def Event13600010():
@@ -925,7 +925,7 @@ def OrphanFirstTimeCutscene():
     EnableFlag(Flags.OrphanFogEntered)
     EnableCharacter(Characters.Orphan)
     EndIfFlagOn(9347)
-    RunEvent(9350, 0, args=(5,))
+    # RunEvent(9350, 0, args=(5,))
     EnableFlag(9347)
     End()
 

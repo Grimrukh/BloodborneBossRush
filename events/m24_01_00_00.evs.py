@@ -1351,7 +1351,7 @@ def ClericBeastFirstTime():
     EnableFlag(Flags.ClericBeastFogEntered)
     EnableFlag(12414223)
     EndIfFlagOn(9300)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9300)
 
 
@@ -1718,7 +1718,7 @@ def FatherGascoigneFirstTime():
     EnableCharacter(Characters.GascoigneHuman)
     EnableFlag(Flags.GascoigneFogEntered)
     EndIfFlagOn(9336)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9336)
 
 
@@ -1980,7 +1980,7 @@ def FatherGascoignePhaseTwoTrigger():
     EnableAI(Characters.GascoigneBeast)
     EnableBossHealthBar(Characters.GascoigneBeast, name=272000, slot=0)
     EndIfFlagOn(9337)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9337)
 
 
@@ -3286,15 +3286,15 @@ def AggroEmissary(_, enemy: int):
 def Event12410687(_, arg_0_3: int, arg_4_7: int):
     """ 12410687: Event 12410687 """
     EndIfFlagOn(arg_0_3)
-    IfFlagOn(0, arg_4_7)
-    RunEvent(9350, 0, args=(1,))
+    # IfFlagOn(0, arg_4_7)
+    # RunEvent(9350, 0, args=(1,))
 
 
 def Event12410693(_, arg_0_3: int, arg_4_7: int):
     """ 12410693: Event 12410693 """
     EndIfFlagOn(arg_0_3)
-    IfFlagOn(0, arg_4_7)
-    RunEvent(9350, 0, args=(2,))
+    # IfFlagOn(0, arg_4_7)
+    # RunEvent(9350, 0, args=(2,))
 
 
 def Event12410700():
@@ -4537,7 +4537,7 @@ def Event12410834():
     IfConditionTrue(1, input_condition=-1)
     IfCharacterInsideRegion(1, PLAYER, region=2412302)
     IfConditionTrue(0, input_condition=1)
-    RunEvent(9350, 0, args=(3,))
+    # RunEvent(9350, 0, args=(3,))
     EnableFlag(72400956)
 
 
@@ -5774,10 +5774,10 @@ def Event12410995():
     """ 12410995: Event 12410995 """
     EndIfThisEventOn()
     EndIfClient()
-    IfStandingOnCollision(1, 2414110)
-    IfCharacterOutsideRegion(1, PLAYER, region=2412900)
-    IfConditionTrue(0, input_condition=1)
-    RunEvent(9350, 0, args=(1,))
+    # IfStandingOnCollision(1, 2414110)
+    # IfCharacterOutsideRegion(1, PLAYER, region=2412900)
+    # IfConditionTrue(0, input_condition=1)
+    # RunEvent(9350, 0, args=(1,))
 
 
 @RestartOnRest

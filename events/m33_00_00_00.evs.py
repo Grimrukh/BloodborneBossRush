@@ -400,7 +400,7 @@ def AmygdalaFirstTime():
     DisableInvincibility(Characters.Amygdala)
     EnableCharacterCollision(Characters.Amygdala)
     EndIfFlagOn(9302)
-    RunEvent(9350, 0, args=(3,))
+    # RunEvent(9350, 0, args=(3,))
     EnableFlag(9302)
 
 
@@ -1214,4 +1214,4 @@ def Event13300990():
     PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 140, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 140, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 140, PlayLogMultiplayerType.HostOnly)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))

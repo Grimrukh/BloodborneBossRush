@@ -6,9 +6,12 @@ from soulstruct.bloodborne.text import MSGDirectory
 from soulstruct.config import BB_PATH
 
 
+VERSION = "Version 2021-05-19 16:02"
+
+
 NEW_EVENT_TEXT = {
     70002201: "Witch of Hemwick",  # Witch's Abode
-    70002301: "Blood-Starved Beast",  # Church of the Good Chalice
+    70002301: "Blood-starved Beast",  # Church of the Good Chalice
     70002302: "Darkbeast Paarl",  # Graveyard of the Darkbeast
     70002401: "Vicar Amelia",  # Grand Cathedral
     70002412: "Cleric Beast",  # Great Bridge
@@ -19,7 +22,7 @@ NEW_EVENT_TEXT = {
     70002601: "Mergo's Wet Nurse",  # Wet Nurse's Lunarium
     70002602: "Micolash, Host of the Nightmare",  # Mergo's Loft: Middle
     70002701: "Shadows of Yharnam",  # Forbidden Grave
-    70002803: "The One Reborn",  # Yahar'gul Chapel
+    70002801: "The One Reborn",  # Advent Plaza
     70003202: "Rom, the Vacuous Spider",  # Moonside Lake
     70003301: "Amygdala",  # Amygdala's Chamber
     70003402: "Ludwig, the Holy Blade",  # Underground Corpse Pile
@@ -28,7 +31,11 @@ NEW_EVENT_TEXT = {
     70003502: "Lady Maria of the Astral Clocktower",  # Astral Clocktower
     70003602: "Orphan of Kos",  # Coast
 
-    70011002: "Face next foe",
+    80000: VERSION,
+    80001: "Challenge Gehrman, the First Hunter",
+    80002: "Challenge Moon Presence",
+
+    70011000: "Face next foe",  # replaces "Light Lamp" (ActionButtonParam 6100)
 }
 
 

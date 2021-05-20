@@ -784,7 +784,7 @@ def BloodStarvedBeastFirstTime():
     ForceAnimation(Characters.BloodStarvedBeast, 7001)
     EnableFlag(12304800)
     EndIfFlagOn(9339)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9339)
 
 
@@ -1066,7 +1066,7 @@ def DarkbeastPaarlFirstTime():
     DisableInvincibility(Characters.DarkbeastPaarl)
     EnableFlag(12304700)
     EndIfFlagOn(9340)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9340)
 
 

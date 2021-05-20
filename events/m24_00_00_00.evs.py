@@ -1330,7 +1330,8 @@ def Event12400410():
     IfCharacterHuman(1, PLAYER)
     EndIfConditionFalse(1)
     IfCharacterHasSpecialEffect(0, PLAYER, 6421)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
+    End()
 
 
 def Event12400420():
@@ -3432,18 +3433,18 @@ def Event12400572():
 def Event12400580():
     """ 12400580: Event 12400580 """
     EndIfThisEventOn()
-    IfCharacterInsideRegion(1, PLAYER, region=2402280)
-    IfFlagOn(2, 72400400)
-    IfConditionTrue(-1, input_condition=1)
-    IfConditionTrue(-1, input_condition=2)
-    IfConditionTrue(0, input_condition=-1)
-    EndIfFinishedConditionTrue(2)
-    EnableSoundEvent(2403300)
+    # IfCharacterInsideRegion(1, PLAYER, region=2402280)
+    # IfFlagOn(2, 72400400)
+    # IfConditionTrue(-1, input_condition=1)
+    # IfConditionTrue(-1, input_condition=2)
+    # IfConditionTrue(0, input_condition=-1)
+    # EndIfFinishedConditionTrue(2)
+    # EnableSoundEvent(2403300)
 
 
 def Event12400581():
     """ 12400581: Event 12400581 """
-    IfFlagOn(0, 72400400)
+    # IfFlagOn(0, 72400400)  # Always disable Amelia talking.
     DisableSoundEvent(2403300)
 
 
@@ -5412,7 +5413,7 @@ def VicarAmeliaFirstTime():
     ForceAnimation(Characters.VicarAmelia, 7001)
     EnableFlag(Flags.VicarAmeliaFogEntered)
     EndIfFlagOn(9301)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9301)
 
 

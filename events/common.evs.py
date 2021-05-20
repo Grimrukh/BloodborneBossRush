@@ -1345,16 +1345,17 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
 
     await FlagEnabled(boss_dead_flag)
 
+    GainInsight(0, 2)  # replaces all boss-specific insight gains
+
     if not BossRushFlags.BossRushActive:
         # This is a single boss fight. Warp back to Dream after waiting long enough for the boss death sound to play.
-        GainInsight(0, 1)  # replaces all boss-specific insight gains
         Wait(5.0)
         EnableFlag(BossRushFlags.RequestDreamReturn)
         return
 
-    WaitFrames(1)  # give completion flag a chance to be enabled
+    WaitFrames(5)  # give boss rush completion flag a chance to be enabled
     if BossRushFlags.BossRushCompleted:
-        Wait(5.0)
+        Wait(7.0)
         DisplayBanner(BannerType.NightmareSlain)
         AwardItemLot(BossRushItemLots.BossRushReward)  # first time only (item lot flag 6620)
         GainInsight(0, 5)  # Can only apply up to 9 insight in one event call, so doing 10 * 5.
@@ -1367,29 +1368,23 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
         GainInsight(7, 5)
         GainInsight(8, 5)
         GainInsight(9, 5)
-        Wait(5.0)
+        Wait(9.0)
         EnableFlag(BossRushFlags.RequestDreamReturn)
         return
 
+    # Wait for player to continue boss rush at lantern.
+
     EnableObject(lantern_obj)
     CreateTemporaryVFX(100330, anchor_entity=lantern_obj, anchor_type=CoordEntityType.Object, model_point=100)
+
+    IfActionButtonParam(0, 6100, entity=lantern_obj)  # "Face next foe"
 
     RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
     AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
 
-    # Trying to use the standard action button instruction, rather than creating a new ActionButtonParam for it.
-    IfActionButton(
-        0,
-        prompt_text=BossRushText.FaceNextFoe,
-        anchor_entity=lantern_obj,
-        anchor_type=CoordEntityType.Object,
-        max_distance=2.0,
-        facing_angle=180.0,
-        trigger_attribute=TriggerAttribute.All,  # may as well avoid weird issues
-    )
-
+    Wait(2.0)
     if BossRushFlags.BossRushRandomized:
         EnableRandomBossWarpFlag()
     else:
@@ -1405,6 +1400,7 @@ def WarpToBoss(_, required_boss_warp_flag: int, warp_point: int):
     Await(FlagEnabled(required_boss_warp_flag) and not BossRushFlags.ChoosingRandomBoss)
     DisableFlag(required_boss_warp_flag)
     WarpPlayerToRespawnPoint(warp_point)
+    return RESTART
 
 
 def MonitorStoryBossRushRequest():
@@ -1412,7 +1408,7 @@ def MonitorStoryBossRushRequest():
     Await(HasSpecialEffect(PLAYER, BossRushEffects.StoryRushRequest))
 
     if not InsideMap(HUNTERS_DREAM):
-        # End boss rush.
+        # End boss rush/challenge.
         Wait(1.0)
         EnableFlag(BossRushFlags.RequestDreamReturn)
         return
@@ -1513,8 +1509,12 @@ def EnableNextStoryBossWarpFlag():
     EnableFlag(BossRushFlags.RequestBoss_Laurence)
     Goto(Label.L0)
 
-    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Ludwig)
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_LivingFailures)
     EnableFlag(BossRushFlags.RequestBoss_LadyMaria)
+    Goto(Label.L0)
+
+    SkipLinesIfFlagOff(2, BossRushFlags.BossDead_Ludwig)
+    EnableFlag(BossRushFlags.RequestBoss_LivingFailures)
     Goto(Label.L0)
 
     SkipLinesIfFlagOff(2, BossRushFlags.BossDead_MergosWetNurse)

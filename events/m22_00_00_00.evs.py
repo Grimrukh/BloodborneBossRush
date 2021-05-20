@@ -246,7 +246,7 @@ def Constructor():
     Event12205080()
     RunEvent(12205010, slot=0, args=(2200240, 2200130, 2202070, 2202370, 2202080, 12205015))
     RunEvent(12205010, slot=1, args=(2200223, 2200310, 2202071, 2202371, 2202171, 12205016))
-    RunEvent(12205015, slot=0, args=(2200130, 2202370, 4294967295, 12205010))
+    RunEvent(12205015, slot=0, args=(2200130, 2202370, -1, 12205010))
     RunEvent(12205015, slot=1, args=(2200310, 2202371, 200, 12205011))
     RunEvent(12205100, slot=0, args=(2200202, 2202130, 3.0, 12205105, 50), arg_types="iifii")
     RunEvent(12205100, slot=1, args=(2200200, 2202150, 3.0, 12205106, 50), arg_types="iifii")
@@ -430,7 +430,7 @@ def WitchesOfHemwickFirstTime():
     ForceAnimation(Characters.FirstWitchOfHemwick, 3011)
     EnableFlag(Flags.WitchesOfHemwickFogEntered)
     EndIfFlagOn(9338)
-    RunEvent(9350, 0, args=(1,))
+    # RunEvent(9350, 0, args=(1,))
     EnableFlag(9338)
 
 

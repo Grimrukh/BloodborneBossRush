@@ -202,20 +202,20 @@ def Constructor():
     Event13501123()
     Event13501124()
     Event13501125()
-    RunEvent(13501200, slot=0, args=(3501120, 13504220, 1, 3500020, 0, 4294967295))
-    # RunEvent(13501200, slot=1, args=(3501130, 13504230, 1, 3500030, 0, 4294967295))  # Maria's door can't be opened.
-    RunEvent(13501200, slot=2, args=(3501141, 13504241, 2, 3500040, 0, 4294967295))
-    RunEvent(13501200, slot=3, args=(3501142, 13504242, 2, 3500040, 0, 4294967295))
-    RunEvent(13501200, slot=4, args=(3501145, 13504245, 2, 3500041, 0, 4294967295))
-    RunEvent(13501200, slot=5, args=(3501146, 13504246, 2, 3500040, 0, 4294967295))
-    RunEvent(13501200, slot=6, args=(3501140, 13504242, 2, 3500040, 0, 4294967295))
+    RunEvent(13501200, slot=0, args=(3501120, 13504220, 1, 3500020, 0, -1))
+    # RunEvent(13501200, slot=1, args=(3501130, 13504230, 1, 3500030, 0, -1))  # Maria's door can't be opened.
+    RunEvent(13501200, slot=2, args=(3501141, 13504241, 2, 3500040, 0, -1))
+    RunEvent(13501200, slot=3, args=(3501142, 13504242, 2, 3500040, 0, -1))
+    RunEvent(13501200, slot=4, args=(3501145, 13504245, 2, 3500041, 0, -1))
+    RunEvent(13501200, slot=5, args=(3501146, 13504246, 2, 3500040, 0, -1))
+    RunEvent(13501200, slot=6, args=(3501140, 13504242, 2, 3500040, 0, -1))
     RunEvent(13501200, slot=7, args=(3501161, 13504261, 1, 3500062, 13504271, 3500063))
     RunEvent(13501200, slot=8, args=(3501162, 13504262, 1, 3500062, 13504272, 3500063))
     RunEvent(13501200, slot=9, args=(3501163, 13504263, 1, 3500062, 13504273, 3500063))
     RunEvent(13501200, slot=10, args=(3501164, 13504264, 1, 3500062, 13504274, 3500063))
     RunEvent(13501200, slot=11, args=(3501165, 13504265, 1, 3500062, 13504275, 3500063))
     RunEvent(13501200, slot=12, args=(3501166, 13504266, 1, 3500062, 13504276, 3500063))
-    RunEvent(13501200, slot=13, args=(3501170, 13504270, 1, 3500070, 0, 4294967295))
+    RunEvent(13501200, slot=13, args=(3501170, 13504270, 1, 3500070, 0, -1))
     Event13501250()
     RunEvent(13501400, slot=0, args=(3501350, 13500020, 9942))
     RunEvent(13501400, slot=1, args=(3501351, 13500021, 9942))
@@ -223,7 +223,7 @@ def Constructor():
     Event13504799()
     Event13500100()
     Event13500105()
-    Event13500106()
+    # Event13500106()  # bell sound disabled
     Event13500110()
     Event13500111()
     Event13500130()
@@ -861,8 +861,8 @@ def Event13501810():
     EndIfThisEventOn()
     IfCharacterHuman(1, PLAYER)
     EndIfConditionFalse(1)
-    IfStandingOnCollision(0, 3504020)
-    RunEvent(9350, slot=0, args=(2,))
+    # IfStandingOnCollision(0, 3504020)
+    # RunEvent(9350, slot=0, args=(2,))
 
 
 def EnterLadyMariaFog():
@@ -1129,7 +1129,7 @@ def LivingFailuresFirstTime():
     ReplanAI(Characters.LivingFailure1)
     EnableFlag(Flags.LivingFailuresFogEntered)
     EndIfFlagOn(9348)
-    RunEvent(9350, slot=0, args=(2,))
+    # RunEvent(9350, slot=0, args=(2,))
     EnableFlag(9348)
 
 
@@ -1280,7 +1280,7 @@ def ControlLivingFailuresMusic():
     DisableSoundEvent(3503812)
     DisableSoundEvent(3503813)
     DisableSoundEvent(3503814)
-    EndIfFlagOn(Flags.LadyMariaDead)
+    EndIfFlagOn(Flags.LivingFailuresDead)
     GotoIfThisEventOn(Label.L0)
     IfFlagOff(1, Flags.LivingFailuresDead)
     IfFlagOn(1, Flags.LivingFailuresBattleStarted)
@@ -2552,20 +2552,20 @@ def Event13500105():
     """ 13500105: Event 13500105 """
     DisableSoundEvent(3503202)
     EndIfThisEventOn()
-    IfCharacterHuman(1, PLAYER)
-    IfStandingOnCollision(1, 3504020)
-    IfConditionTrue(0, input_condition=1)
-    PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.a_Ambient, sound_id=350000010)
+    # IfCharacterHuman(1, PLAYER)
+    # IfStandingOnCollision(1, 3504020)
+    # IfConditionTrue(0, input_condition=1)
+    # PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.a_Ambient, sound_id=350000010)
 
 
 def Event13500106():
     """ 13500106: Event 13500106 """
     DisableSoundEvent(3503203)
     EndIfThisEventOn()
-    IfCharacterHuman(1, PLAYER)
-    IfStandingOnCollision(1, 3504815)
-    IfConditionTrue(0, input_condition=1)
-    PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.a_Ambient, sound_id=350000011)
+    # IfCharacterHuman(1, PLAYER)
+    # IfStandingOnCollision(1, 3504815)
+    # IfConditionTrue(0, input_condition=1)
+    # PlaySoundEffect(anchor_entity=PLAYER, sound_type=SoundType.a_Ambient, sound_id=350000011)
 
 
 @RestartOnRest
@@ -3909,8 +3909,8 @@ def Event13500999():
     IfCharacterHuman(15, PLAYER)
     EndIfConditionFalse(15)
     EndIfThisEventOn()
-    IfFlagOn(0, 73500317)
-    RunEvent(9350, slot=0, args=(2,))
+    # IfFlagOn(0, 73500317)
+    # RunEvent(9350, slot=0, args=(2,))
 
 
 def Event13501900(_, arg_0_3: int):

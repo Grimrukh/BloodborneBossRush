@@ -614,6 +614,7 @@ def MergosWetNurseDies():
     IfCharacterDead(0, Characters.MergosWetNurse)
     DisableBossHealthBar(Characters.MergosWetNurseHealthPool, name=551000, slot=0)
     DisplayBanner(BannerType.PreySlaughtered)  # Nightmare Slain banner saved for boss rush completion
+    EnableFlag(12604808)  # stop music
     SetLockedCameraSlot(game_map=NIGHTMARE_OF_MENSIS, camera_slot=0)
     CancelSpecialEffect(PLAYER, 5630)
     End()  # stripped
@@ -669,7 +670,7 @@ def MergosWetNurseFirstTime():
     EnableFlag(Flags.MergosWetNurseFogEntered)
     EnableCharacter(Characters.MergosWetNurse)
     EndIfFlagOn(9306)
-    RunEvent(9350, 0, args=(3,))
+    # RunEvent(9350, 0, args=(3,))
     EnableFlag(9306)
 
 
@@ -1100,7 +1101,7 @@ def MicolashFirstTime():
     EnableObject(Objects.MicolashFog3)
     CreateVFX(VFX.MicolashFog3)
     EndIfFlagOn(9342)
-    RunEvent(9350, 0, args=(2,))
+    # RunEvent(9350, 0, args=(2,))
     EnableFlag(9342)
 
 
@@ -2708,7 +2709,7 @@ def Event12600990():
     PlayLogParameterOutput(PlayerPlayLogParameter.TemporaryParameters, 268, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Weapon, 268, PlayLogMultiplayerType.HostOnly)
     PlayLogParameterOutput(PlayerPlayLogParameter.Armor, 268, PlayLogMultiplayerType.HostOnly)
-    RunEvent(9350, 0, args=(3,))
+    # RunEvent(9350, 0, args=(3,))
 
 
 def Event12601050():

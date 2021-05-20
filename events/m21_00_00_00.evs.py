@@ -27,13 +27,14 @@ def Constructor():
     ClearBossRushFlags()  # only runs if player does not spawn in boss arena trigger region
 
     # Two new Lanterns for post-Gehrman and post-Moon Presence (no characters).
-    RunEvent(7200, slot=21, args=(0, 2100750, BossRushFlags.BossDead_Gehrman))
-    RunEvent(7200, slot=21, args=(0, 2100751, BossRushFlags.BossDead_MoonPresence))
+    RunEvent(7200, slot=21, args=(0, 2100970, BossRushFlags.BossDead_Gehrman))
+    RunEvent(7200, slot=22, args=(0, 2100971, BossRushFlags.BossDead_MoonPresence))
 
     SkipLinesIfClient(2)
     SkipLinesIfFlagOff(1, 6600)
     EnableFlag(12101999)
 
+    # Lonely gravestone.
     SkipLinesIfFlagOn(1, 12101999)
     DisableObject(2101100)
 
@@ -117,6 +118,9 @@ def Constructor():
     WarpAtHeadstone(61, 72103501, Characters.OldHuntersMessengers, BossRushWarpPoints.LivingFailures)
     WarpAtHeadstone(62, 72103502, Characters.OldHuntersMessengers, BossRushWarpPoints.LadyMaria)
     WarpAtHeadstone(67, 72103602, Characters.OldHuntersMessengers, BossRushWarpPoints.OrphanOfKos)
+    # New events for starting Gehrman or Moon Presence fight at field gate. Both prompts appear at the same time.
+    ChallengeDreamBoss(0, 7003, Objects.WorkshopFrontDoorClosed, BossRushFlags.RequestBoss_Gehrman, 0)
+    ChallengeDreamBoss(1, 7004, Objects.IronGateToField, BossRushFlags.RequestBoss_MoonPresence, 1)
 
     # Chalice altars are disabled.
     DisableFlag(72100420)
@@ -173,14 +177,14 @@ def Constructor():
     MoonPresenceSinHarvest()
 
     # GATES / DOORS
-    DisplayMessageAtObject(
-        0, 7002, Objects.IronGateToField, CommonFlags.WorkshopOnFire, CommonEventTexts.Locked)
-    DisplayMessageAtObject(
-        1, 7030, Objects.WorkshopFrontDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
-    DisplayMessageAtObject(
-        2, 7030, Objects.WorkshopBackDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
-    DisplayMessageAtObject(
-        3, 7030, Objects.WorkshopMiddleDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
+    # DisplayMessageAtObject(
+    #     0, 7002, Objects.IronGateToField, CommonFlags.WorkshopOnFire, CommonEventTexts.Locked)
+    # DisplayMessageAtObject(
+    #     1, 7030, Objects.WorkshopFrontDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
+    # DisplayMessageAtObject(
+    #     2, 7030, Objects.WorkshopBackDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
+    # DisplayMessageAtObject(
+    #     3, 7030, Objects.WorkshopMiddleDoorClosed, CommonFlags.CentralYharnamVisited, CommonEventTexts.Locked)
 
     # HEADSTONES
     AnimateHeadstoneMessengers(0, Characters.YharnamMessengers, Flags.YharnamHeadstoneAvailable)
@@ -234,12 +238,12 @@ def Constructor():
 
     # GEHRMAN (ALLY) is disabled.
     DisableCharacter(Characters.GehrmanAlly)
-    DisableObject(Objects.WorkshopFrontDoorClosed)
-    EnableObject(Objects.WorkshopFrontDoorOpen)
-    DisableObject(Objects.WorkshopBackDoorClosed)
-    EnableObject(Objects.WorkshopBackDoorOpen)
-    DisableObject(Objects.WorkshopMiddleDoorClosed)
-    EnableObject(Objects.WorkshopMiddleDoorOpen)
+    EnableObject(Objects.WorkshopFrontDoorClosed)
+    DisableObject(Objects.WorkshopFrontDoorOpen)
+    EnableObject(Objects.WorkshopBackDoorClosed)
+    DisableObject(Objects.WorkshopBackDoorOpen)
+    EnableObject(Objects.WorkshopMiddleDoorClosed)
+    DisableObject(Objects.WorkshopMiddleDoorOpen)
     UnknownSoapstoneMessages()  # disabled
 
     # STUMP MESSENGERS are disabled.
@@ -881,7 +885,10 @@ def UnknownSoapstoneMessages():
 
 
 def InitializeWorkshopAppearance():
-    """ 12100300: Workshop is never on fire. Blood Moon is enabled if boss rush is completed (NG+ available). """
+    """ 12100300: Workshop is never on fire.
+
+    Blood Moon is enabled if boss rush is completed or Moon Presence is being fought.
+    """
     DeleteVFX(2103300, erase_root_only=False)  # Workshop fire FX.
     DeleteVFX(2103500, erase_root_only=False)
     DeleteVFX(2103501, erase_root_only=False)
@@ -893,6 +900,7 @@ def InitializeWorkshopAppearance():
     DeleteVFX(2103507, erase_root_only=False)
 
     GotoIfFlagOn(Label.L0, BossRushFlags.BossRushCompleted)
+    GotoIfFlagOn(Label.L0, BossRushFlags.MoonPresenceRequested)
 
     # Boss rush not completed.
     EnableObject(Objects.NormalMoonSky)
@@ -901,7 +909,8 @@ def InitializeWorkshopAppearance():
     DisableObject(Objects.BloodMoon)
     End()
 
-    # --- 0 --- # Boss rush completed.
+    # --- 0 --- # Boss rush completed. Show Blood Moon.
+    DefineLabel(Label.L0)
     DisableObject(Objects.NormalMoonSky)
     EnableObject(Objects.BloodMoonSky)
     DisableObject(Objects.NormalMoon)
@@ -909,10 +918,10 @@ def InitializeWorkshopAppearance():
 
 
 def InitializeDreamMusic():
-    """ 12100310: Play special music if boss rush is completed, or player has 50 insight. """
-    IfPlayerInsightAmountGreaterThanOrEqual(-1, 50)
-    IfFlagOn(-1, BossRushFlags.BossRushCompleted)
-    GotoIfConditionTrue(Label.L0, input_condition=-1)
+    """ 12100310: Play special music if boss rush is completed. """
+    IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
+    GotoIfConditionTrue(Label.L1, 1)
+    GotoIfFlagOn(Label.L0, BossRushFlags.BossRushCompleted)
     EnableSoundEvent(Music.NormalMusic)
     DisableSoundEvent(Music.BloodMoonMusic)
     End()
@@ -921,6 +930,12 @@ def InitializeDreamMusic():
     DefineLabel(0)
     DisableSoundEvent(Music.NormalMusic)
     EnableSoundEvent(Music.BloodMoonMusic)
+    End()
+
+    # --- 1 --- # Boss fight.
+    DefineLabel(1)
+    DisableSoundEvent(Music.NormalMusic)
+    DisableSoundEvent(Music.BloodMoonMusic)
     End()
 
 
@@ -948,23 +963,6 @@ def Event12100350(_, arg_0_3: int, arg_4_7: int):
     IfObjectActivated(0, obj_act_id=arg_4_7)
     WaitFrames(10)
     EnableTreasure(arg_0_3)
-
-
-def DisplayMessageAtObject(_, action_button_id: int, obj: int, manual_trigger_flag: int, message: int):
-    """ 12100410: Display a message if an object is activated or a certain flag enabled. """
-    DisableNetworkSync()
-    IfActionButtonParam(-1, action_button_id=action_button_id, entity=obj)
-    IfFlagOn(-1, manual_trigger_flag)
-    IfConditionTrue(0, input_condition=-1)
-    EndIfFlagOn(manual_trigger_flag)
-    DisplayDialog(
-        message,
-        anchor_entity=obj,
-        display_distance=3.0,
-        button_type=ButtonType.OK_or_Cancel,
-        number_buttons=NumberButtons.OneButton,
-    )
-    Restart()
 
 
 def MonitorToolAndBadgePossessionForNewGamePlus():
@@ -1160,6 +1158,7 @@ def GehrmanDies():
     await Flags.GehrmanBattleStarted
     IfCharacterDead(0, Characters.GehrmanBoss)
     DisplayBanner(BannerType.PreySlaughtered)
+    DisableBossHealthBar(Characters.GehrmanBoss, name=BossNames.Gehrman, slot=0)
     SetLockedCameraSlot(game_map=HUNTERS_DREAM, camera_slot=0)
     End()  # stripped
 
@@ -1177,15 +1176,23 @@ def PlayGehrmanDeathSound():
 
 
 def StartGehrmanBossBattle():
-    """ 12104802: Enable Gehrman when trigger region entered. """
+    """ 12104806: Enable Gehrman when trigger region entered.
+
+    Note that event ID has changed. The real flag checked by other events is enabled only if the condition below
+    succeeds, rather than the event ending immediately because Moon Presence is active.
+    """
     DisableCharacter(Characters.GehrmanAlly)
     DisableCharacter(Characters.GehrmanBoss)
+
+    if BossRushFlags.MoonPresenceRequested:
+        return  # Moon Presence was requested on map load.
 
     IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
     IfFlagOff(1, BossRushFlags.MoonPresenceRequested)  # Only map that requires this.
     IfFlagOff(1, BossRushFlags.BossDead_Gehrman)
     IfConditionTrue(0, 1)
 
+    EnableFlag(Flags.GehrmanBattleStarted)  # battle actually started
     EnableCharacter(Characters.GehrmanBoss)
     EnableBossHealthBar(Characters.GehrmanBoss, name=BossNames.Gehrman, slot=0)
     SetCharacterEventTarget(Characters.GehrmanBoss, 2100801)
@@ -1265,6 +1272,7 @@ def MoonPresenceDies():
     IfCharacterDead(0, Characters.MoonPresence)
     EnableFlag(12104859)  # Stops music.
     DisplayBanner(BannerType.PreySlaughtered)  # Nightmare Slain banner saved for boss rush completion
+    DisableBossHealthBar(Characters.MoonPresence, name=540000, slot=0)
     SetLockedCameraSlot(game_map=HUNTERS_DREAM, camera_slot=0)
     End()
 
@@ -1282,17 +1290,28 @@ def PlayMoonPresenceDeathSound():
 
 
 def StartMoonPresenceBossBattle():
-    """ 12104852: Event 12104852 """
+    """ 12104856: Moon Presence battle begins.
+
+    Note that the event ID has changed. The real flag is enabled only when the condition below succeeds.
+    """
     DisableCharacter(Characters.MoonPresence)
+
+    if not BossRushFlags.MoonPresenceRequested:
+        return
 
     IfPlayerInsideRegion(1, BossRushTriggers.GehrmanOrMoonPresence)
     IfFlagOn(1, BossRushFlags.MoonPresenceRequested)  # Only map that requires this.
     IfFlagOff(1, BossRushFlags.BossDead_MoonPresence)
     IfConditionTrue(0, 1)
 
-    DisableFlag(BossRushFlags.MoonPresenceRequested)
+    EnableFlag(Flags.MoonPresenceBattleStarted)
     EnableCharacter(Characters.MoonPresence)
     EnableBossHealthBar(Characters.MoonPresence, name=540000, slot=0)
+
+    # Give Gehrman trigger event time to terminate before we disable this flag (or Gehrman will trigger too).
+    # Also gives time for sky objects to be swapped for Blood Moon versions.
+    WaitFrames(30)
+    DisableFlag(BossRushFlags.MoonPresenceRequested)
 
 
 def ControlMoonPresenceMusic():
@@ -2646,6 +2665,8 @@ def BossRushFirstArrival():
     # Special items.
     AwardItemLot(BossRushItemLots.BossRushRequestItems)
 
+    EnableThisFlag()
+
 
 def ClearBossRushFlags():
     """ 12100800: Disable active and boss death flags, unless we've spawned in Gehrman/Moon Presence fight."""
@@ -2678,3 +2699,16 @@ def ClearBossRushFlags():
     DisableFlag(BossRushFlags.BossDead_OrphanOfKos)
     DisableFlag(BossRushFlags.BossDead_Gehrman)
     DisableFlag(BossRushFlags.BossDead_MoonPresence)
+
+
+def ChallengeDreamBoss(_, action_button_id: int, obj: int, boss_request_flag: int, is_moon_presence: uchar):
+    """ 12100410: Prompt to challenge Gehrman or Moon Presence. """
+    DisableNetworkSync()
+    IfActionButtonParam(0, action_button_id=action_button_id, entity=obj)
+    if is_moon_presence == 1:
+        EnableFlag(BossRushFlags.MoonPresenceRequested)
+    else:
+        DisableFlag(BossRushFlags.MoonPresenceRequested)
+    EnableFlag(boss_request_flag)
+    Wait(3.0)
+    return RESTART

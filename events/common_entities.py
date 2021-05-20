@@ -83,13 +83,17 @@ class Achievements(IntEnum):
     YharnamSunriseEnding = 1
     HonoringWishesEnding = 2
     ChildhoodsBeginningEnding = 3
+    DiscoveredCainhurst = 10
+    DiscoveredUpperCathedralWard = 11
     DiscoveredAbandonedOldWorkshop = 12
+    DiscoveredLectureBuilding = 13
     ShadowsOfYharnamDefeated = 16
     MicolashDefeated = 19
     ClericBeastDefeated = 21
     WitchesOfHemwickDefeated = 23
     LudwigDefeated = 36
     LadyMariaDefeated = 37
+    OrphanDefeated = 38
     LaurenceDefeated = 39
 
 

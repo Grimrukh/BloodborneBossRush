@@ -1,12 +1,3 @@
-"""
-TODO:
-    - No way to start a single fight against Gehrman or Moon Presence yet.
-    - New Cleric Beast regions (and presumably Gascoigne) aren't being respected. My guess is that the game isn't using
-    the latest MSB version, as I assumed (_11). Easy fix: copy it to the other version numbers (_00, _01).
-    - The two boss rush trigger items and the Hunter's Mark
-"""
-
-
 from soulstruct.game_types import *
 
 
@@ -113,7 +104,7 @@ class BossRushFlags(Flag):
 
 class BossRushWarpPoints(SpawnPointEvent):
     HuntersDream = 2102962  # Normal start position.
-    GehrmanOrMoonPresence = 2102965  # Shared (checks warp flag).
+    GehrmanOrMoonPresence = 2102950  # Shared (checks warp flag).
     WitchesOfHemwick = 2202951
     BloodStarvedBeast = 2302951
     DarkbeastPaarl = 2302952
@@ -191,7 +182,9 @@ class BossRushTriggers(Region):
 
 
 class BossRushText(EventText):
-    FaceNextFoe = 70011002
+    ModVersion = 80000
+    ChallengeGehrman = 80001
+    ChallengeMoonPresence = 80002
 
 
 class BossRushItemLots(ItemLotParam):
