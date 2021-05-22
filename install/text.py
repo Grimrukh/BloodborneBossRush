@@ -39,6 +39,47 @@ NEW_EVENT_TEXT = {
 }
 
 
+NEW_GEM_TEXT = {
+    4419: ("Edged Blood Gem", "+18% slash damage", "Adds +18% to slash damage."),
+    4420: ("Blunt Blood Gem", "+18% blunt damage", "Adds +18% to blunt damage."),
+    4421: ("Sharp Blood Gem", "+18% thrust damage", "Adds +18% to thrust damage."),
+    4422: ("Explosive Blood Gem", "+18% gun damage", "Adds +18% to gun damage."),
+    4423: ("Arcane Blood Gem", "+15% arcane damage", "Adds +15% to arcane damage and imbues weapon with arcane."),
+    4424: ("Fire Blood Gem", "+15% fire damage", "Adds +15% to fire damage and imbues weapon with fire."),
+    4425: ("Bolt Blood Gem", "+15% bolt damage", "Adds +15% to bolt damage and imbues weapon with bolt."),
+    4426: ("Hard Blood Gem", "+15% physical damage", "Adds +15% to physical damage."),
+    4427: ("Shiny Blood Gem", "+13% all damage", "Adds +13% to all damage types."),
+}
+
+REDIRECT_RUNES_TO_GOODS = {
+    11000002: 4503,  # Clockwise Metamorphosis
+    11000003: 4504,  # Anti-Clockwise Metamorphosis
+    11000004: 4505,  # Clawmark
+    11000005: 4506,  # Blood Rapture
+    11000006: 4507,  # Oedon
+    11000007: 4508,  # Heir
+    11000012: 4513,  # Arcane
+    11000013: 4514,  # Fading
+    11000014: 4516,  # Dissipating
+    11000015: 4517,  # Lake
+    11000016: 4518,  # Great
+    11000017: 4520,  # Clear
+    11000018: 4521,  # Stunning
+    11000019: 4522,  # Deep
+    11000020: 4523,  # Great
+    11000021: 4524,  # Beast
+    11000025: 4529,  # Communion
+    11000026: 4531,  # Formless
+    11000029: 4540,  # Guidance
+
+    12000004: 4600,  # Radiance
+    12000005: 4610,  # Corruption
+    12000006: 4620,  # Hunter
+    12000008: 4640,  # Beast's Embrace
+    12000009: 4650,  # Milkweed
+}
+
+
 def main():
     """Apply all modifications to vanilla file and save."""
     for language in ("engus", "enggb"):
@@ -72,6 +113,25 @@ def main():
             "Its hollow gaze conjures violent memories, but the nightmare has twisted their chronology.\n\n"
             "Use from within the memory to return to the Dream."
         )
+
+        msg_directory.GoodNames[102] = "Dreaming Blank"
+        msg_directory.GoodSummaries[102] = "Return to the Dream without delay"
+        msg_directory.GoodDescriptions[102] = (
+            "Emits an inaudible burst that abruptly ends waking entanglements.\n\n"
+            "Use from within the memory to return to the Dream."
+        )
+
+        for gem_id, good_id in REDIRECT_RUNES_TO_GOODS.items():
+            msg_directory.GoodNames[good_id] = msg_directory.BloodGemNames[gem_id]
+            msg_directory.GoodSummaries[good_id] = msg_directory.BloodGemSummaries[gem_id]
+            msg_directory.GoodDescriptions[good_id] = msg_directory.BloodGemDescriptions[gem_id] + (
+                "\n\nOnly one Caryll Rune and one Covenant Rune can be purchased at a time."
+            )
+
+        for good_id, (name, summary, desc) in NEW_GEM_TEXT.items():
+            msg_directory.GoodNames[good_id] = name
+            msg_directory.GoodSummaries[good_id] = summary
+            msg_directory.GoodDescriptions[good_id] = desc + "\n\nOnly one gemstone can be purchased at a time."
 
         msg_directory.write(f"../package/msg/{language}")
 

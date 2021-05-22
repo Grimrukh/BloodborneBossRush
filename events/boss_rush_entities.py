@@ -188,7 +188,8 @@ class BossRushText(EventText):
 
 
 class BossRushItemLots(ItemLotParam):
-    VialBulletRefill = 1000
+    VialBulletRefill20 = 1000
+    VialBulletRefill10 = 1010
     BossRushReward = 10000
     BossRushRequestItems = 10010
 
@@ -202,3 +203,4 @@ class BossRushGoods(GoodParam):
 class BossRushEffects(SpecialEffectParam):
     StoryRushRequest = 9500
     RandomRushRequest = 9501
+    ImmediateDreamReturnRequest = 9502

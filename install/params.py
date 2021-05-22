@@ -111,7 +111,7 @@ def set_starting_classes(game_param_bnd: GameParamBND):
         for class_id in (starting_class, starting_class + 1000):
             player_entry = game_param_bnd.Players[class_id]
             print(f"Class {starting_class.name} ({class_id}):")
-            print_change(player_entry, "soul", 687334)  # exactly enough to get from level 4 to 70
+            print_change(player_entry, "soul", 1019240)  # exactly enough to get from level 4 to 80
 
             if DEBUG_PLAYER_LVL:
                 print_change(player_entry, "soulLv", 99)
@@ -130,18 +130,25 @@ def set_starting_classes(game_param_bnd: GameParamBND):
                 print_change(player_entry, "baseMag", 7)
                 print_change(player_entry, "baseFai", 9)
 
-            print_change(player_entry, "baseHeroPoint", 10)  # insight
+            print_change(player_entry, "baseHeroPoint", 25)  # insight
             print_change(player_entry, "item_01", -1)  # remove Hunter's Mark  # TODO: add Rune Workshop Tool (4104)
             print_change(player_entry, "itemNum_01", 1)
 
 
 def set_shop_lineups(game_param_bnd: GameParamBND):
-    """All weapons and most items arefor sale in Bath Messengers shop, using insight (earned from defeating bosses).
+    """All weapons and most items are for sale in Bath Messengers shop, using insight (earned from defeating bosses).
+
+    Bath shop range: 100000 to 109999 (with other time periods at +10000, +20000, +30000).
+    Insight shop range: 200000 to 200099 (with other time periods at +10000, +20000, +30000).
+
+    Note the greatly reduced shop range of the insight shop (100 items rather than 10000).
+    # TODO: sort out insight vs. bath shop properly. Currently, consumables and armor are divided kinda randomly.
 
     Armor is still for sale in Insight Messengers shop, along with other things that were originally sold there.
     TODO: If I can be bothered, move non-armor stuff from Insight to Bath shop.
 
-    Note that the player starts with enough insight to buy two weapons (10).
+    Note that the player starts with enough insight to buy two weapons (10), an armor set (5), a gem (1), rune (2), and
+    covenant rune (2), for a total of 20.
     """
 
     # Any item not present in one of these categories will be removed.
@@ -227,14 +234,14 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     )
 
     def _copy_armor_set(source_head_row_id, dest_head_row_id, head_armor_id, set_name: str):
-        for i, (piece_type, offset) in enumerate(
+        for i_, (piece_type, piece_offset) in enumerate(
             zip(("Head", "Body", "Arms", "Legs"), (0, 1000, 2000, 3000))
         ):
-            _entry = game_param_bnd.Shops[dest_head_row_id + i] = game_param_bnd.Shops[source_head_row_id + i].copy()
-            print_change(_entry, "equipId", head_armor_id + offset)
+            _entry = game_param_bnd.Shops[dest_head_row_id + i_] = game_param_bnd.Shops[source_head_row_id + i_].copy()
+            print_change(_entry, "equipId", head_armor_id + piece_offset)
             _entry.name = f"{set_name} ({piece_type})"
             for s in (10000, 20000, 30000):
-                game_param_bnd.Shops[dest_head_row_id + i + s] = game_param_bnd.Shops[dest_head_row_id + i].copy()
+                game_param_bnd.Shops[dest_head_row_id + i_ + s] = game_param_bnd.Shops[dest_head_row_id + i_].copy()
 
     def _copy_armor_piece(source_piece_id, dest_piece_id, armor_id, name: str):
         _entry = game_param_bnd.Shops[dest_piece_id] = game_param_bnd.Shops[source_piece_id].copy()
@@ -253,6 +260,7 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
         print(f"{_entry.name}:")
         print_change(_entry, "shopType", 5)  # price is insight
         print_change(_entry, "eventFlag", -1)  # always available
+        print_change(_entry, "sellQuantity", -1)  # unlimited supply
         print_change(_entry, "qwcId", -1)  # no badge required
         print_change(_entry, "value", price)  # insight cost
 
@@ -288,6 +296,9 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
             if row["equipId"] + 1000 in game_param_bnd.Weapons:
                 row["equipId"] += 1000  # Change weapon ID to +10 (if available).
             game_param_bnd.Weapons[row["equipId"]]["sellValue"] = 0
+            # Copying durability setup of bare fists (1/0). Seems to work.
+            game_param_bnd.Weapons[row["equipId"]]["durability"] = 1
+            game_param_bnd.Weapons[row["equipId"]]["durabilityMax"] = 0
         elif check_row_id in armor_pieces:
             game_param_bnd.Armor[row["equipId"]]["sellValue"] = 0
             if str(row['equipId']).endswith("1000"):
@@ -327,15 +338,81 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     game_param_bnd.Armor[232000]["sellValue"] = 0  # Sullied Bandage
     game_param_bnd.Armor[233000]["sellValue"] = 0  # Foreign Trousers
 
+    # Add spell items to insight shop.
+    spell_goods = {
+        2000: "Augur of Ebrietas",
+        2010: "A Call Beyond",
+        2020: "Beast Roar",
+        2050: "Choir Bell",
+        2060: "Old Hunter Bone",
+        2070: "Tiny Tonitrus",
+        2080: "Executioner's Gloves",
+        2110: "Messenger's Gift",
+        2120: "Blacksky Eye",
+        2130: "Accursed Brew",
+        2140: "Madaras Whistle",
+    }
+    for i, (spell_good, good_name) in enumerate(spell_goods.items()):
+        shop_entry = game_param_bnd.Shops[200030].copy()
+        shop_entry["value"] = 3
+        shop_entry["equipId"] = spell_good
+        shop_entry["equipType"] = 3  # Good
+        shop_entry["eventFlag"] = -1
+        shop_entry["sellQuantity"] = -1
+        shop_entry.name = good_name
+        for offset in (0, 10000, 20000, 30000):
+            game_param_bnd.Shops[200010 + offset + i] = shop_entry
+
+    # Add "gem" and "rune" goods.
+    for i, blood_gem in enumerate(range(19, 28)):
+        gem = game_param_bnd.Shops[200030].copy()
+        gem["value"] = 1
+        gem["equipId"] = 4400 + blood_gem
+        gem["equipType"] = 3  # Good
+        gem["eventFlag"] = 12112600 + 10 * i  # only nine of them
+        gem["sellQuantity"] = 1
+        for offset in (0, 10000, 20000, 30000):
+            game_param_bnd.Shops[101160 + offset + i] = gem
+
+    for i, rune_id in enumerate(RUNE_IDS):
+        rune = game_param_bnd.Shops[200030].copy()
+        rune["value"] = 2
+        rune["equipId"] = 4500 + rune_id
+        rune["equipType"] = 3  # Good
+        rune["eventFlag"] = 12112700 + 10 * i  # only 19 of them
+        rune["sellQuantity"] = 1
+        for offset in (0, 10000, 20000, 30000):
+            game_param_bnd.Shops[101170 + offset + i] = rune
+
+    for i, covenant_rune_id in enumerate(COVENANT_RUNE_IDS):
+        covenant_rune = game_param_bnd.Shops[200030].copy()
+        covenant_rune["value"] = 2
+        covenant_rune["equipId"] = 4600 + covenant_rune_id - 200000
+        covenant_rune["equipType"] = 3  # Good
+        covenant_rune["eventFlag"] = 12112900 + 10 * i  # only five of them
+        covenant_rune["sellQuantity"] = 1
+        for offset in (0, 10000, 20000, 30000):
+            game_param_bnd.Shops[101190 + offset + covenant_rune_id - 200000] = covenant_rune
+
 
 def set_new_item_lots(game_param_bnd: GameParamBND):
     game_param_bnd.ItemLots[1000] = vial_refill = game_param_bnd.ItemLots[5500].copy()
-    vial_refill.name = "Blood Vial Refill"
+    vial_refill.name = "Blood Vial Refill 20"
+    vial_refill["lotItemId01"] = 1000
+    vial_refill["lotItemNum01"] = 20
+
+    game_param_bnd.ItemLots[1001] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    bullet_refill.name = "Quicksilver Bullet Refill 20"
+    bullet_refill["lotItemId01"] = 900
+    bullet_refill["lotItemNum01"] = 20
+
+    game_param_bnd.ItemLots[1010] = vial_refill = game_param_bnd.ItemLots[5500].copy()
+    vial_refill.name = "Blood Vial Refill 10"
     vial_refill["lotItemId01"] = 1000
     vial_refill["lotItemNum01"] = 10
 
-    game_param_bnd.ItemLots[1001] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
-    bullet_refill.name = "Quicksilver Bullet Refill"
+    game_param_bnd.ItemLots[1011] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    bullet_refill.name = "Quicksilver Bullet Refill 10"
     bullet_refill["lotItemId01"] = 900
     bullet_refill["lotItemNum01"] = 10
 
@@ -350,15 +427,17 @@ def set_new_item_lots(game_param_bnd: GameParamBND):
     game_param_bnd.ItemLots[10011] = boss_rush_request_item_2 = boss_rush_request_item_1.copy()
     boss_rush_request_item_2.name = "Skull of Chaos"
     boss_rush_request_item_2["lotItemId01"] = 101  # Skull of Chaos
+    game_param_bnd.ItemLots[10012] = dreaming_blank_lot = boss_rush_request_item_1.copy()
+    dreaming_blank_lot.name = "Dreaming Blank"
+    dreaming_blank_lot["lotItemId01"] = 102  # Dreaming Blank
 
 
 def set_goods_and_effects(game_param_bnd: GameParamBND):
     template_effect = game_param_bnd.SpecialEffects[9000].copy()
     template_effect["stateInfo"] = 0
-    request_story_boss_rush = template_effect.copy()
-    game_param_bnd.SpecialEffects[9500] = request_story_boss_rush
-    request_random_boss_rush = template_effect.copy()
-    game_param_bnd.SpecialEffects[9501] = request_random_boss_rush
+    game_param_bnd.SpecialEffects[9500] = template_effect.copy()  # Request story boss rush
+    game_param_bnd.SpecialEffects[9501] = template_effect.copy()  # Request random boss rush
+    game_param_bnd.SpecialEffects[9502] = template_effect.copy()  # Request dream return
 
     skull_of_memories = game_param_bnd.Goods[100]  # Hunter's Mark
     skull_of_memories.name = "Skull of Memories"
@@ -376,6 +455,15 @@ def set_goods_and_effects(game_param_bnd: GameParamBND):
         iconId=77,  # Great One's Wisdom
     )
 
+    game_param_bnd.Goods[102] = dreaming_blank = skull_of_memories.copy()
+    dreaming_blank.name = "Dreaming Blank"
+    dreaming_blank.update(
+        refId=9502,  # Homeward
+        iconId=9,
+        opmeMenuType=0,
+        goodsUseAnim=15,  # normal Silencing Blank animation
+    )
+
 
 def set_action_buttons(game_param_bnd: GameParamBND):
     challenge_gehrman = game_param_bnd.ActionButtons[7002].copy()
@@ -388,6 +476,162 @@ def set_action_buttons(game_param_bnd: GameParamBND):
     game_param_bnd.ActionButtons[7004] = challenge_moon_presence
 
 
+RUNE_IDS = {
+    # 0: "Moon",  # blood echoes up
+    # 1: blood echoes down
+    # 2: "Eye",  # item drop up
+    3: "Clockwise Metamorphosis",  # max HP up
+    4: "Anti-Clockwise Metamorphosis",  # max stamina up
+    5: "Clawmark",  # visceral damage up
+    6: "Blood Rapture",  # visceral health regain
+    7: "Oedon Writhe",  # visceral attack bullet recovery
+    8: "Heir",  # visceral attack blood echoes
+    # 9: slash defense up
+    # 10: blunt defense up
+    # 11: thrust defense up
+    # 12: gun defense up
+    13: "Arcane Lake",  # arcane defense up
+    14: "Fading Lake",  # fire defense up
+    # 15: fire defense down
+    16: "Dissipating Lake",  # bolt defense up
+    17: "Lake",  # physical defense up
+    18: "Great Lake",  # all defense up
+    # 19: all defense down
+    20: "Clear Deep Sea",  # slow poison defense up
+    21: "Stunning Deep Sea",  # fast poison defense up
+    22: "Deep Sea",  # frenzy defense up
+    23: "Great Deep Sea",  # all status resistance up
+    24: "Beast",  # beast extension
+    # 25: slow poison shortening
+    # 26: fast poison shortening
+    # 27: blood vial recovery up
+    # 28: blood vial recovery down
+    29: "Communion",  # max blood vials up
+    # 30: max blood vials down
+    31: "Formless Oedon",  # max bullets up
+    # 32: max bullets down
+    # 33: stamina recovery speed up
+    # 34: stamina recovery speed down
+    # 35: fall damage reduction
+    40: "Guidance",  # rally potential up (NOTE: level 3 not found in game)
+
+    # Beast's Embrace
+    # Corruption
+    # Hunter
+    # Impurity (no point including)
+    # Milkweed
+    # Radiance
+}
+
+# Taken from the old cut goods (1600+).
+RUNE_GOOD_ICONS = {
+    3: 332,  # "Clockwise Metamorphosis",  # max HP up
+    4: 333,  # "Anti-Clockwise Metamorphosis",  # max stamina up
+    5: 341,  # "Clawmark",  # visceral damage up
+    6: 334,  # "Blood Rapture",  # visceral health regain
+    7: 335,  # "Oedon Writhe",  # visceral attack bullet recovery
+    8: 342,  # "Heir",  # visceral attack blood echoes
+    13: 336,  # "Arcane Lake",  # arcane defense up
+    14: 336,  # "Fading Lake",  # fire defense up
+    16: 336,  # "Dissipating Lake",  # bolt defense up
+    17: 336,  # "Lake",  # physical defense up
+    18: 336,  # "Great Lake",  # all defense up
+    20: 337,  # "Clear Deep Sea",  # slow poison defense up
+    21: 337,  # "Stunning Deep Sea",  # fast poison defense up
+    22: 337,  # "Deep Sea",  # frenzy defense up
+    23: 337,  # "Great Deep Sea",  # all status resistance up
+    24: 338,  # "Beast",  # beast extension
+    29: 339,  # "Communion",  # max blood vials up
+    31: 340,  # "Formless Oedon",  # max bullets up
+    40: 330,  # "Guidance",  # rally potential up (NOTE: level 3 not found in game)
+}
+
+RUNE_SP_EFFECTS = {
+    3: 103002,
+    4: 105002,
+    5: 107002,
+    6: 108002,
+    7: 110002,
+    8: 112002,
+    13: 118002,
+    14: 119002,
+    16: 121002,
+    17: 122002,
+    18: 123002,
+    20: 125002,
+    21: 126002,
+    22: 127002,
+    23: 128002,
+    24: 129002,
+    29: 134004,  # level 5
+    31: 136004,  # level 5
+    40: 141002,  # Guidance level 3, normally unobtainable
+}
+
+# Actual `GemsAndRunes` entries.
+COVENANT_RUNE_IDS = {
+    200000: "Radiance",
+    200010: "Corruption",
+    200020: "Hunter",
+    # 200030: "Impurity",
+    200040: "Beast's Embrace",
+    200050: "Milkweed",
+}
+
+
+BLOOD_GEM_NAMES = {
+    19: "Blood Gem: +18% Slash Damage",
+    20: "Blood Gem: +18% Blunt Damage",
+    21: "Blood Gem: +18% Thrust Damage",
+    22: "Blood Gem: +18% Gun Damage",
+    23: "Blood Gem: +15% Arcane Damage",
+    24: "Blood Gem: +15% Fire Damage",
+    25: "Blood Gem: +15% Bolt Damage",
+    26: "Blood Gem: +15% Physical Damage",
+    27: "Blood Gem: +13% All Damage",
+}
+
+
+def set_gems_and_runes(game_param_bnd: GameParamBND):
+    """I can't get gems or runes to appear in shops (using any `equipType`), so I need to use goods (key items) to
+    spoof them, and match the texture.
+
+    Buying one will remove any others in that category from your inventory. They cost 1 (gems) or 2 (runes) insight.
+
+    Common EMEVD checks if you possess a "gem" or "rune" good on map load (don't worry about re-checking if you buy a
+    new one) and apply a permanent SpEffect to the player with the appropriate effect. They will only apply to the right
+    hand weapon, just like Bolt Paper and co, so gems will reapply their effect every second in case you switch weapons.
+
+    The (cost4 rank10) levels of the "magnification" gems give about +15%. For reference, these GemEffects IDs:
+        19410: +18% Slash
+        20410: +18% Blunt
+        21410: +18% Piercing
+        22410: +15% Neutral (Guns)
+        23410: +15% Arcane (Magic element)
+        24410: +15% Fire (Fire element)
+        25410: +15% Bolt (Lightning element)
+        26410: +15% Physical
+        27410: +13% All
+    They reference the same SpecialEffect ID. There are also duplicates at +100000 and +200000 (maybe more), possibly
+    just for different gem shape slots.
+    """
+    def create_gem_good(good_id: int, icon_id: int, name: str):
+        new_good = game_param_bnd.Goods[4000].copy()  # Oedon Tomb Key
+        new_good["iconId"] = icon_id
+        new_good["goodsType"] = 2  # key items don't show up; trying materials
+        new_good.name = name
+        game_param_bnd.Goods[good_id] = new_good
+
+    for i in range(19, 28):  # "Slash" to "All"; see IDs above
+        create_gem_good(4400 + i, icon_id=324, name=BLOOD_GEM_NAMES[i])  # Petrified Blood Gem icon
+
+    for rune_id, rune_name in RUNE_IDS.items():
+        create_gem_good(4500 + rune_id, icon_id=RUNE_GOOD_ICONS[rune_id], name=rune_name)
+
+    for covenant_rune_id, rune_name in COVENANT_RUNE_IDS.items():
+        create_gem_good(4600 + covenant_rune_id - 200000, icon_id=331, name=rune_name)  # Eye
+
+
 def main():
     """Apply all modifications to vanilla file and save."""
     game_param_bnd = GameParamBND(BB_PATH + "/param/gameparam/gameparam.parambnd.dcx")
@@ -397,6 +641,7 @@ def main():
     set_new_item_lots(game_param_bnd)
     set_goods_and_effects(game_param_bnd)
     set_action_buttons(game_param_bnd)
+    set_gems_and_runes(game_param_bnd)
     game_param_bnd.write("../package/param/gameparam/gameparam.parambnd.dcx")
 
     for bak_file in Path("../package/param/gameparam").glob("*.bak"):

@@ -14,15 +14,22 @@ def Constructor():
     """ 0: Event 0 """
 
     if (BossRushTriggers.GehrmanOrMoonPresence or OutsideMap(HUNTERS_DREAM)) and not BossRushFlags.BossRushActive:
-        # Get exactly 10 Vials and Bullets on map load if this is a single boss fight.
+        # Get exactly 20 Vials and Bullets on map load if this is a single boss fight.
         RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
         RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
         RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-        AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
+        AwardItemLot(BossRushItemLots.VialBulletRefill20)
         # Leave spawn point as whatever was warped to, for single boss fight.
     else:
         # Set respawn point to normal Hunter's Dream spawn.
         SetRespawnPoint(BossRushWarpPoints.HuntersDream)  # Hunter's Dream
+
+    ManageGems()
+    ManageNormalRunes()
+    ManageCovenantRunes()
+    MonitorGemPurchase()
+    MonitorNormalRunePurchase()
+    MonitorCovenantRunePurchase()
 
     DisableFlag(7501)
     RunEvent(9190)
@@ -422,28 +429,7 @@ def Event6002():
 
 # Events 6680 to 6697 (weapon monitors) hijacked.
 
-
-def Event6788():
-    """ 6788: Event 6788 """
-    DisableNetworkSync()
-    IfCharacterHasSpecialEffect(0, PLAYER, 6141)
-    StoreItemAmountSpecifiedByFlagValue(ItemType.Good, 1700, 6780, 8)
-    Wait(0.10000000149011612)
-    Restart()
-
-
-def Event6789():
-    """ 6789: Event 6789 """
-    DisableNetworkSync()
-    IfCharacterHasSpecialEffect(0, PLAYER, 6143)
-    StoreItemAmountSpecifiedByFlagValue(ItemType.Good, 1700, 6790, 8)
-    EventValueOperation(6780, 8, 0, 6790, 8, CalculationType.Subtract)
-    EventValueOperation(6800, 9, 0, 6780, 8, CalculationType.Add)
-    IfEventValueComparison(1, 6800, bit_count=9, comparison_type=ComparisonType.GreaterThanOrEqual, value=255)
-    SkipLinesIfConditionFalse(1, 1)
-    EventValueOperation(6800, 9, 255, 0, 1, CalculationType.Assign)
-    Wait(0.10000000149011612)
-    Restart()
+# Events 6788, 6789 (Vermin item management) hijacked, along with flag 6790 they used.
 
 
 def Event6809():
@@ -1379,10 +1365,11 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
 
     IfActionButtonParam(0, 6100, entity=lantern_obj)  # "Face next foe"
 
-    RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
-    RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
+    # Remove blood bullets, but keep existing vials/bullets.
+    # RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
+    # RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
+    AwardItemLot(BossRushItemLots.VialBulletRefill10)  # give 10 extra, rather than setting to 20 exactly
 
     Wait(2.0)
     if BossRushFlags.BossRushRandomized:
@@ -1421,9 +1408,9 @@ def MonitorStoryBossRushRequest():
     RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
+    AwardItemLot(BossRushItemLots.VialBulletRefill20)
 
-    Wait(0.5)
+    Wait(1.0)
     EnableNextStoryBossWarpFlag()
 
 
@@ -1448,9 +1435,9 @@ def MonitorRandomBossRushRequest():
     RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill)  # 10 Blood Vials, 10 Quicksilver Bullets
+    AwardItemLot(BossRushItemLots.VialBulletRefill20)
 
-    Wait(0.5)
+    Wait(1.0)
     EnableRandomBossWarpFlag()
 
 
@@ -1699,6 +1686,737 @@ def WarpBackToDream():
 
     This event ID used to play some random sounds in the DLC.
     """
-    Await(FlagEnabled(BossRushFlags.RequestDreamReturn))  # ignores 'ChoosingRandomBoss' flag, for emergencies
+    IfFlagOn(-1, BossRushFlags.RequestDreamReturn)
+    IfCharacterHasSpecialEffect(-1, PLAYER, BossRushEffects.ImmediateDreamReturnRequest)
+    IfConditionTrue(0, -1)
+
     DisableFlag(BossRushFlags.RequestDreamReturn)
     WarpPlayerToRespawnPoint(BossRushWarpPoints.HuntersDream)
+
+
+def ManageGems():
+    """ 6692: Check which gem player has and apply effect. Checks every second as long as player has no gem effects.
+
+    19410: +18% Slash
+    20410: +18% Blunt
+    21410: +18% Piercing
+    22410: +18% Neutral (Guns)
+    23410: +15% Arcane (Magic element)
+    24410: +15% Fire (Fire element)
+    25410: +15% Bolt (Lightning element)
+    26410: +15% Physical
+    27410: +13% All
+    """
+
+    for offset, effect in zip(
+        (0, 10, 20, 30, 40, 50, 60, 70, 80),
+        (19410, 20410, 21410, 22410, 23410, 24410, 25410, 26410, 27410),
+    ):
+        SkipLinesIfFlagOff(1, 12112600 + offset + 9)
+        AddSpecialEffect(PLAYER, effect, affect_npc_part_hp=False)
+
+    # Waits until player has no gem effects (e.g. they swapped weapons) before running again, with a minimum wait of
+    # one second.
+    Wait(1.0)
+    for effect in (19410, 20410, 21410, 22410, 23410, 24410, 25410, 26410, 27410):
+        IfCharacterDoesNotHaveSpecialEffect(1, PLAYER, effect)
+    IfConditionTrue(0, 1)
+    return RESTART
+
+
+def ManageNormalRunes():
+    """ 6693: Check which rune player has and apply effect. """
+
+    for offset, effect in zip(
+        (0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180),
+        (
+            103002, 105002, 107002, 108002, 110002, 112002, 118002, 119002, 121002, 122002,
+            123002, 125002, 126002, 127002, 128002, 129002, 134004, 136004, 141002,
+        ),
+    ):
+        SkipLinesIfFlagOff(1, 12112700 + offset + 9)
+        AddSpecialEffect(PLAYER, effect, affect_npc_part_hp=False)
+
+    # Only runs once per load.
+    return
+
+
+def ManageCovenantRunes():
+    """ 6694: Check which covenant rune player has and apply effect.
+
+    180000: +2% Blood Vial (Radiance)
+    180010: Heal below 12.5% HP (Corruption)
+    180020: +3 stamina recovery (Hunter)
+    250, 252, 253, 180050: Beast
+    255, 257, 180060: Milkweed
+    """
+
+    # Radiance
+    SkipLinesIfFlagOff(1, 12112909)
+    AddSpecialEffect(PLAYER, 180000, affect_npc_part_hp=False)
+
+    # Corruption
+    SkipLinesIfFlagOff(1, 12112919)
+    AddSpecialEffect(PLAYER, 180010, affect_npc_part_hp=False)
+
+    # Hunter
+    SkipLinesIfFlagOff(1, 12112929)
+    AddSpecialEffect(PLAYER, 180020, affect_npc_part_hp=False)
+
+    # Beast
+    SkipLinesIfFlagOff(4, 12112939)
+    AddSpecialEffect(PLAYER, 250, affect_npc_part_hp=False)
+    AddSpecialEffect(PLAYER, 252, affect_npc_part_hp=False)
+    AddSpecialEffect(PLAYER, 253, affect_npc_part_hp=False)
+    AddSpecialEffect(PLAYER, 180050, affect_npc_part_hp=False)
+
+    # Milkweed
+    SkipLinesIfFlagOff(3, 12112949)
+    AddSpecialEffect(PLAYER, 255, affect_npc_part_hp=False)
+    AddSpecialEffect(PLAYER, 257, affect_npc_part_hp=False)
+    AddSpecialEffect(PLAYER, 180060, affect_npc_part_hp=False)
+
+    # Only runs once per load.
+    return
+
+
+def MonitorGemPurchase():
+    """ 6695: Monitor whenever player purchases a new gem, and control flags.
+
+    This extra layer of flags is necessary to properly control effects in above events, as otherwise multiple gems could
+    be bought in sequence and mess up the shop flags.
+
+    Normally we would use slots for this, but I'm too lazy to find event ID ranges.
+    """
+    if not InsideMap(HUNTERS_DREAM):
+        return  # only needs to run in Dream
+
+    SkipLinesIfFlagOn(12, 12112609)
+    SkipLinesIfFlagOff(11, 12112600)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112600)
+    EnableFlag(12112609)
+    SkipLinesIfFlagOn(12, 12112619)
+    SkipLinesIfFlagOff(11, 12112610)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112610)
+    EnableFlag(12112619)
+    SkipLinesIfFlagOn(12, 12112629)
+    SkipLinesIfFlagOff(11, 12112620)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112620)
+    EnableFlag(12112629)
+    SkipLinesIfFlagOn(12, 12112639)
+    SkipLinesIfFlagOff(11, 12112630)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112630)
+    EnableFlag(12112639)
+    SkipLinesIfFlagOn(12, 12112649)
+    SkipLinesIfFlagOff(11, 12112640)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112640)
+    EnableFlag(12112649)
+    SkipLinesIfFlagOn(12, 12112659)
+    SkipLinesIfFlagOff(11, 12112650)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112650)
+    EnableFlag(12112659)
+    SkipLinesIfFlagOn(12, 12112669)
+    SkipLinesIfFlagOff(11, 12112660)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4426)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112660)
+    EnableFlag(12112669)
+    SkipLinesIfFlagOn(12, 12112679)
+    SkipLinesIfFlagOff(11, 12112670)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4427)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112670)
+    EnableFlag(12112679)
+    SkipLinesIfFlagOn(12, 12112689)
+    SkipLinesIfFlagOff(11, 12112680)
+    RemoveGoodFromPlayer(4419)
+    RemoveGoodFromPlayer(4420)
+    RemoveGoodFromPlayer(4421)
+    RemoveGoodFromPlayer(4422)
+    RemoveGoodFromPlayer(4423)
+    RemoveGoodFromPlayer(4424)
+    RemoveGoodFromPlayer(4425)
+    RemoveGoodFromPlayer(4426)
+    DisableFlagRange((12112600, 12112699))
+    EnableFlag(12112680)
+    EnableFlag(12112689)
+
+    # Re-checks every second.
+    Wait(1.0)
+    return RESTART
+
+
+def MonitorNormalRunePurchase():
+    """ 6696: Monitor whenever player purchases a new normal Caryll Rune, and control flags. """
+    if not InsideMap(HUNTERS_DREAM):
+        return  # only needs to run in Dream
+
+    SkipLinesIfFlagOn(22, 12112709)
+    SkipLinesIfFlagOff(21, 12112700)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112700)
+    EnableFlag(12112709)
+    SkipLinesIfFlagOn(22, 12112719)
+    SkipLinesIfFlagOff(21, 12112710)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112710)
+    EnableFlag(12112719)
+    SkipLinesIfFlagOn(22, 12112729)
+    SkipLinesIfFlagOff(21, 12112720)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112720)
+    EnableFlag(12112729)
+    SkipLinesIfFlagOn(22, 12112739)
+    SkipLinesIfFlagOff(21, 12112730)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112730)
+    EnableFlag(12112739)
+    SkipLinesIfFlagOn(22, 12112749)
+    SkipLinesIfFlagOff(21, 12112740)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112740)
+    EnableFlag(12112749)
+    SkipLinesIfFlagOn(22, 12112759)
+    SkipLinesIfFlagOff(21, 12112750)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112750)
+    EnableFlag(12112759)
+    SkipLinesIfFlagOn(22, 12112769)
+    SkipLinesIfFlagOff(21, 12112760)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112760)
+    EnableFlag(12112769)
+    SkipLinesIfFlagOn(22, 12112779)
+    SkipLinesIfFlagOff(21, 12112770)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112770)
+    EnableFlag(12112779)
+    SkipLinesIfFlagOn(22, 12112789)
+    SkipLinesIfFlagOff(21, 12112780)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112780)
+    EnableFlag(12112789)
+    SkipLinesIfFlagOn(22, 12112799)
+    SkipLinesIfFlagOff(21, 12112790)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112790)
+    EnableFlag(12112799)
+    SkipLinesIfFlagOn(22, 12112809)
+    SkipLinesIfFlagOff(21, 12112800)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112800)
+    EnableFlag(12112809)
+    SkipLinesIfFlagOn(22, 12112819)
+    SkipLinesIfFlagOff(21, 12112810)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112810)
+    EnableFlag(12112819)
+    SkipLinesIfFlagOn(22, 12112829)
+    SkipLinesIfFlagOff(21, 12112820)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112820)
+    EnableFlag(12112829)
+    SkipLinesIfFlagOn(22, 12112839)
+    SkipLinesIfFlagOff(21, 12112830)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112830)
+    EnableFlag(12112839)
+    SkipLinesIfFlagOn(22, 12112849)
+    SkipLinesIfFlagOff(21, 12112840)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112840)
+    EnableFlag(12112849)
+    SkipLinesIfFlagOn(22, 12112859)
+    SkipLinesIfFlagOff(21, 12112850)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112850)
+    EnableFlag(12112859)
+    SkipLinesIfFlagOn(22, 12112869)
+    SkipLinesIfFlagOff(21, 12112860)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4531)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112860)
+    EnableFlag(12112869)
+    SkipLinesIfFlagOn(22, 12112879)
+    SkipLinesIfFlagOff(21, 12112870)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4540)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112870)
+    EnableFlag(12112879)
+    SkipLinesIfFlagOn(22, 12112889)
+    SkipLinesIfFlagOff(21, 12112880)
+    RemoveGoodFromPlayer(4503)
+    RemoveGoodFromPlayer(4504)
+    RemoveGoodFromPlayer(4505)
+    RemoveGoodFromPlayer(4506)
+    RemoveGoodFromPlayer(4507)
+    RemoveGoodFromPlayer(4508)
+    RemoveGoodFromPlayer(4513)
+    RemoveGoodFromPlayer(4514)
+    RemoveGoodFromPlayer(4516)
+    RemoveGoodFromPlayer(4517)
+    RemoveGoodFromPlayer(4518)
+    RemoveGoodFromPlayer(4520)
+    RemoveGoodFromPlayer(4521)
+    RemoveGoodFromPlayer(4522)
+    RemoveGoodFromPlayer(4523)
+    RemoveGoodFromPlayer(4524)
+    RemoveGoodFromPlayer(4529)
+    RemoveGoodFromPlayer(4531)
+    DisableFlagRange((12112700, 12112899))
+    EnableFlag(12112880)
+    EnableFlag(12112889)
+
+    # Re-checks every second.
+    Wait(1.0)
+    return RESTART
+
+
+def MonitorCovenantRunePurchase():
+    """ 6697: Monitor whenever player purchases a new Covenant Rune, and control flags. """
+    if not InsideMap(HUNTERS_DREAM):
+        return  # only needs to run in Dream
+
+    SkipLinesIfFlagOn(8, 12112909)  # rune must not already be "active"
+    SkipLinesIfFlagOff(7, 12112900)  # rune must be purchased
+    RemoveGoodFromPlayer(4610)
+    RemoveGoodFromPlayer(4620)
+    RemoveGoodFromPlayer(4640)
+    RemoveGoodFromPlayer(4650)
+    DisableFlagRange((12112900, 12112999))  # all runes purchaseable and inactive...
+    EnableFlag(12112900)  # ...except this rune is not purchaseable...
+    EnableFlag(12112909)  # ...and this rune is "active" for effect
+
+    SkipLinesIfFlagOn(8, 12112919)  # rune must not already be "active"
+    SkipLinesIfFlagOff(7, 12112910)  # rune must be purchased
+    RemoveGoodFromPlayer(4600)
+    RemoveGoodFromPlayer(4620)
+    RemoveGoodFromPlayer(4640)
+    RemoveGoodFromPlayer(4650)
+    DisableFlagRange((12112900, 12112999))  # all runes purchaseable and inactive...
+    EnableFlag(12112910)  # ...except this rune is not purchaseable...
+    EnableFlag(12112919)  # ...and this rune is "active" for effect
+
+    SkipLinesIfFlagOn(8, 12112929)  # rune must not already be "active"
+    SkipLinesIfFlagOff(7, 12112920)  # rune must be purchased
+    RemoveGoodFromPlayer(4600)
+    RemoveGoodFromPlayer(4610)
+    RemoveGoodFromPlayer(4640)
+    RemoveGoodFromPlayer(4650)
+    DisableFlagRange((12112900, 12112999))  # all runes purchaseable and inactive...
+    EnableFlag(12112920)  # ...except this rune is not purchaseable...
+    EnableFlag(12112929)  # ...and this rune is "active" for effect
+
+    SkipLinesIfFlagOn(8, 12112939)  # rune must not already be "active"
+    SkipLinesIfFlagOff(7, 12112930)  # rune must be purchased
+    RemoveGoodFromPlayer(4600)
+    RemoveGoodFromPlayer(4610)
+    RemoveGoodFromPlayer(4620)
+    RemoveGoodFromPlayer(4650)
+    DisableFlagRange((12112900, 12112999))  # all runes purchaseable and inactive...
+    EnableFlag(12112930)  # ...except this rune is not purchaseable...
+    EnableFlag(12112939)  # ...and this rune is "active" for effect
+
+    SkipLinesIfFlagOn(8, 12112949)  # rune must not already be "active"
+    SkipLinesIfFlagOff(7, 12112940)  # rune must be purchased
+    RemoveGoodFromPlayer(4600)
+    RemoveGoodFromPlayer(4610)
+    RemoveGoodFromPlayer(4620)
+    RemoveGoodFromPlayer(4640)
+    DisableFlagRange((12112900, 12112999))  # all runes purchaseable and inactive...
+    EnableFlag(12112940)  # ...except this rune is not purchaseable...
+    EnableFlag(12112949)  # ...and this rune is "active" for effect
+
+    # Re-checks every second.
+    Wait(1.0)
+    return RESTART

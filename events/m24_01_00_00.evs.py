@@ -26,10 +26,6 @@ from .m24_01_entities import *
 
 def Constructor():
     """ 0: Event 0 """
-    if InsideMap(CENTRAL_YHARNAM) and not BossRushTriggers.ClericBeast and not BossRushTriggers.FatherGascoigne:
-        # This warps the player to the Dream when the game first begins, as well.
-        EnableFlag(BossRushFlags.RequestDreamReturn)
-
     RunEvent(7200, slot=1, args=(2410952, 2411952, BossRushFlags.BossDead_ClericBeast))
     RunEvent(7200, slot=2, args=(2410953, 2411953, BossRushFlags.BossDead_FatherGascoigne))
 
@@ -517,6 +513,11 @@ def Constructor():
     RunEvent(12414100, slot=0, args=(2411000, 7400, 10012000))
     RunEvent(12414100, slot=1, args=(2411001, 7401, 10012001))
     RunEvent(12414100, slot=4, args=(2411004, 7404, 10012004))
+
+    WaitFrames(10)  # waiting + using battle start flags here, as Cleric Beast region was being weird
+    if InsideMap(CENTRAL_YHARNAM) and not FlagEnabled(12414702) and not FlagEnabled(12414802):
+        # This warps the player to the Dream when the game first begins, as well.
+        EnableFlag(BossRushFlags.RequestDreamReturn)
 
 
 def Preconstructor():
@@ -3286,15 +3287,17 @@ def AggroEmissary(_, enemy: int):
 def Event12410687(_, arg_0_3: int, arg_4_7: int):
     """ 12410687: Event 12410687 """
     EndIfFlagOn(arg_0_3)
-    # IfFlagOn(0, arg_4_7)
+    IfFlagOn(0, arg_4_7)
     # RunEvent(9350, 0, args=(1,))
+    return
 
 
 def Event12410693(_, arg_0_3: int, arg_4_7: int):
     """ 12410693: Event 12410693 """
     EndIfFlagOn(arg_0_3)
-    # IfFlagOn(0, arg_4_7)
+    IfFlagOn(0, arg_4_7)
     # RunEvent(9350, 0, args=(2,))
+    return
 
 
 def Event12410700():

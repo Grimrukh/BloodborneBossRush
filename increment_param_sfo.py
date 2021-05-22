@@ -29,4 +29,4 @@ def update(force_value: int = None):
 
 
 if __name__ == '__main__':
-    update(10)
+    update(12)
