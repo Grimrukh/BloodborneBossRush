@@ -104,6 +104,10 @@ def set_boss_levels(game_param_bnd: GameParamBND):
                 # Otherwise, leave boss at standard level (including all DLC bosses).
             print_change(boss_entry, "GameClearSpEffectID", ng_plus_level)
 
+    # Cleric Beast has too much HP by default.
+    cleric_beast_entry = game_param_bnd.Characters[BossCharacterParam.ClericBeast]
+    cleric_beast_entry["hp"] = int(0.85 * 2700)
+
 
 def set_starting_classes(game_param_bnd: GameParamBND):
 
@@ -237,8 +241,13 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
         for i_, (piece_type, piece_offset) in enumerate(
             zip(("Head", "Body", "Arms", "Legs"), (0, 1000, 2000, 3000))
         ):
+            armor_id = head_armor_id + piece_offset
+            if armor_id not in game_param_bnd.Armor:
+                print(f"Missing armor piece: {armor_id}. Skipping.")
+                continue  # missing piece, e.g. arms for Student Set
             _entry = game_param_bnd.Shops[dest_head_row_id + i_] = game_param_bnd.Shops[source_head_row_id + i_].copy()
-            print_change(_entry, "equipId", head_armor_id + piece_offset)
+            game_param_bnd.Armor[armor_id]["sellValue"] = 0
+            print_change(_entry, "equipId", armor_id)
             _entry.name = f"{set_name} ({piece_type})"
             for s in (10000, 20000, 30000):
                 game_param_bnd.Shops[dest_head_row_id + i_ + s] = game_param_bnd.Shops[dest_head_row_id + i_].copy()
@@ -286,10 +295,10 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
             _set_insight_price(row_id, 1)
             game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in uncommon_items:
-            _set_insight_price(row_id, 2)
+            _set_insight_price(row_id, 1)  # NOTE: everything reduce to 1
             game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in rare_items:
-            _set_insight_price(row_id, 3)
+            _set_insight_price(row_id, 1)  # NOTE: everything reduced to 1
             game_param_bnd.Goods[row["equipId"]]["sellValue"] = 0
         elif check_row_id in weapons:
             _set_insight_price(row_id, 5)
@@ -337,6 +346,12 @@ def set_shop_lineups(game_param_bnd: GameParamBND):
     game_param_bnd.Armor[231000]["sellValue"] = 0  # Foreign Garb
     game_param_bnd.Armor[232000]["sellValue"] = 0  # Sullied Bandage
     game_param_bnd.Armor[233000]["sellValue"] = 0  # Foreign Trousers
+
+    # Add missing consumables to normal shop.
+    beast_blood_pellet_shop = game_param_bnd.Shops[100208] = game_param_bnd.Shops[100207].copy()
+    beast_blood_pellet_shop["equipId"] = 1110
+    for i in (10000, 20000, 30000, 40000):
+        game_param_bnd.Shops[100208 + i] = beast_blood_pellet_shop.copy()
 
     # Add spell items to insight shop.
     spell_goods = {
@@ -401,17 +416,17 @@ def set_new_item_lots(game_param_bnd: GameParamBND):
     vial_refill["lotItemId01"] = 1000
     vial_refill["lotItemNum01"] = 20
 
-    game_param_bnd.ItemLots[1001] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    game_param_bnd.ItemLots[1010] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
     bullet_refill.name = "Quicksilver Bullet Refill 20"
     bullet_refill["lotItemId01"] = 900
     bullet_refill["lotItemNum01"] = 20
 
-    game_param_bnd.ItemLots[1010] = vial_refill = game_param_bnd.ItemLots[5500].copy()
+    game_param_bnd.ItemLots[1020] = vial_refill = game_param_bnd.ItemLots[5500].copy()
     vial_refill.name = "Blood Vial Refill 10"
     vial_refill["lotItemId01"] = 1000
     vial_refill["lotItemNum01"] = 10
 
-    game_param_bnd.ItemLots[1011] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
+    game_param_bnd.ItemLots[1030] = bullet_refill = game_param_bnd.ItemLots[5500].copy()
     bullet_refill.name = "Quicksilver Bullet Refill 10"
     bullet_refill["lotItemId01"] = 900
     bullet_refill["lotItemNum01"] = 10

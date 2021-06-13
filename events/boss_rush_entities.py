@@ -188,8 +188,10 @@ class BossRushText(EventText):
 
 
 class BossRushItemLots(ItemLotParam):
-    VialBulletRefill20 = 1000
-    VialBulletRefill10 = 1010
+    VialRefill20 = 1000
+    BulletRefill20 = 1000
+    VialRefill10 = 1020
+    BulletRefill10 = 1030
     BossRushReward = 10000
     BossRushRequestItems = 10010
 

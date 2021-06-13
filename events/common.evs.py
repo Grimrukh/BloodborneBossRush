@@ -18,7 +18,8 @@ def Constructor():
         RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
         RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
         RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-        AwardItemLot(BossRushItemLots.VialBulletRefill20)
+        AwardItemLot(BossRushItemLots.VialRefill20)
+        AwardItemLot(BossRushItemLots.BulletRefill20)
         # Leave spawn point as whatever was warped to, for single boss fight.
     else:
         # Set respawn point to normal Hunter's Dream spawn.
@@ -1369,7 +1370,8 @@ def ControlBossRushLantern(_, lantern_chr: int, lantern_obj: int, boss_dead_flag
     # RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     # RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill10)  # give 10 extra, rather than setting to 20 exactly
+    AwardItemLot(BossRushItemLots.VialRefill10)  # give 10 extra, rather than setting to 20 exactly
+    AwardItemLot(BossRushItemLots.BulletRefill10)  # give 10 extra, rather than setting to 20 exactly
 
     Wait(2.0)
     if BossRushFlags.BossRushRandomized:
@@ -1408,7 +1410,8 @@ def MonitorStoryBossRushRequest():
     RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill20)
+    AwardItemLot(BossRushItemLots.VialRefill20)
+    AwardItemLot(BossRushItemLots.BulletRefill20)
 
     Wait(1.0)
     EnableNextStoryBossWarpFlag()
@@ -1435,7 +1438,8 @@ def MonitorRandomBossRushRequest():
     RemoveGoodFromPlayer(BossRushGoods.BloodVial, 99)
     RemoveGoodFromPlayer(BossRushGoods.QuicksilverBullet, 99)
     RemoveGoodFromPlayer(BossRushGoods.BloodBullet, 99)
-    AwardItemLot(BossRushItemLots.VialBulletRefill20)
+    AwardItemLot(BossRushItemLots.VialRefill20)
+    AwardItemLot(BossRushItemLots.BulletRefill20)
 
     Wait(1.0)
     EnableRandomBossWarpFlag()
